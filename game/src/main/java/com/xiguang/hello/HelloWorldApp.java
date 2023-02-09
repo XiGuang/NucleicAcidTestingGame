@@ -7,7 +7,7 @@ public class HelloWorldApp extends GameApplication {
 
     @Override
     protected void initSettings(GameSettings gameSettings) {
-        gameSettings.setTitle("11");
+        gameSettings.setTitle("hello world");
         gameSettings.setVersion("0.1");
         gameSettings.setHeight(520);
         gameSettings.setWidth(480);
