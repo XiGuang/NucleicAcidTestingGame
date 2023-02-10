@@ -1,4 +1,8 @@
+import org.json.simple.JSONObject;
+
 import java.sql.*;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Objects;
 
 public class user {
@@ -11,9 +15,10 @@ public class user {
         password=p;
         number=0;
     }
-    public void login(){
+    public String login(){
         Connection con = null;  // 定义Connection对象用于链接数据库
         Statement s;  // 定义Statement对象用于执行SQL语句
+        String res = null;
         try {
             // 加载数据库驱动
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -39,15 +44,13 @@ public class user {
                 String pswd;
                 pswd = r.getString("password");
                 if(Objects.equals(pswd, password)){
-                    System.out.println("登录成功！");
+                    res = "登录成功！";
                 }
                 else{
-                    System.out.println(password);
-                    System.out.println(pswd);
-                    System.out.println("密码错误，请重试！");
+                    res = "密码错误，请重试！";
                 }
             }
-            else System.out.println("账户不存在，请注册");
+            else res = "账户不存在，请注册";
 
         } catch (ClassNotFoundException e) {
             // TODO Auto-generated catch block
@@ -66,10 +69,12 @@ public class user {
                 con=null;
             }
         }
+        return res;
     }
-    public void Registration(){
+    public String Registration(){
         Connection con = null;  // 定义Connection对象用于链接数据库
         Statement s;  // 定义Statement对象用于执行SQL语句
+        String res = null;
         try {
             // 加载数据库驱动
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -89,7 +94,7 @@ public class user {
             ResultSet r = ps.executeQuery();
             String us_id ;
             if(r.next()){
-                System.out.println("账户名重复，请重新注册");
+                res = "账户名重复，请重新注册";
             }
             else {
                 // 数据插入,用于用户注册
@@ -100,8 +105,8 @@ public class user {
                 psql.setString( 2 , password );
                 psql.setInt( 3 ,x);
                 psql.executeUpdate();
+                res = "注册成功，请登录";
             }
-
         } catch (ClassNotFoundException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -119,6 +124,7 @@ public class user {
                 con=null;
             }
         }
+        return res;
     }
 
     public void setNumber(int num) {
@@ -170,9 +176,10 @@ public class user {
             }
         }
     }
-    public void Ranking(){
+    public List<JSONObject> Ranking(){
         Connection con = null;  // 定义Connection对象用于链接数据库
         Statement s;  // 定义Statement对象用于执行SQL语句
+        List<JSONObject> list = new LinkedList<JSONObject>();   //实现传表
         try {
             // 加载数据库驱动
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -196,6 +203,11 @@ public class user {
             while(r.next()){
                 user_id = r.getString("user_id");
                 num = r.getInt("number");
+                JSONObject object_r1 = new JSONObject();
+                object_r1.put("Ranking",i);
+                object_r1.put("Name",user_id);
+                object_r1.put("Number",num);
+                list.add(object_r1);
                 System.out.println(i+"\t"+user_id+"\t"+num);
                 i+=1;
             }
@@ -217,6 +229,7 @@ public class user {
                 con=null;
             }
         }
+        return list;
     }
 
 }
