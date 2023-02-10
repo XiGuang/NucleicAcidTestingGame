@@ -1,27 +1,34 @@
 package NucleicAcidTesting.game.components;
 
+import NucleicAcidTesting.game.Config;
 import com.almasb.fxgl.entity.component.Component;
 import com.almasb.fxgl.pathfinding.CellMoveComponent;
 import com.almasb.fxgl.pathfinding.astar.AStarMoveComponent;
+import com.almasb.fxgl.physics.PhysicsComponent;
 
 public class PlayerComponent extends Component {
-    private CellMoveComponent cell;
-    private AStarMoveComponent astar;
+
+    PhysicsComponent physics;
 
     public void moveRight() {
-        astar.moveToRightCell();
+        physics.setVelocityX(Config.Velocity);
     }
 
     public void moveLeft() {
-        astar.moveToLeftCell();
+        physics.setVelocityX(-Config.Velocity);
     }
 
     public void moveUp() {
-        astar.moveToUpCell();
+        physics.setVelocityY(-Config.Velocity);
     }
 
     public void moveDown() {
-        astar.moveToDownCell();
+        physics.setVelocityY(Config.Velocity);
+    }
+
+    public void stop(){
+        physics.setVelocityX(0);
+        physics.setVelocityY(0);
     }
 }
 

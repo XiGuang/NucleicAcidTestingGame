@@ -1,22 +1,19 @@
 package NucleicAcidTesting.game.EntityFactory;
 
-import NucleicAcidTesting.game.Config;
-import NucleicAcidTesting.game.NATGameApp;
 import NucleicAcidTesting.game.NATType;
 import NucleicAcidTesting.game.components.BuildingComponent;
 import NucleicAcidTesting.game.components.PeopleComponent;
 import NucleicAcidTesting.game.components.PlayerComponent;
 import NucleicAcidTesting.game.components.SiteComponent;
 import com.almasb.fxgl.dsl.FXGL;
+import com.almasb.fxgl.dsl.components.KeepOnScreenComponent;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.EntityFactory;
 import com.almasb.fxgl.entity.SpawnData;
 import com.almasb.fxgl.entity.Spawns;
 import com.almasb.fxgl.entity.components.CollidableComponent;
-import com.almasb.fxgl.pathfinding.CellMoveComponent;
-import com.almasb.fxgl.pathfinding.astar.AStarMoveComponent;
-import com.almasb.fxgl.texture.Texture;
-import javafx.geometry.Point2D;
+import com.almasb.fxgl.physics.PhysicsComponent;
+import com.almasb.fxgl.physics.box2d.dynamics.BodyType;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
@@ -26,19 +23,22 @@ public class NATFactory implements EntityFactory {
     public Entity newBackground(SpawnData data) {
 
         return FXGL.entityBuilder(data)
+                .view("floor.png")
                 .zIndex(-1)
                 .build();
     }
 
     @Spawns("Player")
     public Entity newPlayer(SpawnData data) {
+        PhysicsComponent physicsComponent=new PhysicsComponent();
+        physicsComponent.setBodyType(BodyType.KINEMATIC);
+
         return FXGL.entityBuilder(data)
-                .at(Config.WINDOW_HEIGHT/2.0,Config.WINDOW_WIDTH/2.0)
                 .type(NATType.PLAYER)
                 .viewWithBBox(new Rectangle(20,20, Color.LIGHTBLUE))
                 .with(new CollidableComponent(true))
-                .with(new CellMoveComponent(40,40,150))
-                .with(new AStarMoveComponent(FXGL.<NATGameApp>getAppCast().getGrid()))
+                .with(physicsComponent)
+                .with(new KeepOnScreenComponent())
                 .with(new PlayerComponent())
                 .build();
     }
