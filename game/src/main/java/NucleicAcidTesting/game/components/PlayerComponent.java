@@ -1,10 +1,13 @@
 package NucleicAcidTesting.game.components;
 
 import NucleicAcidTesting.game.Config;
+import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.component.Component;
 import com.almasb.fxgl.pathfinding.CellMoveComponent;
 import com.almasb.fxgl.pathfinding.astar.AStarMoveComponent;
 import com.almasb.fxgl.physics.PhysicsComponent;
+
+import java.util.List;
 
 public class PlayerComponent extends Component {
 
