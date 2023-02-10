@@ -2,6 +2,7 @@ package NucleicAcidTesting.game;
 
 import NucleicAcidTesting.game.EntityFactory.NATFactory;
 import NucleicAcidTesting.game.components.PlayerComponent;
+import NucleicAcidTesting.game.ui.MainMenu;
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
 import com.almasb.fxgl.entity.Entity;
@@ -29,6 +30,7 @@ public class NATGameApp extends GameApplication {
         gameSettings.setTitle(Config.TITLE);
         gameSettings.setHeight(Config.WINDOW_HEIGHT);
         gameSettings.setWidth(Config.WINDOW_WIDTH);
+        gameSettings.setSceneFactory(new NATSceneFactory());
     }
 
     @Override
