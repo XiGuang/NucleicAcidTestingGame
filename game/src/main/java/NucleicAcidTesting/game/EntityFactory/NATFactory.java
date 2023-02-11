@@ -45,6 +45,7 @@ public class NATFactory implements EntityFactory {
                 .collidable()
                 .with(new KeepOnScreenComponent())
                 .with(new PlayerComponent())
+                .with(new MoveComponent())
                 .build();
     }
 
@@ -111,6 +112,7 @@ public class NATFactory implements EntityFactory {
                 .collidable()
                 .with(physicsComponent)
                 .with(new PeopleComponent())
+                .with(new MoveComponent())
                 .build();
     }
 
@@ -129,20 +131,6 @@ public class NATFactory implements EntityFactory {
                 .build();
     }
     
-    @Spawns("UICountDown")
-    public Entity newUICountDown(SpawnData data) {
-        return FXGL.entityBuilder(data)
-                .type(NATType.COUNT_DOWN)
-                .with(new CountDownComponent())
-                .build();
-    }
-    
-    @Spawns("Mood")
-    public Entity newMood(SpawnData data) {
-        return FXGL.entityBuilder(data)
-                .type(NATType.MOOD)
-                .with(new MoodComponent())
-                .build();
-    }
+
 
 }

@@ -1,7 +1,8 @@
 package NucleicAcidTesting.game;
 
 import NucleicAcidTesting.game.EntityFactory.NATFactory;
-import NucleicAcidTesting.game.components.PlayerComponent;
+import NucleicAcidTesting.game.EntityFactory.NATUIFactory;
+import NucleicAcidTesting.game.components.MoveComponent;
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
 import com.almasb.fxgl.entity.Entity;
@@ -9,13 +10,15 @@ import com.almasb.fxgl.input.UserAction;
 import com.almasb.fxgl.input.virtual.VirtualButton;
 import javafx.scene.input.KeyCode;
 
+import java.util.Map;
+
 import static com.almasb.fxgl.dsl.FXGLForKtKt.*;
 
 public class NATGameApp extends GameApplication {
 
     private Entity player;
 
-    private PlayerComponent playerComponent;
+    private MoveComponent moveComponent;
 
 
 
@@ -35,52 +38,57 @@ public class NATGameApp extends GameApplication {
     }
 
     @Override
+    protected void initGameVars(Map<String, Object> vars) {
+
+    }
+
+    @Override
     protected void initInput() {
         getInput().addAction(new UserAction("Move Up") {
             @Override
             protected void onAction() {
-                playerComponent.moveUp();
+                moveComponent.moveUp();
             }
 
             @Override
             protected void onActionEnd() {
-                playerComponent.stop();
+                moveComponent.stop();
             }
         }, KeyCode.W, VirtualButton.UP);
 
         getInput().addAction(new UserAction("Move Left") {
             @Override
             protected void onAction() {
-                playerComponent.moveLeft();
+                moveComponent.moveLeft();
             }
 
             @Override
             protected void onActionEnd() {
-                playerComponent.stop();
+                moveComponent.stop();
             }
         }, KeyCode.A,VirtualButton.LEFT);
 
         getInput().addAction(new UserAction("Move Down") {
             @Override
             protected void onAction() {
-                playerComponent.moveDown();
+                moveComponent.moveDown();
             }
 
             @Override
             protected void onActionEnd() {
-                playerComponent.stop();
+                moveComponent.stop();
             }
         }, KeyCode.S,VirtualButton.DOWN);
 
         getInput().addAction(new UserAction("Move Right") {
             @Override
             protected void onAction() {
-                playerComponent.moveRight();
+                moveComponent.moveRight();
             }
 
             @Override
             protected void onActionEnd() {
-                playerComponent.stop();
+                moveComponent.stop();
             }
         }, KeyCode.D,VirtualButton.RIGHT);
     }
@@ -88,11 +96,12 @@ public class NATGameApp extends GameApplication {
     @Override
     protected void initGame() {
         getGameWorld().addEntityFactory(new NATFactory());
+        getGameWorld().addEntityFactory(new NATUIFactory());
 
         spawn("Background",0,0);
 
         player = spawn("Player",0,0);
-        playerComponent = player.getComponent(PlayerComponent.class);
+        moveComponent = player.getComponent(MoveComponent.class);
 
         NATFactory.spawnBuildings(10, (int) (-getAppWidth()+Config.SIZE_X/2+Config.GAP_TO_WINDOW),
                 (int) (-getAppHeight()+Config.SIZE_Y/2+Config.GAP_TO_WINDOW),
