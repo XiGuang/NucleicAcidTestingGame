@@ -6,8 +6,30 @@ public interface Config {
     String VERSION="0.1";
     String TITLE="Nucleic Acid Testing";
 
+    // Player
+    double Velocity=300;
 
+    // Building
+    double SIZE_X=80;
+    double SIZE_Y=160;
 
+    double GAP_X =SIZE_X+30;
+    double GAP_Y =SIZE_Y+30;
+    int MAX_CYCLE_TIME=100;
 
+    double OFFSET_X=-SIZE_X/2;
+    double OFFSET_Y=-SIZE_Y/2;
+
+    int GAP_TO_WINDOW=30;
+
+    // Window
+    int WINDOW_MIN_X=-WINDOW_WIDTH;
+    int WINDOW_MAX_X=WINDOW_WIDTH;
+    int WINDOW_MIN_Y=-WINDOW_HEIGHT;
+    int WINDOW_MAX_Y=WINDOW_HEIGHT;
+
+    int BACKGROUND_LEVEL=-1;
+    int BUILDING_LEVEL=1;
+    int ACTION_LEVEL=0;
 
 }
