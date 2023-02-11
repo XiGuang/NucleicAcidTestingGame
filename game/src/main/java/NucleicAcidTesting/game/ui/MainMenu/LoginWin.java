@@ -42,6 +42,7 @@ public class LoginWin extends GridPane {
 
         Button loginButton = new Button("登录");
         loginButton.setPrefSize(btnWidth, btnHeight);
+
         if(!online){
             loginButton.setOnAction(actionEvent -> {
                 this.toBack();
