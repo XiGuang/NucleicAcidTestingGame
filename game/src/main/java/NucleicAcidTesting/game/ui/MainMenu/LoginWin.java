@@ -18,7 +18,7 @@ import javafx.scene.control.Alert.AlertType;
 
 public class LoginWin extends GridPane {
     Client client = new Client();
-    boolean online = true;
+    boolean online = false;
     public LoginWin() {
 
         Image input = new Image("assets/textures/menuBg.png",
