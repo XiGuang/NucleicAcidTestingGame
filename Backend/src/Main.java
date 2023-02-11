@@ -66,9 +66,8 @@ class Server_listen implements Runnable{
 
                     case "3":  //功能3.登记分数
                         String name3 = (String) jsonObject.get("Name");
-                        String password3 = (String) jsonObject.get("Password");
                         int number3 = (int) jsonObject.get("Number");
-                        user z = new user(name3,password3);
+                        user z = new user(name3,"password3");
                         z.setNumber(number3);
                         break;
 
