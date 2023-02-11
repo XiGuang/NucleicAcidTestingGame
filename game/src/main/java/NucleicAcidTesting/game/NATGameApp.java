@@ -1,19 +1,13 @@
 package NucleicAcidTesting.game;
 
 import NucleicAcidTesting.game.EntityFactory.NATFactory;
-import NucleicAcidTesting.game.collision.PlayerBuildingHandler;
 import NucleicAcidTesting.game.components.PlayerComponent;
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
-import com.almasb.fxgl.core.math.FXGLMath;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.input.UserAction;
 import com.almasb.fxgl.input.virtual.VirtualButton;
-import javafx.geometry.Point2D;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.input.KeyCode;
-
-import java.util.List;
 
 import static com.almasb.fxgl.dsl.FXGLForKtKt.*;
 
@@ -100,7 +94,7 @@ public class NATGameApp extends GameApplication {
         player = spawn("Player",0,0);
         playerComponent = player.getComponent(PlayerComponent.class);
 
-        spawnBuildings(10, (int) (-getAppWidth()+Config.SIZE_X/2+Config.GAP_TO_WINDOW),
+        NATFactory.spawnBuildings(10, (int) (-getAppWidth()+Config.SIZE_X/2+Config.GAP_TO_WINDOW),
                 (int) (-getAppHeight()+Config.SIZE_Y/2+Config.GAP_TO_WINDOW),
                 (int) (getAppWidth()-Config.SIZE_X/2-Config.GAP_TO_WINDOW),
                 (int) (getAppHeight()-Config.SIZE_Y/2-Config.GAP_TO_WINDOW));
@@ -128,47 +122,8 @@ public class NATGameApp extends GameApplication {
 
     @Override
     protected void onUpdate(double tpf) {
-        List<Entity> entities=getGameWorld().getEntitiesInRange(new Rectangle2D(player.getPosition().getX(),player.getPosition().getY(),player.getWidth(),player.getHeight()));
-        if(!entities.isEmpty()){
-            for(var e:entities){
-                if(e.isType(NATType.BUILDING)){
-                    e.setOpacity(0.5);
-                }
-            }
-        }
+
     }
 
-    /**
-     * 随机生成居民楼
-     * @param num 生成楼的数量
-     * @param min_x 生成的最小x范围
-     * @param min_y 生成的最小y范围
-     * @param max_x 生成的最大x范围
-     * @param max_y 生成的最大y范围
-     */
-    private void spawnBuildings(int num, int min_x, int min_y, int max_x, int max_y) throws RuntimeException {
-        Rectangle2D bound = new Rectangle2D(min_x, min_y, max_x - min_x, max_y - min_y);
-        for (int i = 0; i < num; ++i) {
-            Point2D point;
-            int cycle_num = 0;    // 防止找不到生成位置
-            while (true) {
-                point = FXGLMath.randomPoint(bound);
-                List<Entity> buildings = getGameWorld().getEntitiesInRange(new Rectangle2D(
-                        point.getX() - Config.GAP_X / 2,
-                        point.getY() - Config.GAP_Y / 2,
-                        Config.GAP_X,
-                        Config.GAP_Y));
 
-                // 避免物体重叠
-                if (buildings.isEmpty())
-                    break;
-
-                // 防止找不到生成位置
-                if (++cycle_num > Config.MAX_CYCLE_TIME)
-                    throw new RuntimeException("NOT FOUND LOCATION TO SET BUILDING");
-
-            }
-            getGameWorld().spawn("Building", point);
-        }
-    }
 }

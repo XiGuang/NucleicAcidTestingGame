@@ -2,7 +2,6 @@ package NucleicAcidTesting.game.EntityFactory;
 
 import NucleicAcidTesting.game.Config;
 import NucleicAcidTesting.game.NATType;
-import NucleicAcidTesting.game.collision.PlayerBuildingHandler;
 import NucleicAcidTesting.game.components.BuildingComponent;
 import NucleicAcidTesting.game.components.PeopleComponent;
 import NucleicAcidTesting.game.components.PlayerComponent;
@@ -11,8 +10,6 @@ import com.almasb.fxgl.core.math.FXGLMath;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.dsl.components.KeepOnScreenComponent;
 import com.almasb.fxgl.entity.*;
-import com.almasb.fxgl.entity.components.BoundingBoxComponent;
-import com.almasb.fxgl.entity.components.CollidableComponent;
 import com.almasb.fxgl.physics.*;
 import com.almasb.fxgl.physics.box2d.dynamics.BodyType;
 import com.almasb.fxgl.physics.box2d.dynamics.FixtureDef;
@@ -21,9 +18,10 @@ import javafx.geometry.Rectangle2D;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
+
+import static com.almasb.fxgl.dsl.FXGLForKtKt.getGameWorld;
 
 public class NATFactory implements EntityFactory {
 
@@ -41,7 +39,6 @@ public class NATFactory implements EntityFactory {
         PhysicsComponent physicsComponent = new PhysicsComponent();
         physicsComponent.setBodyType(BodyType.DYNAMIC);
         physicsComponent.setFixtureDef(new FixtureDef());
-        physicsComponent.addSensor(new HitBox("PLAYER_SENSOR",new Point2D(0,0),BoundingShape.box(20,20)), new PlayerBuildingHandler());
 
         return FXGL.entityBuilder(data)
                 .type(NATType.PLAYER)
@@ -54,11 +51,44 @@ public class NATFactory implements EntityFactory {
                 .build();
     }
 
+    /**
+     * 随机生成居民楼
+     * @param num 生成楼的数量
+     * @param min_x 生成的最小x范围
+     * @param min_y 生成的最小y范围
+     * @param max_x 生成的最大x范围
+     * @param max_y 生成的最大y范围
+     */
+    public static void spawnBuildings(int num, int min_x, int min_y, int max_x, int max_y) throws RuntimeException {
+        Rectangle2D bound = new Rectangle2D(min_x, min_y, max_x - min_x, max_y - min_y);
+        for (int i = 0; i < num; ++i) {
+            Point2D point;
+            int cycle_num = 0;    // 防止找不到生成位置
+            while (true) {
+                point = FXGLMath.randomPoint(bound);
+                List<Entity> buildings = getGameWorld().getEntitiesInRange(new Rectangle2D(
+                        point.getX() - Config.GAP_X / 2,
+                        point.getY() - Config.GAP_Y / 2,
+                        Config.GAP_X,
+                        Config.GAP_Y));
+
+                // 避免物体重叠
+                if (buildings.isEmpty())
+                    break;
+
+                // 防止找不到生成位置
+                if (++cycle_num > Config.MAX_CYCLE_TIME)
+                    throw new RuntimeException("NOT FOUND LOCATION TO SET BUILDING");
+
+            }
+            getGameWorld().spawn("Building", point);
+        }
+    }
+
     @Spawns("Building")
     public Entity newBuilding(SpawnData data) {
         PhysicsComponent physicsComponent=new PhysicsComponent();
         physicsComponent.setBodyType(BodyType.STATIC);
-        physicsComponent.addSensor(new HitBox("BUILDING_SENSOR",new Point2D(0,0),BoundingShape.box(Config.SIZE_X,Config.SIZE_Y)),new SensorCollisionHandler(){});
 
         return FXGL.entityBuilder()
                 .type(NATType.BUILDING)
@@ -74,20 +104,30 @@ public class NATFactory implements EntityFactory {
 
     @Spawns("People")
     public Entity newPeople(SpawnData data) {
+        PhysicsComponent physicsComponent=new PhysicsComponent();
+        physicsComponent.setBodyType(BodyType.KINEMATIC);
+
         return FXGL.entityBuilder(data)
                 .type(NATType.PEOPLE)
                 .zIndex(Config.ACTION_LEVEL)
                 .viewWithBBox(new Circle(10, FXGLMath.randomColor()))
+                .collidable()
+                .with(physicsComponent)
                 .with(new PeopleComponent())
                 .build();
     }
 
     @Spawns("Site")
     public Entity newSite(SpawnData data) {
+        PhysicsComponent physicsComponent=new PhysicsComponent();
+        physicsComponent.setBodyType(BodyType.STATIC);
+
         return FXGL.entityBuilder(data)
                 .type(NATType.SITE)
                 .zIndex(Config.BUILDING_LEVEL)
                 .viewWithBBox(new Rectangle(30, 30, Color.PINK))
+                .collidable()
+                .with(physicsComponent)
                 .with(new SiteComponent())
                 .build();
     }
