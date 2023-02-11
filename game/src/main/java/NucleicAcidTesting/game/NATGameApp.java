@@ -10,6 +10,7 @@ import com.almasb.fxgl.input.UserAction;
 import com.almasb.fxgl.input.virtual.VirtualButton;
 import javafx.scene.input.KeyCode;
 
+import java.util.List;
 import java.util.Map;
 
 import static com.almasb.fxgl.dsl.FXGLForKtKt.*;
@@ -103,6 +104,8 @@ public class NATGameApp extends GameApplication {
         player = spawn("Player",0,0);
         moveComponent = player.getComponent(MoveComponent.class);
 
+        spawn("People",10,10);
+
         NATFactory.spawnBuildings(10, (int) (-getAppWidth()+Config.SIZE_X/2+Config.GAP_TO_WINDOW),
                 (int) (-getAppHeight()+Config.SIZE_Y/2+Config.GAP_TO_WINDOW),
                 (int) (getAppWidth()-Config.SIZE_X/2-Config.GAP_TO_WINDOW),
@@ -132,7 +135,15 @@ public class NATGameApp extends GameApplication {
     @Override
     protected void onUpdate(double tpf) {
 
-    }
 
+
+        /// 按y轴的高度进行渲染
+        List<Entity> entities =getGameWorld().getEntities();
+        // 按bottomY从小到大排序（屏幕上小下大）
+        entities.sort(new EntityComparator());
+        for(int z=0;z<entities.size();++z){
+            entities.get(z).setZIndex(z+1);
+        }
+    }
 
 }
