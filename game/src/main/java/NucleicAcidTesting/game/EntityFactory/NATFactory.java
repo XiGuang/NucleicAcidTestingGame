@@ -2,10 +2,7 @@ package NucleicAcidTesting.game.EntityFactory;
 
 import NucleicAcidTesting.game.Config;
 import NucleicAcidTesting.game.NATType;
-import NucleicAcidTesting.game.components.BuildingComponent;
-import NucleicAcidTesting.game.components.PeopleComponent;
-import NucleicAcidTesting.game.components.PlayerComponent;
-import NucleicAcidTesting.game.components.SiteComponent;
+import NucleicAcidTesting.game.components.*;
 import com.almasb.fxgl.core.math.FXGLMath;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.dsl.components.KeepOnScreenComponent;
@@ -129,6 +126,22 @@ public class NATFactory implements EntityFactory {
                 .collidable()
                 .with(physicsComponent)
                 .with(new SiteComponent())
+                .build();
+    }
+    
+    @Spawns("UICountDown")
+    public Entity newUICountDown(SpawnData data) {
+        return FXGL.entityBuilder(data)
+                .type(NATType.COUNT_DOWN)
+                .with(new CountDownComponent())
+                .build();
+    }
+    
+    @Spawns("Mood")
+    public Entity newMood(SpawnData data) {
+        return FXGL.entityBuilder(data)
+                .type(NATType.MOOD)
+                .with(new MoodComponent())
                 .build();
     }
 
