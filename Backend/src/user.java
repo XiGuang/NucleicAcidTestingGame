@@ -22,12 +22,10 @@ public class user {
         try {
             // 加载数据库驱动
             Class.forName("com.mysql.cj.jdbc.Driver");
-            System.out.println("数据库驱动加载成功 ！");
             // 链接数据库java_hs_database
             con = DriverManager.getConnection(
                     "jdbc:mysql://localhost:3306/java_hs_database?severTimezone=GMT",
                     "root", "12345");
-            System.out.println("连接成功，获取连接对象： " + con);
             s = con.createStatement();
 
             // 查询操作，查询是否存在此用户
@@ -62,7 +60,6 @@ public class user {
         {
             try {
                 con.close();
-                System.out.println("连接关闭！");
             } catch (SQLException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
@@ -78,12 +75,10 @@ public class user {
         try {
             // 加载数据库驱动
             Class.forName("com.mysql.cj.jdbc.Driver");
-            System.out.println("数据库驱动加载成功 ！");
             // 链接数据库java_hs_database
             con = DriverManager.getConnection(
                     "jdbc:mysql://localhost:3306/java_hs_database?severTimezone=GMT",
                     "root", "12345");
-            System.out.println("连接成功，获取连接对象： " + con);
             s = con.createStatement();
 
             //查询操作，判断是否重名
@@ -117,7 +112,6 @@ public class user {
         {
             try {
                 con.close();
-                System.out.println("连接关闭！");
             } catch (SQLException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
@@ -133,15 +127,13 @@ public class user {
         try {
             // 加载数据库驱动
             Class.forName("com.mysql.cj.jdbc.Driver");
-            System.out.println("数据库驱动加载成功 ！");
             // 链接数据库java_hs_database
             con = DriverManager.getConnection(
                     "jdbc:mysql://localhost:3306/java_hs_database?severTimezone=GMT",
                     "root", "12345");
-            System.out.println("连接成功，获取连接对象： " + con);
             s = con.createStatement();
 
-            //查询操作，判断是否重名
+            //查询操作，判断分数是否需要重新登记
             String sql = "SELECT number" +
                     " FROM user WHERE user_id=?;";
             PreparedStatement ps= con.prepareStatement(sql);
@@ -168,7 +160,6 @@ public class user {
         {
             try {
                 con.close();
-                System.out.println("连接关闭！");
             } catch (SQLException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
@@ -183,12 +174,10 @@ public class user {
         try {
             // 加载数据库驱动
             Class.forName("com.mysql.cj.jdbc.Driver");
-            System.out.println("数据库驱动加载成功 ！");
             // 链接数据库java_hs_database
             con = DriverManager.getConnection(
                     "jdbc:mysql://localhost:3306/java_hs_database?severTimezone=GMT",
                     "root", "12345");
-            System.out.println("连接成功，获取连接对象： " + con);
             s = con.createStatement();
 
             // 查询操作，按number降序输出
@@ -222,7 +211,6 @@ public class user {
         {
             try {
                 con.close();
-                System.out.println("连接关闭！");
             } catch (SQLException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
