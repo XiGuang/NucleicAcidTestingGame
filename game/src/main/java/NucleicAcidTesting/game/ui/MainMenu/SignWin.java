@@ -73,19 +73,23 @@ public class SignWin {
                     e_password.setText("");
                     e_confirm_password.setText("");
                 } else {
-                    String res = Client.Registration(e_name.getText(), e_password.getText()).get("result").toString();
-                    switch (res) {
-                        case "注册成功，请登录" -> {
-                            Popup.infoBox("注册成功，请登录！");
-                            stage.close();
+                    try {
+                        String res = Client.Registration(e_name.getText(), e_password.getText()).get("result").toString();
+                        switch (res) {
+                            case "注册成功，请登录" -> {
+                                Popup.infoBox("注册成功，请登录！");
+                                stage.close();
+                            }
+                            case "账户名重复，请重新注册" -> {
+                                Popup.warningBox("账户名重复！");
+                                e_name.setText("");
+                                e_password.setText("");
+                                e_confirm_password.setText("");
+                            }
+                            default -> Popup.warningBox("????");
                         }
-                        case "账户名重复，请重新注册" -> {
-                            Popup.warningBox("账户名重复！");
-                            e_name.setText("");
-                            e_password.setText("");
-                            e_confirm_password.setText("");
-                        }
-                        default -> Popup.warningBox("????");
+                    } catch (Exception e) {
+                        Popup.warningBox("网络连接错误，请重试！");
                     }
                 }
             });

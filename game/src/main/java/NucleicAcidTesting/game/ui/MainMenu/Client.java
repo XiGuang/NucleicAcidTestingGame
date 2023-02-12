@@ -11,7 +11,7 @@ public class Client {
     private static Socket socket;
     public static boolean connection_state = false;
 
-    public static JSONObject login(String Name,String Password)
+    public static JSONObject login(String Name,String Password) throws Exception
     //登录函数，需要传递用户姓名，密码
     {
         JSONObject res = null;
@@ -33,11 +33,12 @@ public class Client {
         }catch (Exception e){
             e.printStackTrace();
             connection_state = false;
+            throw e;
         }
         return res;
     }
 
-    public static JSONObject Registration(String Name,String Password)
+    public static JSONObject Registration(String Name,String Password) throws Exception
     //注册函数，需要传递用户姓名，密码
     {
         JSONObject res = null;
@@ -59,11 +60,12 @@ public class Client {
         }catch (Exception e){
             e.printStackTrace();
             connection_state = false;
+            throw e;
         }
         return res;
     }
 
-    public static void setNumber(String Name,int number)
+    public static void setNumber(String Name,int number) throws Exception
     //登记分数函数，需要传递用户姓名，分数
     {
         try {
@@ -82,10 +84,11 @@ public class Client {
         }catch (Exception e){
             e.printStackTrace();
             connection_state = false;
+            throw e;
         }
     }
 
-    public static List<JSONObject> Ranking()
+    public static List<JSONObject> Ranking() throws Exception
     //排名函数，不需要提供参数
     {
         List<JSONObject> res = null;
@@ -107,6 +110,7 @@ public class Client {
         }catch (Exception e){
             e.printStackTrace();
             connection_state = false;
+            throw e;
         }
         return res;
     }

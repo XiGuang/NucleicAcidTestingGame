@@ -16,6 +16,8 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.control.Alert.AlertType;
 
+import java.net.ConnectException;
+
 public class LoginWin extends GridPane {
     public LoginWin() {
 
@@ -48,12 +50,16 @@ public class LoginWin extends GridPane {
         }
         else {
             loginButton.setOnAction(actionEvent -> {
-                String res = Client.login(e_name.getText(), e_password.getText()).get("result").toString();
-                switch (res) {
-                    case "登录成功！" -> this.toBack();
-                    case "密码错误，请重试！" -> Popup.warningBox("密码错误，请重试！");
-                    case "账户不存在，请注册" -> Popup.warningBox("账户不存在，请注册");
-                    default -> Popup.warningBox("????");
+                try {
+                    String res = Client.login(e_name.getText(), e_password.getText()).get("result").toString();
+                    switch (res) {
+                        case "登录成功！" -> this.toBack();
+                        case "密码错误，请重试！" -> Popup.warningBox("密码错误，请重试！");
+                        case "账户不存在，请注册" -> Popup.warningBox("账户不存在，请注册");
+                        default -> Popup.warningBox("????");
+                    }
+                } catch (Exception e) {
+                    Popup.warningBox("网络连接错误，请重试！");
                 }
             });
         }
