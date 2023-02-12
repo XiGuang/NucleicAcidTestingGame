@@ -25,7 +25,7 @@ public class SignWin {
         GridPane pane = new GridPane();
         pane.setPrefSize(350, 250);
 
-        Image image = new Image("assets/textures/signBg.gif",
+        Image image = new Image("assets/textures/menuImg/signBg.gif",
                 100, 100, false, false);
         ImageView imageView = new ImageView(image);
         imageView.setLayoutX(350 - 100);
