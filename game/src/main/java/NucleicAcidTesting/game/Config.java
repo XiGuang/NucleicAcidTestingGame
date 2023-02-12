@@ -6,6 +6,7 @@ public interface Config {
     String VERSION="0.1";
     String TITLE="Nucleic Acid Testing";
 
+    boolean ONLINE = false;
     // Player
     double Velocity=300;
 

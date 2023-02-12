@@ -17,8 +17,6 @@ import javafx.scene.text.Text;
 import javafx.scene.control.Alert.AlertType;
 
 public class LoginWin extends GridPane {
-    Client client = new Client();
-    boolean online = false;
     public LoginWin() {
 
         Image input = new Image("assets/textures/menuBg.png",
@@ -43,7 +41,7 @@ public class LoginWin extends GridPane {
         Button loginButton = new Button("登录");
         loginButton.setPrefSize(btnWidth, btnHeight);
 
-        if(!online){
+        if(!Config.ONLINE){
             loginButton.setOnAction(actionEvent -> {
                 this.toBack();
             });
@@ -53,9 +51,9 @@ public class LoginWin extends GridPane {
                 String res = Client.login(e_name.getText(), e_password.getText()).get("result").toString();
                 switch (res) {
                     case "登录成功！" -> this.toBack();
-                    case "密码错误，请重试！" -> warningBox("密码错误，请重试！");
-                    case "账户不存在，请注册" -> warningBox("账户不存在，请注册");
-                    default -> warningBox("????");
+                    case "密码错误，请重试！" -> Popup.warningBox("密码错误，请重试！");
+                    case "账户不存在，请注册" -> Popup.warningBox("账户不存在，请注册");
+                    default -> Popup.warningBox("????");
                 }
             });
         }
@@ -63,7 +61,7 @@ public class LoginWin extends GridPane {
         Button signButton = new Button("注册");
         signButton.setPrefSize(btnWidth, btnHeight);
         signButton.setOnAction(actionEvent -> {
-            this.toBack();
+            new SignWin();
         });
 
         this.add(name, 0, 0);
@@ -79,14 +77,6 @@ public class LoginWin extends GridPane {
         this.setBackground(new Background(backgroundimage));
         this.setVgap(10);
         this.setHgap(5);
-    }
-
-    public static void warningBox(String infoMessage) {
-        Alert alert = new Alert(AlertType.WARNING);
-        alert.setTitle("Warning");
-        alert.setContentText(infoMessage);
-        alert.showAndWait();
-
     }
 
 }
