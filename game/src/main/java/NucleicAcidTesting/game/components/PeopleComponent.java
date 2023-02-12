@@ -16,12 +16,13 @@ public class PeopleComponent extends Component {
 
         // 跟随
         Entity player = FXGL.getGameWorld().getEntitiesByType(NATType.PLAYER).get(0);
-        if (entity.distance(player) > 30)
+        double distance=entity.distance(player);
+        if (distance > 50)
             physicsComponent.setLinearVelocity(new Point2D(
                     2 * (player.getCenter().getX() - entity.getCenter().getX()),
                     2 * (player.getCenter().getY() - entity.getCenter().getY())
             ));
-        else
+         else
             physicsComponent.setLinearVelocity(
                     NATMath.InterpolationD(physicsComponent.getVelocityX(), 0, tpf*10),
                     NATMath.InterpolationD(physicsComponent.getVelocityY(), 0, tpf*10));
