@@ -5,10 +5,8 @@ import com.almasb.fxgl.dsl.FXGL;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.geometry.VPos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -18,6 +16,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import org.json.simple.JSONObject;
+import java.util.List;
 
 public class MainWin extends StackPane {
     double btnHeight = Config.WINDOW_HEIGHT * 0.15, btnWidth = Config.WINDOW_WIDTH * 0.2;
@@ -62,7 +62,13 @@ public class MainWin extends StackPane {
             Button setButton = new ChoiceButton("设置");
             setButton.setOnAction(actionEvent -> FXGL.getGameController().gotoGameMenu());
             Button rankButton = new ChoiceButton("排行榜");
-            rankButton.setOnAction(actionEvent -> rankPane.toFront());
+            rankButton.setOnAction(actionEvent -> {rankPane.toFront();
+                try {
+                    getRank();
+                } catch (Exception e) {
+                    Popup.warningBox("网络连接错误，请重试！");
+                }
+            });
             Button exitButton = new ChoiceButton("退出");
             exitButton.setOnAction(actionEvent -> FXGL.getGameController().exit());
             Button hellpButton = new ChoiceButton("帮助");
@@ -75,45 +81,19 @@ public class MainWin extends StackPane {
         }
     }
 
-    class FunctionPane extends GridPane {
-        public FunctionPane() {
-            this.setPrefSize(boxWidth * 0.7, boxHeight);
-            this.setStyle("-fx-background-color:rgba(153,204,255);");
-            this.setAlignment(Pos.CENTER);
-        }
-    }
+
 
     class DetailPane extends Pane {
         public DetailPane() {
-
-            Image Img = new Image("assets/textures/menuImg/detailBg.gif",
-                    400, 400, false, false);
-            ImageView imageView = new ImageView(Img);
-            imageView.setOpacity(1);
             this.setPrefSize(boxWidth * 0.7, boxHeight);
             this.setStyle("-fx-background-color:rgba(153,204,255,0.6);");
             this.setLayoutX(Config.WINDOW_WIDTH * 0.25);
-            originPane.add(imageView, 0, 0);
-
-            Button classGameButton = new Button("开始游戏");
-            classGameButton.setOnAction(actionEvent -> FXGL.getGameController().startNewGame());
-            classGameButton.setPrefSize(200, 50);
-            GridPane.setHalignment(classGameButton, HPos.CENTER);
-            Image classicGameImg = new Image("assets/textures/menuImg/classicGameImg.png",
-                    500, 250, false, false);
-            ImageView classicGameImgView = new ImageView(classicGameImg);
-            classGamePane.add(classicGameImgView, 0, 0);
-            classGamePane.add(classGameButton, 0, 1);
-            classGamePane.setHgap(20);
-            classGamePane.setVgap(20);
+            setOriginPane();
+            setClassGamePane();
+            setRankPane();
 
 
-            Text rankTitle = new Text("排行榜");
-            rankTitle.setFont(Font.font("Times Roman", FontWeight.BOLD, 20));
-            GridPane.setHalignment(rankTitle, HPos.CENTER);
-            ScrollPane scrollPane = new ScrollPane();
-            rankPane.add(rankTitle, 0, 0);
-            rankPane.add(scrollPane, 0, 1);
+
 
             this.getChildren().add(rankPane);
             this.getChildren().add(classGamePane);
@@ -122,6 +102,91 @@ public class MainWin extends StackPane {
         }
     }
 
+    private void setOriginPane() {
+        Image Img = new Image("assets/textures/menuImg/detailBg.gif",
+                400, 400, false, false);
+        ImageView imageView = new ImageView(Img);
+        imageView.setOpacity(1);
+
+        originPane.add(imageView, 0, 0);
+    }
+
+    private void setClassGamePane() {
+        Button classGameButton = new Button("开始游戏");
+        classGameButton.setOnAction(actionEvent -> FXGL.getGameController().startNewGame());
+        classGameButton.setPrefSize(200, 50);
+        GridPane.setHalignment(classGameButton, HPos.CENTER);
+        Image classicGameImg = new Image("assets/textures/menuImg/classicGameImg.png",
+                500, 250, false, false);
+        ImageView classicGameImgView = new ImageView(classicGameImg);
+        classGamePane.add(classicGameImgView, 0, 0);
+        classGamePane.add(classGameButton, 0, 1);
+        classGamePane.setVgap(20);
+    }
+
+    private void setRankPane() {
+        Image rankLogo = new Image("assets/textures/menuImg/rankLogo.png",
+                250, 100, false, false);
+        ImageView rankLogoView = new ImageView(rankLogo);
+
+        GridPane.setHalignment(rankLogoView, HPos.CENTER);
+        rankPane.add(rankLogoView, 0, 0);
+        rankPane.setVgap(20);
+    }
+
+    private void getRank() throws Exception {
+        ScrollPane scrollPane = new ScrollPane();
+        List<JSONObject> rankList = Client.Ranking();
+        VBox vBox = new VBox();
+        vBox.setPrefSize(Config.WINDOW_WIDTH * 0.5,Config.WINDOW_HEIGHT);
+
+        for (JSONObject jsonObject : rankList) {
+            String ranking = jsonObject.get("Ranking").toString();
+            Text rankingText = new Text(ranking);
+            rankingText.setFont(Font.font("Times Roman", FontWeight.LIGHT, 20));
+            rankingText.resize(1000,1000);
+            String name =  jsonObject.get("Name").toString();
+            Text nameText = new Text(name);
+            nameText.setFont(Font.font("Times Roman", FontWeight.LIGHT, 20));
+            String score = jsonObject.get("Number").toString();
+            Text scoreText = new Text(score);
+            scoreText.setFont(Font.font("Times Roman", FontWeight.LIGHT, 20));
+            GridPane gridPane = new GridPane();
+            String gap1 = "----------------------------------";
+            String gap2 = "----------------------------------------";
+            String gap3 = "-----------";
+            String empty = "     ";
+            Text emptyText1 = new Text(empty);
+            Text emptyText2 = new Text(empty);
+            Text gapText1 = new Text(gap1);
+            Text gapText2 = new Text(gap2);
+            Text gapText3= new Text(gap3);
+            gridPane.add(emptyText1,0,0);
+            gridPane.add(rankingText,1,0);
+            gridPane.add(nameText,2,0);
+            gridPane.add(scoreText,3,0);
+            gridPane.add(emptyText2,0,1);
+            gridPane.add(gapText1,1,1);
+            gridPane.add(gapText2,2,1);
+            gridPane.add(gapText3,3,1);
+
+            gridPane.setStyle("-fx-background-color: #99CCFF;");
+            vBox.getChildren().add(gridPane);
+
+        }
+        vBox.setStyle("-fx-background-color: #99CCFF;");
+        scrollPane.setContent(vBox);
+        scrollPane.setPrefSize(Config.WINDOW_WIDTH * 0.5,Config.WINDOW_HEIGHT*0.6);
+
+        scrollPane.setBackground(new Background(new BackgroundFill(Color.web("#99CCFF"), CornerRadii.EMPTY, Insets.EMPTY)));
+
+
+        scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        rankPane.add(scrollPane, 0, 1);
+
+
+    }
 
     public MainWin() {
         Pane pane = new Pane(new ChoicePane(), new DetailPane());
