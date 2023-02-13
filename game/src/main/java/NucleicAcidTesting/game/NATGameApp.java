@@ -104,7 +104,7 @@ public class NATGameApp extends GameApplication {
         getGameWorld().addEntityFactory(new NATUIFactory());
 
         spawn("Background",0,0);
-
+        spawn("UICountDown",-40 ,-200);
         player = spawn("Player",0,0);
         move_component = player.getComponent(MoveComponent.class);
 
