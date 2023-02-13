@@ -8,6 +8,7 @@ import java.util.Objects;
 public class user {
     private String name;
     private String password;
+    private String data_passward="12345";
     private int number;
 
     public user(String n,String p){
@@ -25,7 +26,7 @@ public class user {
             // 链接数据库java_hs_database
             con = DriverManager.getConnection(
                     "jdbc:mysql://localhost:3306/java_hs_database?severTimezone=GMT",
-                    "root", "12345");
+                    "root", data_passward);
             s = con.createStatement();
 
             // 查询操作，查询是否存在此用户
@@ -78,7 +79,7 @@ public class user {
             // 链接数据库java_hs_database
             con = DriverManager.getConnection(
                     "jdbc:mysql://localhost:3306/java_hs_database?severTimezone=GMT",
-                    "root", "12345");
+                    "root", data_passward);
             s = con.createStatement();
 
             //查询操作，判断是否重名
@@ -130,7 +131,7 @@ public class user {
             // 链接数据库java_hs_database
             con = DriverManager.getConnection(
                     "jdbc:mysql://localhost:3306/java_hs_database?severTimezone=GMT",
-                    "root", "12345");
+                    "root", data_passward);
             s = con.createStatement();
 
             //查询操作，判断分数是否需要重新登记
@@ -177,7 +178,7 @@ public class user {
             // 链接数据库java_hs_database
             con = DriverManager.getConnection(
                     "jdbc:mysql://localhost:3306/java_hs_database?severTimezone=GMT",
-                    "root", "12345");
+                    "root", data_passward);
             s = con.createStatement();
 
             // 查询操作，按number降序输出
