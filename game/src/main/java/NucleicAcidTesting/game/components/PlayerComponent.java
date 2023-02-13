@@ -15,7 +15,7 @@ import java.util.List;
 
 public class PlayerComponent extends Component {
 
-    LazyValue<EntityGroup> entityGroupLazyValue = new LazyValue<>(() -> FXGL.getGameWorld().getGroup(NATType.BUILDING, NATType.SITE));
+    LazyValue<EntityGroup> entity_group_lazy_value = new LazyValue<>(() -> FXGL.getGameWorld().getGroup(NATType.BUILDING, NATType.SITE));
 
     @Override
     public void onAdded() {
@@ -24,7 +24,7 @@ public class PlayerComponent extends Component {
 
     @Override
     public void onUpdate(double tpf) {
-        List<Entity> entities = entityGroupLazyValue.get().getEntitiesCopy();
+        List<Entity> entities = entity_group_lazy_value.get().getEntitiesCopy();
 
         for (var e : entities) {
             Point2D point_left_up = e.getPosition();

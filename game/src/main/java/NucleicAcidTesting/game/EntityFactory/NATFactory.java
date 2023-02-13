@@ -41,7 +41,6 @@ public class NATFactory implements EntityFactory {
     public Entity newPlayer(SpawnData data) {
         PhysicsComponent physicsComponent = new PhysicsComponent();
         physicsComponent.setBodyType(BodyType.DYNAMIC);
-        physicsComponent.setFixtureDef(new FixtureDef());
 
         return FXGL.entityBuilder(data)
                 .type(NATType.PLAYER)

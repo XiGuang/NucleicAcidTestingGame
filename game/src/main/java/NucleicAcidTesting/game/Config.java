@@ -7,6 +7,7 @@ public interface Config {
     String TITLE="Nucleic Acid Testing";
 
     boolean ONLINE = false;
+
     // Player
     double Velocity=300;
 
@@ -30,7 +31,7 @@ public interface Config {
     int WINDOW_MAX_Y=WINDOW_HEIGHT;
 
     int BACKGROUND_LEVEL=-1;
-    int BUILDING_LEVEL=1;
-    int ACTION_LEVEL=0;
+
+    int MAX_FOLLOW_NUM=20;
 
 }
