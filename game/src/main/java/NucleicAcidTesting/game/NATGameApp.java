@@ -9,9 +9,12 @@ import com.almasb.fxgl.app.GameSettings;
 import com.almasb.fxgl.core.collection.PropertyMap;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
+import com.almasb.fxgl.input.Trigger;
+import com.almasb.fxgl.input.TriggerListener;
 import com.almasb.fxgl.input.UserAction;
 import com.almasb.fxgl.input.virtual.VirtualButton;
 import javafx.scene.input.KeyCode;
+import javafx.util.Duration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -96,6 +99,8 @@ public class NATGameApp extends GameApplication {
                 move_component.stop();
             }
         }, KeyCode.D,VirtualButton.RIGHT);
+
+
     }
 
     @Override
@@ -117,6 +122,8 @@ public class NATGameApp extends GameApplication {
         person.getComponent(PeopleComponent.class).follow();
         Entity person2=spawn("People",50,50);
         person2.getComponent(PeopleComponent.class).follow();
+
+
 
 
         NATFactory.spawnBuildings(10, (int) (-getAppWidth()+Config.SIZE_X/2+Config.GAP_TO_WINDOW),
@@ -148,14 +155,15 @@ public class NATGameApp extends GameApplication {
     @Override
     protected void onUpdate(double tpf) {
 
-
-
         /// 按y轴的高度进行渲染
         List<Entity> entities =getGameWorld().getEntities();
         // 按bottomY从小到大排序（屏幕上小下大）
         entities.sort(new EntityComparator());
         for(int z=0;z<entities.size();++z){
-            entities.get(z).setZIndex(z+1);
+            Entity entity=entities.get(z);
+            if(entity.isType(NATType.EFFECT) || entity.isType(NATType.BACKGROUND))
+                continue;
+            entity.setZIndex(z+1);
         }
     }
 

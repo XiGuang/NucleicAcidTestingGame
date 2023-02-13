@@ -32,6 +32,7 @@ public class NATFactory implements EntityFactory {
     public Entity newBackground(SpawnData data) {
 
         return FXGL.entityBuilder(data)
+                .type(NATType.BACKGROUND)
                 .view("floor.png")
                 .zIndex(Config.BACKGROUND_LEVEL)
                 .build();
@@ -137,6 +138,14 @@ public class NATFactory implements EntityFactory {
                 .build();
     }
     
-
+    @Spawns("Effect")
+    public Entity newEffect(SpawnData data) {
+        return FXGL.entityBuilder(data)
+                .type(NATType.EFFECT)
+                .zIndex(0)
+                .collidable()
+                .viewWithBBox(new Circle(data.get("size"),Color.RED))
+                .build();
+    }
 
 }
