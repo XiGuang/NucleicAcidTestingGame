@@ -1,13 +1,21 @@
 package NucleicAcidTesting.game;
 
 import NucleicAcidTesting.game.EntityFactory.NATFactory;
-import NucleicAcidTesting.game.components.PlayerComponent;
+import NucleicAcidTesting.game.EntityFactory.NATUIFactory;
+import NucleicAcidTesting.game.components.MoveComponent;
+import NucleicAcidTesting.game.components.PeopleComponent;
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
+import com.almasb.fxgl.core.collection.PropertyMap;
+import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.input.UserAction;
 import com.almasb.fxgl.input.virtual.VirtualButton;
 import javafx.scene.input.KeyCode;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 import static com.almasb.fxgl.dsl.FXGLForKtKt.*;
 
@@ -15,7 +23,7 @@ public class NATGameApp extends GameApplication {
 
     private Entity player;
 
-    private PlayerComponent playerComponent;
+    private MoveComponent move_component;
 
 
 
@@ -35,52 +43,57 @@ public class NATGameApp extends GameApplication {
     }
 
     @Override
+    protected void initGameVars(Map<String, Object> vars) {
+        vars.put("follow_list", new ArrayList<Entity>());
+    }
+
+    @Override
     protected void initInput() {
         getInput().addAction(new UserAction("Move Up") {
             @Override
             protected void onAction() {
-                playerComponent.moveUp();
+                move_component.moveUp();
             }
 
             @Override
             protected void onActionEnd() {
-                playerComponent.stop();
+                move_component.stop();
             }
         }, KeyCode.W, VirtualButton.UP);
 
         getInput().addAction(new UserAction("Move Left") {
             @Override
             protected void onAction() {
-                playerComponent.moveLeft();
+                move_component.moveLeft();
             }
 
             @Override
             protected void onActionEnd() {
-                playerComponent.stop();
+                move_component.stop();
             }
         }, KeyCode.A,VirtualButton.LEFT);
 
         getInput().addAction(new UserAction("Move Down") {
             @Override
             protected void onAction() {
-                playerComponent.moveDown();
+                move_component.moveDown();
             }
 
             @Override
             protected void onActionEnd() {
-                playerComponent.stop();
+                move_component.stop();
             }
         }, KeyCode.S,VirtualButton.DOWN);
 
         getInput().addAction(new UserAction("Move Right") {
             @Override
             protected void onAction() {
-                playerComponent.moveRight();
+                move_component.moveRight();
             }
 
             @Override
             protected void onActionEnd() {
-                playerComponent.stop();
+                move_component.stop();
             }
         }, KeyCode.D,VirtualButton.RIGHT);
     }
@@ -88,11 +101,23 @@ public class NATGameApp extends GameApplication {
     @Override
     protected void initGame() {
         getGameWorld().addEntityFactory(new NATFactory());
+        getGameWorld().addEntityFactory(new NATUIFactory());
 
         spawn("Background",0,0);
 
         player = spawn("Player",0,0);
-        playerComponent = player.getComponent(PlayerComponent.class);
+        move_component = player.getComponent(MoveComponent.class);
+
+        // 将player添加到跟随队列中
+        PropertyMap propertyMap=FXGL.getWorldProperties();
+        ArrayList<Entity> follow_list= (ArrayList<Entity>) propertyMap.objectProperty("follow_list").get();
+        follow_list.add(player);
+
+        Entity person=spawn("People",10,10);
+        person.getComponent(PeopleComponent.class).follow();
+        Entity person2=spawn("People",50,50);
+        person2.getComponent(PeopleComponent.class).follow();
+
 
         NATFactory.spawnBuildings(10, (int) (-getAppWidth()+Config.SIZE_X/2+Config.GAP_TO_WINDOW),
                 (int) (-getAppHeight()+Config.SIZE_Y/2+Config.GAP_TO_WINDOW),
@@ -123,7 +148,15 @@ public class NATGameApp extends GameApplication {
     @Override
     protected void onUpdate(double tpf) {
 
-    }
 
+
+        /// 按y轴的高度进行渲染
+        List<Entity> entities =getGameWorld().getEntities();
+        // 按bottomY从小到大排序（屏幕上小下大）
+        entities.sort(new EntityComparator());
+        for(int z=0;z<entities.size();++z){
+            entities.get(z).setZIndex(z+1);
+        }
+    }
 
 }
