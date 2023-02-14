@@ -1,54 +1,62 @@
 package NucleicAcidTesting.game.components;
 
 import NucleicAcidTesting.game.Config;
-import NucleicAcidTesting.game.NATMath;
-import NucleicAcidTesting.game.NATType;
+import NucleicAcidTesting.game.tools.NATMath;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.component.Component;
 import com.almasb.fxgl.physics.PhysicsComponent;
 import javafx.geometry.Point2D;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class PeopleComponent extends Component {
-    PhysicsComponent physics_component;
+    PhysicsComponent physicsComponent;
 
-    int queue_num =-1;
-    Entity ahead_person;
-    State state=State.REST;
+    int queueNum = -1;
+    Entity aheadPerson;
+    State state = State.REST;
 
-    public enum State{
-        REST,FOLLOW
+    public enum State {
+        REST, FOLLOW
     }
 
-    public boolean follow(){
-        ArrayList<Entity> follow_list=(ArrayList<Entity>)FXGL.getWorldProperties().
-                objectProperty("follow_list").get();
-        if(follow_list.size()> Config.MAX_FOLLOW_NUM+1)
+    public static boolean canFollow() {
+        List<Entity> follow_list = FXGL.getWorldProperties().getObject("follow_list");
+        return follow_list.size() < Config.MAX_FOLLOW_NUM + 1;
+    }
+
+    public boolean follow() {
+        if (queueNum != -1)
             return false;
-        ahead_person=follow_list.get(follow_list.size()-1);
+
+        List<Entity> follow_list = FXGL.getWorldProperties().getObject("follow_list");
+
+        if (follow_list.size() > Config.MAX_FOLLOW_NUM + 1)
+            return false;
+        aheadPerson = follow_list.get(follow_list.size() - 1);
+
         follow_list.add(entity);
-        queue_num=follow_list.size()-1;
-        state=State.FOLLOW;
+        queueNum = follow_list.size() - 1;
+        state = State.FOLLOW;
         return true;
     }
 
     @Override
     public void onUpdate(double tpf) {
-        if(state==State.REST)
+        if (state == State.REST)
             return;
 
         // 跟随
-        double distance=entity.distance(ahead_person);
+        double distance = entity.distance(aheadPerson);
         if (distance > 50)
-            physics_component.setLinearVelocity(new Point2D(
-                    2 * (ahead_person.getCenter().getX() - entity.getCenter().getX()),
-                    2 * (ahead_person.getCenter().getY() - entity.getCenter().getY())
+            physicsComponent.setLinearVelocity(new Point2D(
+                    2 * (aheadPerson.getCenter().getX() - entity.getCenter().getX()),
+                    2 * (aheadPerson.getCenter().getY() - entity.getCenter().getY())
             ));
-         else
-            physics_component.setLinearVelocity(
-                    NATMath.InterpolationD(physics_component.getVelocityX(), 0, tpf*10),
-                    NATMath.InterpolationD(physics_component.getVelocityY(), 0, tpf*10));
+        else
+            physicsComponent.setLinearVelocity(
+                    NATMath.InterpolationD(physicsComponent.getVelocityX(), 0, tpf * 10),
+                    NATMath.InterpolationD(physicsComponent.getVelocityY(), 0, tpf * 10));
     }
 }

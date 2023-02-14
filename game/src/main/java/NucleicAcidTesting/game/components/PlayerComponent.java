@@ -1,6 +1,6 @@
 package NucleicAcidTesting.game.components;
 
-import NucleicAcidTesting.game.NATMath;
+import NucleicAcidTesting.game.tools.NATMath;
 import NucleicAcidTesting.game.NATType;
 import com.almasb.fxgl.core.util.LazyValue;
 import com.almasb.fxgl.dsl.FXGL;
@@ -16,11 +16,6 @@ import java.util.List;
 public class PlayerComponent extends Component {
 
     LazyValue<EntityGroup> entity_group_lazy_value = new LazyValue<>(() -> FXGL.getGameWorld().getGroup(NATType.BUILDING, NATType.SITE));
-
-    @Override
-    public void onAdded() {
-
-    }
 
     @Override
     public void onUpdate(double tpf) {

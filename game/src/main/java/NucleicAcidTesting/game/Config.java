@@ -1,5 +1,7 @@
 package NucleicAcidTesting.game;
 
+import javafx.util.Duration;
+
 public interface Config {
     int WINDOW_HEIGHT=520;
     int WINDOW_WIDTH =960;
@@ -23,6 +25,9 @@ public interface Config {
     double OFFSET_Y=-SIZE_Y/2;
 
     int GAP_TO_WINDOW=30;
+
+    Duration SPAWNING_INTERVAL=Duration.seconds(1);
+    double SPAWNING_X_GAP=5;
 
     // Window
     int WINDOW_MIN_X=-WINDOW_WIDTH;

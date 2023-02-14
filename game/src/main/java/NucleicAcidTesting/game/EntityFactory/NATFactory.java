@@ -113,13 +113,10 @@ public class NATFactory implements EntityFactory {
         return FXGL.entityBuilder(data)
                 .type(NATType.PEOPLE)
                 .viewWithBBox(new Circle(10, FXGLMath.randomColor()))
-                .collidable()
-                .with(physicsComponent)
                 .with(new KeepInBoundsComponent
                         (new Rectangle2D(Config.WINDOW_MIN_X,Config.WINDOW_MIN_Y,
                                 Config.WINDOW_MAX_X-Config.WINDOW_MIN_X,
                                 Config.WINDOW_MAX_Y-Config.WINDOW_MIN_Y)))
-                .with(new PeopleComponent())
                 .with(new MoveComponent())
                 .build();
     }
@@ -143,6 +140,7 @@ public class NATFactory implements EntityFactory {
         return FXGL.entityBuilder(data)
                 .type(NATType.EFFECT)
                 .zIndex(0)
+                .with(new EffectComponent(data.get("building")))
                 .collidable()
                 .viewWithBBox(new Circle(data.get("size"),Color.RED))
                 .build();

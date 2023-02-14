@@ -1,4 +1,4 @@
-package NucleicAcidTesting.game;
+package NucleicAcidTesting.game.tools;
 
 public class NATMath {
     /**

@@ -2,19 +2,15 @@ package NucleicAcidTesting.game;
 
 import NucleicAcidTesting.game.EntityFactory.NATFactory;
 import NucleicAcidTesting.game.EntityFactory.NATUIFactory;
+import NucleicAcidTesting.game.collision.PlayerEffectHandler;
 import NucleicAcidTesting.game.components.MoveComponent;
-import NucleicAcidTesting.game.components.PeopleComponent;
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
-import com.almasb.fxgl.core.collection.PropertyMap;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
-import com.almasb.fxgl.input.Trigger;
-import com.almasb.fxgl.input.TriggerListener;
 import com.almasb.fxgl.input.UserAction;
 import com.almasb.fxgl.input.virtual.VirtualButton;
 import javafx.scene.input.KeyCode;
-import javafx.util.Duration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,8 +23,6 @@ public class NATGameApp extends GameApplication {
     private Entity player;
 
     private MoveComponent move_component;
-
-
 
     @Override
     protected void initSettings(GameSettings gameSettings) {
@@ -113,18 +107,9 @@ public class NATGameApp extends GameApplication {
         player = spawn("Player",0,0);
         move_component = player.getComponent(MoveComponent.class);
 
-        // 将player添加到跟随队列中
-        PropertyMap propertyMap=FXGL.getWorldProperties();
-        ArrayList<Entity> follow_list= (ArrayList<Entity>) propertyMap.objectProperty("follow_list").get();
+        // 将player添加到跟随队列首位
+        List<Entity> follow_list = FXGL.getWorldProperties().getObject("follow_list");
         follow_list.add(player);
-
-        Entity person=spawn("People",10,10);
-        person.getComponent(PeopleComponent.class).follow();
-        Entity person2=spawn("People",50,50);
-        person2.getComponent(PeopleComponent.class).follow();
-
-
-
 
         NATFactory.spawnBuildings(10, (int) (-getAppWidth()+Config.SIZE_X/2+Config.GAP_TO_WINDOW),
                 (int) (-getAppHeight()+Config.SIZE_Y/2+Config.GAP_TO_WINDOW),
@@ -141,6 +126,7 @@ public class NATGameApp extends GameApplication {
     @Override
     protected void initPhysics() {
         getPhysicsWorld().setGravity(0,0);
+        getPhysicsWorld().addCollisionHandler(new PlayerEffectHandler());
     }
 
     @Override
