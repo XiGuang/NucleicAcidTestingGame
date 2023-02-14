@@ -22,6 +22,7 @@ public class MoodComponent extends Component {
     public MoodComponent(int peopleNum) {
         people_num = peopleNum;
     }
+    
     //构造函数二
     public MoodComponent(){}
 
