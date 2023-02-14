@@ -140,6 +140,24 @@ public class NATFactory implements EntityFactory {
         getGameWorld().spawn("Site", point);
     }
 
+    public static void spawnSite() {
+        Rectangle2D bound = new Rectangle2D(0,0,20,200);
+        Point2D point;
+        while (true) {
+            point = FXGLMath.randomPoint(bound);
+            List<Entity> buildings = getGameWorld().getEntitiesInRange(new Rectangle2D(
+                    point.getX() - Config.GAP_X / 2,
+                    point.getY() - Config.GAP_Y / 2,
+                    Config.GAP_X,
+                    Config.GAP_Y));
+
+            // 避免物体重叠
+            if (buildings.isEmpty())
+                break;
+        }
+        getGameWorld().spawn("Site", point);
+    }
+
     @Spawns("Site")
     public Entity newSite(SpawnData data) {
         PhysicsComponent physicsComponent=new PhysicsComponent();
