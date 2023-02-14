@@ -105,6 +105,8 @@ public class NATGameApp extends GameApplication {
 
         spawn("Background",0,0);
         spawn("UICountDown",-40 ,-200);
+        //随机生成核算检测点
+        NATFactory.spawnSite();
         player = spawn("Player",0,0);
         move_component = player.getComponent(MoveComponent.class);
 
