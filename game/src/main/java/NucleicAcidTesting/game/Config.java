@@ -17,8 +17,8 @@ public interface Config {
     double SIZE_X=80;
     double SIZE_Y=160;
 
-    double GAP_X =SIZE_X+30;
-    double GAP_Y =SIZE_Y+30;
+    double GAP_X =SIZE_X*2;
+    double GAP_Y =SIZE_Y*2;
     int MAX_CYCLE_TIME=100;
 
     double OFFSET_X=-SIZE_X/2;
@@ -26,6 +26,7 @@ public interface Config {
 
     int GAP_TO_WINDOW=30;
 
+    // 队伍生成时间间隔
     Duration SPAWNING_INTERVAL=Duration.seconds(1);
     double SPAWNING_X_GAP=5;
 

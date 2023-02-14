@@ -20,6 +20,7 @@ public class BuildingComponent extends Component {
 
     private boolean isStartingSpawn = false;
 
+    // 生成队伍计时器
     private LocalTimer spawnTimer;
 
 

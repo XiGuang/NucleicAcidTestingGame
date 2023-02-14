@@ -4,6 +4,7 @@ import NucleicAcidTesting.game.EntityFactory.NATFactory;
 import NucleicAcidTesting.game.EntityFactory.NATUIFactory;
 import NucleicAcidTesting.game.collision.PlayerEffectHandler;
 import NucleicAcidTesting.game.components.MoveComponent;
+import NucleicAcidTesting.game.tools.EntityComparator;
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
 import com.almasb.fxgl.dsl.FXGL;
@@ -140,7 +141,6 @@ public class NATGameApp extends GameApplication {
 
     @Override
     protected void onUpdate(double tpf) {
-
         /// 按y轴的高度进行渲染
         List<Entity> entities =getGameWorld().getEntities();
         // 按bottomY从小到大排序（屏幕上小下大）

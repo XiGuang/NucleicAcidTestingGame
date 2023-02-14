@@ -29,6 +29,7 @@ public class CountDownComponent extends Component {
         CountTime = CountSecondTime;
     }
     //构造函数，设置初始秒数
+    @Override
     public void onAdded() {
 
         //根据秒数设置分与秒

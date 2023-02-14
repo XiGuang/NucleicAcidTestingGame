@@ -2,6 +2,7 @@ package NucleicAcidTesting.game.EntityFactory;
 
 import NucleicAcidTesting.game.NATType;
 import NucleicAcidTesting.game.components.CountDownComponent;
+import NucleicAcidTesting.game.components.TipsComponent;
 import NucleicAcidTesting.game.components.MoodComponent;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
@@ -25,6 +26,13 @@ public class NATUIFactory implements EntityFactory {
         return FXGL.entityBuilder(data)
                 .type(NATType.MOOD)
                 .with(new MoodComponent())
+                .build();
+    }
+
+    @Spawns("Tips")
+    public Entity newTips(SpawnData data) {
+        return FXGL.entityBuilder(data)
+                .with(new TipsComponent(data.get("tips")))
                 .build();
     }
 }

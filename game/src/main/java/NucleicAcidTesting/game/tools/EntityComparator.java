@@ -1,4 +1,4 @@
-package NucleicAcidTesting.game;
+package NucleicAcidTesting.game.tools;
 
 import com.almasb.fxgl.entity.Entity;
 

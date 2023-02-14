@@ -81,7 +81,7 @@ public class NATFactory implements EntityFactory {
                     break;
 
                 // 防止找不到生成位置
-                if (++cycle_num > Config.MAX_CYCLE_TIME)
+                if (++cycle_num > Config.MAX_CYCLE_TIME+num)
                     throw new RuntimeException("NOT FOUND LOCATION TO SET BUILDING");
 
             }
@@ -137,12 +137,14 @@ public class NATFactory implements EntityFactory {
     
     @Spawns("Effect")
     public Entity newEffect(SpawnData data) {
+        double size= data.get("size");
         return FXGL.entityBuilder(data)
                 .type(NATType.EFFECT)
                 .zIndex(0)
                 .with(new EffectComponent(data.get("building")))
                 .collidable()
-                .viewWithBBox(new Circle(data.get("size"),Color.RED))
+                .view(new Circle(size,Color.RED))
+                .bbox(new HitBox(new Point2D(-size/2,-size/2),BoundingShape.box(size*1.8,size*1.8)))
                 .build();
     }
 
