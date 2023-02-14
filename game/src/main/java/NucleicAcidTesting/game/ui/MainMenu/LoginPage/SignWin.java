@@ -1,6 +1,8 @@
-package NucleicAcidTesting.game.ui.MainMenu;
+package NucleicAcidTesting.game.ui.MainMenu.LoginPage;
 
 import NucleicAcidTesting.game.Config;
+import NucleicAcidTesting.game.ui.MainMenu.LoginPage.Client;
+import NucleicAcidTesting.game.ui.MainMenu.Popup;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;

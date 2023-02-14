@@ -1,5 +1,7 @@
 package NucleicAcidTesting.game.ui.MainMenu;
 
+import NucleicAcidTesting.game.ui.MainMenu.LoginPage.LoginWin;
+import NucleicAcidTesting.game.ui.MainMenu.StartPage.MainWin;
 import com.almasb.fxgl.app.scene.FXGLMenu;
 import com.almasb.fxgl.app.scene.MenuType;
 import javafx.scene.layout.*;

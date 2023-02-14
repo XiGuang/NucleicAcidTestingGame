@@ -1,4 +1,4 @@
-package NucleicAcidTesting.game.ui.MainMenu;
+package NucleicAcidTesting.game.ui.MainMenu.LoginPage;
 
 import org.json.simple.JSONObject;
 
