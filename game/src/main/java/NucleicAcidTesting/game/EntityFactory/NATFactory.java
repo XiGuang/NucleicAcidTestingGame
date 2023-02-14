@@ -120,6 +120,20 @@ public class NATFactory implements EntityFactory {
                 .with(new MoveComponent())
                 .build();
     }
+    
+    @Spawns("Site")
+    public Entity newSite(SpawnData data) {
+        PhysicsComponent physicsComponent=new PhysicsComponent();
+        physicsComponent.setBodyType(BodyType.STATIC);
+
+        return FXGL.entityBuilder(data)
+                .type(NATType.SITE)
+                .viewWithBBox(new Rectangle(30, 30, Color.PINK))
+                .collidable()
+                .with(physicsComponent)
+                .with(new SiteComponent())
+                .build();
+    }
 
     @Spawns("Site")
     public Entity newSite(SpawnData data) {
