@@ -27,5 +27,6 @@ public class SiteComponent extends Component {
                     Config.GAP_Y);
         StackPane pane=new StackPane(canvas);
         entity.getViewComponent().addChild(pane);
+        
     }
 }
