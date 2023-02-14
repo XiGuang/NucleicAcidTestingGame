@@ -1,7 +1,5 @@
 package NucleicAcidTesting.game.ui.MainMenu.LoginPage;
-
 import org.json.simple.JSONObject;
-
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;

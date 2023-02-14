@@ -7,13 +7,11 @@ import com.almasb.fxgl.dsl.FXGL;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.geometry.VPos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -125,9 +123,19 @@ public class MainWin extends StackPane {
         Image classicGameImg = new Image("assets/textures/menuImg/classicGameImg.png",
                 500, 250, false, false);
         ImageView classicGameImgView = new ImageView(classicGameImg);
-        classGamePane.add(classicGameImgView, 0, 0);
-        classGamePane.add(classGameButton, 0, 1);
-        classGamePane.setVgap(20);
+        GridPane gridPane = new GridPane();
+        gridPane.setVgap(20);
+        gridPane.setStyle("-fx-background-color: rgb(146,184,248);" +
+                "-fx-background-radius: 10px;" +
+                "-fx-border-radius: 10px;" +
+                "-fx-border-style: dashed;" +
+                "-fx-border-width: 2px");
+        gridPane.setPrefSize(600,400);
+        gridPane.setAlignment(Pos.CENTER);
+        gridPane.add(classicGameImgView, 0, 0);
+        gridPane.add(classGameButton, 0, 1);
+        classGamePane.add(gridPane, 0, 0);
+
     }
 
     private void setRankPane() {
