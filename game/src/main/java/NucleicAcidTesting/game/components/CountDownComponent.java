@@ -22,11 +22,16 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class CountDownComponent extends Component {
-    int minute,second;
+    double minute,second;
     int CountTime;
-
+    double remainingTime ;
+    double currentSecond ;
+    double Delay;
+    //计时器 初始延迟的秒数
+    Text text;
     public CountDownComponent(int CountSecondTime){
         CountTime = CountSecondTime;
+
     }
     //构造函数，设置初始秒数
     @Override
@@ -36,6 +41,13 @@ public class CountDownComponent extends Component {
         minute = CountTime/60;
         second = CountTime%60;
 
+        //设置计时器的时间
+        remainingTime = second;
+        currentSecond = second;
+
+        //设置计时器启动的初始延迟
+        Delay = 2;
+
         //背景图片以及格式设置
         Image image = new Image("assets/textures/CountDwonPic/CountDownBackground.gif");
         Rectangle rectangle = new Rectangle(80,50);
@@ -44,7 +56,7 @@ public class CountDownComponent extends Component {
         rectangle.setStrokeWidth(3);
 
         //数字显示设置
-        Text text = FXGL.getUIFactoryService().newText(minute+":"+second);
+        text = FXGL.getUIFactoryService().newText((int)minute+":"+(int)second);
         text.setFill(Color.BLUE);
         text.fontProperty().unbind();
         text.setFont(Font.font(35));
@@ -54,48 +66,49 @@ public class CountDownComponent extends Component {
         FXGL.addUINode(stackPane,850,30);
 
 
-
-
-        //计数
-        Timer timer = new Timer();
-        TimerTask task = new TimerTask() {
-            @Override
-            public void run() {
-                Update(text);
-            }
-        };
-
-        timer.schedule(task,0,1000);
-
     }
 
-    public void Update(Text text){
-        second--;
+    @Override
+    public void onUpdate(double tpf) {
+        super.onUpdate(tpf);
+        //等待Delay时间然后再启动倒计时
+        if (Delay > 0) {
+            Delay -= tpf;
+            return;
+        } else {
+            remainingTime -= tpf;
 
-        //倒计时等于0
-        if(second ==0 && minute == 0){
+            if (currentSecond - remainingTime >= 1) {
+                currentSecond = remainingTime;
+                //经过一秒
+                second--;
+                //倒计时等于0
+                if (second == 0 && minute == 0) {
+                    System.out.println("倒计时为0");
+                }
 
-            System.out.println("倒计时为0");
-        }
+                //减去一秒后判断下一时刻的情况
+                if (second == -1) {
+                    if (minute == 0) {
+                        minute = 0;
+                        second = 0;
+                        text.setText("0:00");
+                    } else {
+                        minute--;
+                        second = 59;
+                        text.setText((int) minute + ":" + (int) second);
+                    }
+                } else {
+                    if (second < 10)
+                        text.setText((int) minute + ":0" + (int) second);
+                    else
+                        text.setText((int) minute + ":" + (int) second);
+                }
 
-        //减去一秒后判断下一时刻的情况
-        if(second == -1){
-            if(minute ==0){
-                minute = 0;
-                second = 0;
-                text.setText("0:00");
+
+            } else {
+                return;
             }
-            else {
-                minute--;
-                second = 59;
-                text.setText(minute+":"+second);
-            }
-        }
-        else {
-            if(second<10)
-                text.setText(minute+":0"+second);
-            else
-                text.setText(minute+":"+second);
         }
     }
 }
