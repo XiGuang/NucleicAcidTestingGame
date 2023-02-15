@@ -104,8 +104,6 @@ public class CountDownComponent extends Component {
                     else
                         text.setText((int) minute + ":" + (int) second);
                 }
-
-
             } else {
                 return;
             }
