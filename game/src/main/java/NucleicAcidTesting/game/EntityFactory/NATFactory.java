@@ -121,18 +121,22 @@ public class NATFactory implements EntityFactory {
                 .build();
     }
     
-    @Spawns("Site")
-    public Entity newSite(SpawnData data) {
-        PhysicsComponent physicsComponent=new PhysicsComponent();
-        physicsComponent.setBodyType(BodyType.STATIC);
+     public static void spawnSite() {
+        Rectangle2D bound = new Rectangle2D(0,0,20,200);
+        Point2D point;
+        while (true) {
+            point = FXGLMath.randomPoint(bound);
+            List<Entity> buildings = getGameWorld().getEntitiesInRange(new Rectangle2D(
+                    point.getX() - Config.GAP_X / 2,
+                    point.getY() - Config.GAP_Y / 2,
+                    Config.GAP_X,
+                    Config.GAP_Y));
 
-        return FXGL.entityBuilder(data)
-                .type(NATType.SITE)
-                .viewWithBBox(new Rectangle(30, 30, Color.PINK))
-                .collidable()
-                .with(physicsComponent)
-                .with(new SiteComponent())
-                .build();
+            // 避免物体重叠
+            if (buildings.isEmpty())
+                break;
+        }
+        getGameWorld().spawn("Site", point);
     }
 
     @Spawns("Site")
