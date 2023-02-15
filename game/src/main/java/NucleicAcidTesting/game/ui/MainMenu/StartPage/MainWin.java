@@ -12,6 +12,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -20,6 +21,8 @@ import javafx.scene.text.Text;
 import org.json.simple.JSONObject;
 
 import java.util.List;
+
+import static NucleicAcidTesting.game.ui.MainMenu.StartPage.LevelChooser.getLevels;
 
 public class MainWin extends StackPane {
     double boxHeight = Config.WINDOW_HEIGHT, boxWidth = Config.WINDOW_WIDTH;
@@ -69,7 +72,7 @@ public class MainWin extends StackPane {
             this.setStyle("-fx-background-color:rgba(153,204,255,0.6);");
             this.setLayoutX(Config.WINDOW_WIDTH * 0.2);
             setOriginPane();
-            setClassGamePane();
+            setClassicGamePane();
             setRankPane();
 
             this.getChildren().add(rankPane);
@@ -83,7 +86,7 @@ public class MainWin extends StackPane {
         public TopPane(MainWin mainWin) {
             Button returnButton = new Button();
             this.setPrefSize(boxWidth, boxHeight * 0.06);
-            returnButton.setPrefSize(boxWidth*0.1, boxHeight * 0.06);
+            returnButton.setPrefSize(boxWidth * 0.1, boxHeight * 0.06);
             Image image = new Image("assets/textures/menuImg/returnLogo.png",
                     boxHeight * 0.05, boxHeight * 0.05, false, false);
             BackgroundImage backgroundimage = new BackgroundImage(image,
@@ -92,14 +95,16 @@ public class MainWin extends StackPane {
                     BackgroundPosition.DEFAULT,
                     BackgroundSize.DEFAULT);
             returnButton.setBackground(new Background(backgroundimage));
-            returnButton.setOnAction(actionEvent -> {mainWin.toBack();});
+            returnButton.setOnAction(actionEvent -> {
+                mainWin.toBack();
+            });
 
             DropShadow dropShadow2 = new DropShadow();
             dropShadow2.setOffsetX(0.0);
             dropShadow2.setOffsetY(0.70);
             GridPane.setHalignment(returnButton, HPos.CENTER);
             this.setAlignment(Pos.CENTER_LEFT);
-            this.add(returnButton,0,0);
+            this.add(returnButton, 0, 0);
             this.setStyle("-fx-background-color:rgb(3,123,253);");
             this.setEffect(dropShadow2);
             this.toFront();
@@ -115,27 +120,71 @@ public class MainWin extends StackPane {
         originPane.add(imageView, 0, 0);
     }
 
-    private void setClassGamePane() {
-        Button classGameButton = new Button("开始游戏");
-        classGameButton.setOnAction(actionEvent -> FXGL.getGameController().startNewGame());
-        classGameButton.setPrefSize(200, 50);
-        GridPane.setHalignment(classGameButton, HPos.CENTER);
-        Image classicGameImg = new Image("assets/textures/menuImg/classicGameImg.png",
-                500, 250, false, false);
-        ImageView classicGameImgView = new ImageView(classicGameImg);
-        GridPane gridPane = new GridPane();
-        gridPane.setVgap(20);
-        gridPane.setStyle("-fx-background-color: rgb(146,184,248);" +
+    private void setClassicGamePane() {
+        Button classicGameButton = new Button("开始游戏");
+        classicGameButton.setOnAction(actionEvent -> FXGL.getGameController().startNewGame());
+        classicGameButton.setPrefSize(200, 50);
+        classicGameButton.setFont(Font.font("Times Roman", FontWeight.BOLD, 16));
+        classicGameButton.setStyle("-fx-background-color: rgba(85,192,232,0.7);" +
+                "-fx-border-color: rgba(255,255,255,0.82);" +
+                "-fx-border-width: 3px;" +
+                "-fx-border-radius: 10px;" +
+                "-fx-background-radius: 10px;" +
+                "-fx-text-fill: white;");
+        classicGameButton.addEventHandler(MouseEvent.MOUSE_ENTERED, (e) -> {
+            classicGameButton.setStyle("-fx-border-color: rgb(246,168,69);" +
+                    "-fx-background-color: rgba(85,192,232,0.7);" +
+                    "-fx-border-width: 3px;" +
+                    "-fx-border-radius: 10px;" +
+                    "-fx-background-radius: 10px;" +
+                    "-fx-text-fill: white;");
+        });
+        ;
+        classicGameButton.addEventHandler(MouseEvent.MOUSE_EXITED, (e) -> {
+            classicGameButton.setStyle(("-fx-background-color: rgba(85,192,232,0.7);" +
+                    "-fx-border-width: 3px;" +
+                    "-fx-border-color: rgba(255,255,255,0.82);" +
+                    "-fx-border-radius: 10px;" +
+                    "-fx-background-radius: 10px;" +
+                    "-fx-text-fill: white;"));
+        });
+
+        Image image = new Image("assets/textures/menuImg/levelChooseLogo.png",
+                165, 50, false, false);
+        ImageView imageView = new ImageView(image);
+
+
+        GridPane.setHalignment(classicGameButton, HPos.CENTER);
+        List<LevelChooser> levelList = getLevels();
+
+
+        this.setOnMouseMoved(mouseEvent -> {
+            LevelChooser.showChosenButton(levelList);
+        });
+
+        VBox vBox = new VBox();
+        vBox.setStyle("-fx-background-color: rgb(146,184,248);" +
                 "-fx-background-radius: 10px;" +
                 "-fx-border-radius: 10px;" +
                 "-fx-border-style: dashed;" +
                 "-fx-border-width: 2px");
-        gridPane.setPrefSize(600,400);
-        gridPane.setAlignment(Pos.CENTER);
-        gridPane.add(classicGameImgView, 0, 0);
-        gridPane.add(classGameButton, 0, 1);
-        classGamePane.add(gridPane, 0, 0);
+        vBox.setPrefSize(600, 400);
+        vBox.setAlignment(Pos.CENTER);
 
+        GridPane gridPane = new GridPane();
+        gridPane.setPrefSize(500, 200);
+        gridPane.setAlignment(Pos.CENTER);
+
+        for (int i = 0; i < levelList.size(); i++) {
+            gridPane.add(levelList.get(i), i % 3, i / 3);
+        }
+
+        gridPane.setHgap(20);
+        gridPane.setVgap(10);
+
+        vBox.getChildren().addAll(imageView, gridPane, classicGameButton);
+        classGamePane.setAlignment(Pos.CENTER);
+        classGamePane.add(vBox, 0, 0);
     }
 
     private void setRankPane() {

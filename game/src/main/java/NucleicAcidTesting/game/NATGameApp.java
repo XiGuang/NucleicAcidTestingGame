@@ -103,23 +103,13 @@ public class NATGameApp extends GameApplication {
         getGameWorld().addEntityFactory(new NATFactory());
         getGameWorld().addEntityFactory(new NATUIFactory());
 
-        spawn("Background",0,0);
-        spawn("UICountDown",-40 ,-200);
-        //随机生成核算检测点
-        NATFactory.spawnSite();
+
         player = spawn("Player",0,0);
         move_component = player.getComponent(MoveComponent.class);
-
-        // 将player添加到跟随队列首位
         List<Entity> follow_list = FXGL.getWorldProperties().getObject("follow_list");
         follow_list.add(player);
 
-        NATFactory.spawnBuildings(10, (int) (-getAppWidth()+Config.SIZE_X/2+Config.GAP_TO_WINDOW),
-                (int) (-getAppHeight()+Config.SIZE_Y/2+Config.GAP_TO_WINDOW),
-                (int) (getAppWidth()-Config.SIZE_X/2-Config.GAP_TO_WINDOW),
-                (int) (getAppHeight()-Config.SIZE_Y/2-Config.GAP_TO_WINDOW));
-
-//        spawn("Building",0,0);
+        MapLoader.loadMap();
 
         getGameScene().getViewport().bindToEntity(player,getAppWidth()/2.0,getAppHeight()/2.0);
         getGameScene().getViewport().setLazy(true);

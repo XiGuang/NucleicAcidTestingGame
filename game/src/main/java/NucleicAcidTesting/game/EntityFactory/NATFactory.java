@@ -125,6 +125,7 @@ public class NATFactory implements EntityFactory {
         Rectangle2D bound = new Rectangle2D(0,0,20,200);
         Point2D point;
         while (true) {
+            System.out.println("dsada");
             point = FXGLMath.randomPoint(bound);
             List<Entity> buildings = getGameWorld().getEntitiesInRange(new Rectangle2D(
                     point.getX() - Config.GAP_X / 2,
