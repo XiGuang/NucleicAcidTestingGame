@@ -32,7 +32,7 @@ import java.util.List;
 import static com.almasb.fxgl.dsl.FXGLForKtKt.getGameWorld;
 
 public class SiteComponent extends Component {
-    private SimpleDoubleProperty progress=new SimpleDoubleProperty();
+    private int count=0;
     private LocalTimer localTimer;
     //检测队列
     List<Entity>site_queue=new ArrayList<>();
@@ -46,6 +46,9 @@ public class SiteComponent extends Component {
         return distance;
     }
 
+    public int getCount(){
+        return count;
+    }
     //传入当前人的实体
     public void onAdded(){
         localTimer = FXGL.newLocalTimer();
@@ -64,8 +67,9 @@ public class SiteComponent extends Component {
                 i--;
                 if(!site_queue.contains(person)) {
                     site_queue.add(person);
+                    count++;
                     Entity citizen=FXGL.getGameWorld().spawn("People",
-                            entity.getX() + Config.SPAWNING_X_GAP * site_queue.size(),
+                            entity.getX()  + Config.SPAWNING_X_GAP * 4 * site_queue.size(),
                             entity.getBottomY() - 5);
                     disappear_queue.add(citizen);
                 }
@@ -74,11 +78,15 @@ public class SiteComponent extends Component {
 
         while(!disappear_queue.isEmpty()) {
             if (!localTimer.elapsed(Duration.seconds(2))){
-                break;
+                return;
             }
             localTimer.capture();
             FXGL.getGameWorld().removeEntity(disappear_queue.get(0));
             disappear_queue.remove(0);
+            for(int i=0;i<disappear_queue.size();i++){
+                Entity header=disappear_queue.get(i);
+                header.translate(-20, 0);
+            }
         }
     }
 
