@@ -14,6 +14,7 @@ import com.almasb.fxgl.entity.components.ViewComponent;
 import com.almasb.fxgl.physics.PhysicsComponent;
 import com.almasb.fxgl.physics.box2d.dynamics.BodyType;
 import com.almasb.fxgl.time.LocalTimer;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.geometry.Point2D;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.canvas.Canvas;
@@ -22,6 +23,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -30,9 +32,11 @@ import java.util.List;
 import static com.almasb.fxgl.dsl.FXGLForKtKt.getGameWorld;
 
 public class SiteComponent extends Component {
+    private SimpleDoubleProperty progress=new SimpleDoubleProperty();
     private LocalTimer localTimer;
     //检测队列
     List<Entity>site_queue=new ArrayList<>();
+    List<Entity>disappear_queue=new ArrayList<>();
     final static double INFINITE_MAX=10000;
     PhysicsComponent physicsComponent;
     //距离
@@ -45,6 +49,7 @@ public class SiteComponent extends Component {
     //传入当前人的实体
     public void onAdded(){
         localTimer = FXGL.newLocalTimer();
+
     }
 
     public void onUpdate(double tpf) {
@@ -59,18 +64,24 @@ public class SiteComponent extends Component {
                 i--;
                 if(!site_queue.contains(person)) {
                     site_queue.add(person);
-                    FXGL.getGameWorld().spawn("People",
+                    Entity citizen=FXGL.getGameWorld().spawn("People",
                             entity.getX() + Config.SPAWNING_X_GAP * site_queue.size(),
                             entity.getBottomY() - 5);
+                    disappear_queue.add(citizen);
                 }
             }
         }
 
-        //队列消失
-        while (!site_queue.isEmpty()) {
-            break;
+        while(!disappear_queue.isEmpty()) {
+            if (!localTimer.elapsed(Duration.seconds(2))){
+                break;
+            }
+            localTimer.capture();
+            FXGL.getGameWorld().removeEntity(disappear_queue.get(0));
+            disappear_queue.remove(0);
         }
     }
+
 }
 
 
