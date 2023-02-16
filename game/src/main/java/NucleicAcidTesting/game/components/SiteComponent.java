@@ -33,13 +33,10 @@ import static com.almasb.fxgl.dsl.FXGLForKtKt.getGameWorld;
 
 public class SiteComponent extends Component {
     private int remove_count=0;
-    //排队人数
     private int count=0;
-    
     private LocalTimer localTimer;
     //检测队列
     List<Entity>site_queue=new ArrayList<>();
-    //排队消失队列
     List<Entity>disappear_queue=new ArrayList<>();
     final static double INFINITE_MAX=10000;
     PhysicsComponent physicsComponent;
@@ -53,7 +50,7 @@ public class SiteComponent extends Component {
     public int getCount(){
         return count;
     }
-    
+    //传入当前人的实体
     public void onAdded(){
         localTimer = FXGL.newLocalTimer();
 
@@ -67,16 +64,25 @@ public class SiteComponent extends Component {
             for (int i=1;i<follow_list.size();i++) {
                 Entity person = follow_list.get(i);
                 follow_list.remove(person);
-                FXGL.getGameWorld().removeEntity(person);
-                i--;
-                if(!site_queue.contains(person)) {
+                if (site_queue.size() == 0){
+                    person.getComponent(PeopleComponent.class).follow(entity, 1);
                     site_queue.add(person);
-                    count++;
-                    Entity citizen=FXGL.getGameWorld().spawn("People",
-                            entity.getX()  + Config.SPAWNING_X_GAP * 4 * site_queue.size(),
-                            entity.getBottomY() - 5);
-                    disappear_queue.add(citizen);
+                    disappear_queue.add(person);
+                }else{
+                    person.getComponent(PeopleComponent.class).follow(site_queue.get(site_queue.size()-1), site_queue.size());
+                    site_queue.add(person);
+                    disappear_queue.add(person);
                 }
+//                FXGL.getGameWorld().removeEntity(person);
+//                i--;
+//                if(!site_queue.contains(person)) {
+//                    site_queue.add(person);
+//                    count++;
+//                    Entity citizen=FXGL.getGameWorld().spawn("People",
+//                            entity.getX()  + Config.SPAWNING_X_GAP * 4 * site_queue.size(),
+//                            entity.getBottomY() - 5);
+//                    disappear_queue.add(citizen);
+//                }
             }
         }
 
@@ -88,11 +94,11 @@ public class SiteComponent extends Component {
             localTimer.capture();
             if(remove_count==0)
                 break;
-            FXGL.getGameWorld().removeEntity(disappear_queue.get(0));
-            disappear_queue.remove(0);
-            for(int i=0;i<disappear_queue.size();i++){
-                Entity header=disappear_queue.get(i);
-                header.translate(-20, 0);
+            Entity person=disappear_queue.get(0);
+            double distance=entity.distance(person);
+            if(distance<100) {
+                FXGL.getGameWorld().removeEntity(person);
+                disappear_queue.remove(0);
             }
         }
     }
