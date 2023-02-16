@@ -17,7 +17,7 @@ public class NATUIFactory implements EntityFactory {
         return FXGL.entityBuilder(data)
                 .type(NATType.COUNT_DOWN)
                 // 在CountDownComponent中传入初始的秒数来进行倒计时
-                .with(new CountDownComponent(130))
+                .with(new CountDownComponent(10))
                 .build();
     }
 
