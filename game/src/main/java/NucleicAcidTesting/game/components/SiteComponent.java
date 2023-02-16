@@ -32,10 +32,14 @@ import java.util.List;
 import static com.almasb.fxgl.dsl.FXGLForKtKt.getGameWorld;
 
 public class SiteComponent extends Component {
+    private int remove_count=0;
+    //排队人数
     private int count=0;
+    
     private LocalTimer localTimer;
     //检测队列
     List<Entity>site_queue=new ArrayList<>();
+    //排队消失队列
     List<Entity>disappear_queue=new ArrayList<>();
     final static double INFINITE_MAX=10000;
     PhysicsComponent physicsComponent;
@@ -49,7 +53,7 @@ public class SiteComponent extends Component {
     public int getCount(){
         return count;
     }
-    //传入当前人的实体
+    
     public void onAdded(){
         localTimer = FXGL.newLocalTimer();
 
@@ -78,9 +82,12 @@ public class SiteComponent extends Component {
 
         while(!disappear_queue.isEmpty()) {
             if (!localTimer.elapsed(Duration.seconds(2))){
+                remove_count++;
                 return;
             }
             localTimer.capture();
+            if(remove_count==0)
+                break;
             FXGL.getGameWorld().removeEntity(disappear_queue.get(0));
             disappear_queue.remove(0);
             for(int i=0;i<disappear_queue.size();i++){
