@@ -33,8 +33,6 @@ public class MoodComponent extends Component {
         Canvas canvas = new Canvas(367,14);
         //添加画笔
         GraphicsContext g2d=canvas.getGraphicsContext2D();
-        g2d.setFill(Color.rgb(0,255,0));
-        g2d.fillRect(0,0,canvas.getWidth(), canvas.getHeight());
 
         //添加底层视图
         StackPane pane=new StackPane(
@@ -54,6 +52,8 @@ public class MoodComponent extends Component {
             //上层遮盖条移动距离
             if(people_num==0) {
                 //画绿色进度条
+                g2d.setFill(Color.rgb(0,255,0));
+                g2d.fillRect(0,0,canvas.getWidth(), canvas.getHeight());
                 if((nv.doubleValue() / 10 * width)<=(width/3)){
                     rect.setTranslateX(-width +
                         Math.min(width, nv.doubleValue() / 10 * width));
