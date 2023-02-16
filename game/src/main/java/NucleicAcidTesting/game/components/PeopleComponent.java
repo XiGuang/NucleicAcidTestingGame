@@ -42,6 +42,12 @@ public class PeopleComponent extends Component {
         return true;
     }
 
+    public boolean follow(Entity aheadPerson,int queueNum){
+        this.aheadPerson=aheadPerson;
+        this.queueNum=queueNum;
+        return true;
+    }
+
     @Override
     public void onUpdate(double tpf) {
         if (state == State.REST)
