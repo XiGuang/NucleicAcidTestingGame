@@ -38,7 +38,7 @@ public class CountDownComponent extends Component {
     public void onAdded() {
 
         //根据秒数设置分与秒
-        minute = CountTime/60;
+        minute = CountTime/60.0;
         second = CountTime%60;
 
         //设置计时器的时间
@@ -49,7 +49,7 @@ public class CountDownComponent extends Component {
         Delay = 2;
 
         //背景图片以及格式设置
-        Image image = new Image("assets/textures/CountDwonPic/CountDownBackground.gif");
+        Image image = new Image("assets/textures/CountDownPic/CountDownBackground.gif");
         Rectangle rectangle = new Rectangle(80,50);
         rectangle.setFill(new ImagePattern(image));
         rectangle.setStroke(Color.BROWN);
@@ -70,7 +70,6 @@ public class CountDownComponent extends Component {
 
     @Override
     public void onUpdate(double tpf) {
-        super.onUpdate(tpf);
         //等待Delay时间然后再启动倒计时
         if (Delay > 0) {
             Delay -= tpf;
