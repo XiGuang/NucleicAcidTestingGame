@@ -6,7 +6,7 @@ import static com.almasb.fxgl.dsl.FXGLForKtKt.*;
 
 public class MapLoader {
 
-    static String mapLevel;
+    static String mapLevel = "1";
 
     public static void setMapLevel(String mapLevel) {
         MapLoader.mapLevel = mapLevel;
@@ -22,7 +22,7 @@ public class MapLoader {
     private static void loadMapLevel1() {
         spawn("Background", 0, 0);
         spawn("UICountDown", -40, -200);
-//        NATFactory.spawnSite();
+        NATFactory.spawnSite();
         NATFactory.spawnBuildings(10, (int) (-getAppWidth() + Config.SIZE_X / 2 + Config.GAP_TO_WINDOW),
                 (int) (-getAppHeight() + Config.SIZE_Y / 2 + Config.GAP_TO_WINDOW),
                 (int) (getAppWidth() - Config.SIZE_X / 2 - Config.GAP_TO_WINDOW),

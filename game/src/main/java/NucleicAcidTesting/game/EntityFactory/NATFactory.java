@@ -122,7 +122,7 @@ public class NATFactory implements EntityFactory {
     }
     
      public static void spawnSite() {
-        Rectangle2D bound = new Rectangle2D(0,0,20,200);
+        Rectangle2D bound = new Rectangle2D(0,0,200,200);
         Point2D point;
         while (true) {
             System.out.println("dsada");
