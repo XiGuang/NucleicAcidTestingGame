@@ -94,12 +94,25 @@ public class SiteComponent extends Component {
             localTimer.capture();
             if(remove_count==0)
                 break;
+
             Entity person=disappear_queue.get(0);
-            double distance=entity.distance(person);
+            distance=entity.distance(person);
             if(distance<100) {
                 FXGL.getGameWorld().removeEntity(person);
                 disappear_queue.remove(0);
             }
+            for(int i=0;i<disappear_queue.size();i++){
+                if(i==0) {
+                    person = disappear_queue.get(i);
+                    person.getComponent(PeopleComponent.class).follow(entity, 1);
+                }
+                else{
+                    person = disappear_queue.get(i);
+                    person.getComponent(PeopleComponent.class).follow(disappear_queue.get(i-1), 1);
+                }
+            }
+            if(disappear_queue.isEmpty())
+                remove_count=0;
         }
     }
 
