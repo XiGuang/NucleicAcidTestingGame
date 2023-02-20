@@ -18,7 +18,7 @@ public class MoodComponent extends Component {
     //出楼人数
     private int people_num=0;
     //记录时间
-    private SimpleDoubleProperty progress=new SimpleDoubleProperty();
+    private final SimpleDoubleProperty progress=new SimpleDoubleProperty();
     //构造函数一
     public MoodComponent(int peopleNum) {
         people_num = peopleNum;

@@ -48,8 +48,8 @@ public class BuildingComponent extends Component {
         SpawnData spawnData = new SpawnData(entity.getCenter().getX(), entity.getBottomY());
         spawnData.put("size", 55.0);
         spawnData.put("building", entity);
-        Entity trigger_circle = FXGL.spawn("Effect", spawnData);
-        trigger_circle.setOpacity(0.25);
+        Entity trigger_area = FXGL.spawn("Area", spawnData);
+        trigger_area.setOpacity(0.25);
     }
 
     @Override
@@ -60,6 +60,9 @@ public class BuildingComponent extends Component {
         Entity person = FXGL.getGameWorld().spawn("People",
                 entity.getX() + Config.SPAWNING_X_GAP * queueResidents.size(),
                 entity.getBottomY() - 5);
+
+        person.setUpdateEnabled(false);
+
         ++hasSpawnedNum;
         queueResidents.add(person);
     }
@@ -86,9 +89,7 @@ public class BuildingComponent extends Component {
                 person.addComponent(new CollidableComponent(true));
             }
 
-            if (!person.hasComponent(PeopleComponent.class)) {
-                person.addComponent(new PeopleComponent());
-            }
+            person.setUpdateEnabled(true);
 
             FXGL.getGameWorld().addEntity(person);
             if(!person.getComponent(PeopleComponent.class).follow())

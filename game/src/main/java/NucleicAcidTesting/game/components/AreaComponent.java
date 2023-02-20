@@ -6,7 +6,7 @@ import com.almasb.fxgl.input.KeyTrigger;
 import com.almasb.fxgl.input.TriggerListener;
 import org.jetbrains.annotations.NotNull;
 
-public class EffectComponent extends Component {
+public class AreaComponent extends Component {
 
     private final Entity fromBuilding;
 
@@ -16,7 +16,7 @@ public class EffectComponent extends Component {
         return triggerListener;
     }
 
-    public EffectComponent(Entity from_building) {
+    public AreaComponent(Entity from_building) {
         this.fromBuilding =from_building;
     }
 

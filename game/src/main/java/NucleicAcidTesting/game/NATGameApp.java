@@ -2,7 +2,7 @@ package NucleicAcidTesting.game;
 
 import NucleicAcidTesting.game.EntityFactory.NATFactory;
 import NucleicAcidTesting.game.EntityFactory.NATUIFactory;
-import NucleicAcidTesting.game.collision.PlayerEffectHandler;
+import NucleicAcidTesting.game.collision.PlayerAreaHandler;
 import NucleicAcidTesting.game.components.MoveComponent;
 import NucleicAcidTesting.game.tools.EntityComparator;
 import com.almasb.fxgl.app.GameApplication;
@@ -119,7 +119,7 @@ public class NATGameApp extends GameApplication {
     @Override
     protected void initPhysics() {
         getPhysicsWorld().setGravity(0,0);
-        getPhysicsWorld().addCollisionHandler(new PlayerEffectHandler());
+        getPhysicsWorld().addCollisionHandler(new PlayerAreaHandler());
     }
 
     @Override
@@ -139,7 +139,7 @@ public class NATGameApp extends GameApplication {
         entities.sort(new EntityComparator());
         for(int z=0;z<entities.size();++z){
             Entity entity=entities.get(z);
-            if(entity.isType(NATType.EFFECT) || entity.isType(NATType.BACKGROUND))
+            if(entity.isType(NATType.AREA) || entity.isType(NATType.BACKGROUND))
                 continue;
             entity.setZIndex(z+1);
         }

@@ -14,7 +14,6 @@ import javafx.util.Duration;
 import java.util.List;
 
 public class PeopleComponent extends Component {
-    PhysicsComponent physicsComponent;
 
     int queueNum = -1;
     Entity aheadPerson;
@@ -70,17 +69,26 @@ public class PeopleComponent extends Component {
 
     @Override
     public void onUpdate(double tpf) {
+
+        var physicsComponent=entity.getComponent(PhysicsComponent.class);
+
         if (state == State.REST)
             return;
 
         // 跟随
         double distance = entity.distance(aheadPerson);
-        if (distance > 50)
-            physicsComponent.setLinearVelocity(new Point2D(
+        if (distance > 50) {
+            Point2D vec=new Point2D(
                     2 * (aheadPerson.getCenter().getX() - entity.getCenter().getX()),
                     2 * (aheadPerson.getCenter().getY() - entity.getCenter().getY())
-            ));
-        else
+            );
+            // 连接从这个人到上一个人的线上的结果。
+            var ray_result=FXGL.getPhysicsWorld().raycast(entity.getCenter(),aheadPerson.getCenter());
+            if(ray_result.getEntity().isPresent() && !ray_result.getEntity().get().equals(aheadPerson)){
+                physicsComponent.setLinearVelocity(-vec.getY(),vec.getX());
+            }else
+                physicsComponent.setLinearVelocity(vec);
+        } else
             physicsComponent.setLinearVelocity(
                     NATMath.InterpolationD(physicsComponent.getVelocityX(), 0, tpf * 10),
                     NATMath.InterpolationD(physicsComponent.getVelocityY(), 0, tpf * 10));
@@ -94,6 +102,7 @@ public class PeopleComponent extends Component {
 
     }
     private void setAnimation(){
+        var physicsComponent=entity.getComponent(PhysicsComponent.class);
         double x_speed = physicsComponent.getVelocityX();
         double y_speed = physicsComponent.getVelocityY();
 

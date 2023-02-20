@@ -15,7 +15,6 @@ import com.almasb.fxgl.physics.BoundingShape;
 import com.almasb.fxgl.physics.HitBox;
 import com.almasb.fxgl.physics.PhysicsComponent;
 import com.almasb.fxgl.physics.box2d.dynamics.BodyType;
-import com.almasb.fxgl.physics.box2d.dynamics.FixtureDef;
 import javafx.geometry.Point2D;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.paint.Color;
@@ -112,12 +111,12 @@ public class NATFactory implements EntityFactory {
         return FXGL.entityBuilder(data)
                 .type(NATType.PEOPLE)
                 .bbox(BoundingShape.circle(10))
-                .view("playerLine.png")
                 .with(new KeepInBoundsComponent
                         (new Rectangle2D(Config.WINDOW_MIN_X,Config.WINDOW_MIN_Y,
                                 Config.WINDOW_MAX_X-Config.WINDOW_MIN_X,
                                 Config.WINDOW_MAX_Y-Config.WINDOW_MIN_Y)))
                 .with(new MoveComponent())
+                .with(new PeopleComponent())
                 .build();
     }
     
@@ -153,13 +152,13 @@ public class NATFactory implements EntityFactory {
                 .build();
     }
     
-    @Spawns("Effect")
-    public Entity newEffect(SpawnData data) {
+    @Spawns("Area")
+    public Entity newArea(SpawnData data) {
         double size= data.get("size");
         return FXGL.entityBuilder(data)
-                .type(NATType.EFFECT)
+                .type(NATType.AREA)
                 .zIndex(0)
-                .with(new EffectComponent(data.get("building")))
+                .with(new AreaComponent(data.get("building")))
                 .collidable()
                 .view(new Circle(size,Color.RED))
                 .bbox(new HitBox(new Point2D(-size/2,-size/2),BoundingShape.box(size*1.8,size*1.8)))

@@ -1,26 +1,26 @@
 package NucleicAcidTesting.game.collision;
 
 import NucleicAcidTesting.game.NATType;
-import NucleicAcidTesting.game.components.EffectComponent;
+import NucleicAcidTesting.game.components.AreaComponent;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.SpawnData;
 import com.almasb.fxgl.input.TriggerListener;
 import com.almasb.fxgl.physics.CollisionHandler;
 
-public class PlayerEffectHandler extends CollisionHandler {
+public class PlayerAreaHandler extends CollisionHandler {
     private TriggerListener triggerListener;
 
-    Entity keyTips;
+    Entity keyTips,Mood;
 
-    public PlayerEffectHandler() {
-        super(NATType.PLAYER, NATType.EFFECT);
+    public PlayerAreaHandler() {
+        super(NATType.PLAYER, NATType.AREA);
     }
 
     @Override
     protected void onCollisionBegin(Entity player, Entity effect) {
 
-        triggerListener=effect.getComponent(EffectComponent.class).getTriggerListener();
+        triggerListener=effect.getComponent(AreaComponent.class).getTriggerListener();
         FXGL.getInput().addTriggerListener(triggerListener);
 
         keyTips=FXGL.getGameWorld().spawn("Tips",new SpawnData().put("tips","E"));
