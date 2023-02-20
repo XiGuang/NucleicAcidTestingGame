@@ -33,7 +33,7 @@ public class NATFactory implements EntityFactory {
 
         return FXGL.entityBuilder(data)
                 .type(NATType.BACKGROUND)
-                .view("floor.png")
+                .view("map.png")
                 .zIndex(Config.BACKGROUND_LEVEL)
                 .build();
     }
@@ -125,7 +125,6 @@ public class NATFactory implements EntityFactory {
         Rectangle2D bound = new Rectangle2D(0,0,200,200);
         Point2D point;
         while (true) {
-            System.out.println("dsada");
             point = FXGLMath.randomPoint(bound);
             List<Entity> buildings = getGameWorld().getEntitiesInRange(new Rectangle2D(
                     point.getX() - Config.GAP_X / 2,

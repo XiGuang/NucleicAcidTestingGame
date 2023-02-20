@@ -20,7 +20,7 @@ public class MapLoader {
     }
 
     private static void loadMapLevel1() {
-        spawn("Background", 0, 0);
+        spawn("Background", -Config.WINDOW_WIDTH, -Config.WINDOW_HEIGHT);
         spawn("UICountDown", -40, -200);
         NATFactory.spawnSite();
         NATFactory.spawnBuildings(10, (int) (-getAppWidth() + Config.SIZE_X / 2 + Config.GAP_TO_WINDOW),

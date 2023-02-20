@@ -90,7 +90,6 @@ public class LevelChooser extends Button {
                 levelChooser.setStyle("-fx-background-color: transparent;" +
                         "-fx-border-radius: 5px;" +
                         "-fx-background-radius: 5px;");
-                ;
             } else if (levelChooser.isChosen() &&
                     levelChooser.getLevel().equals(LevelChooser.getChosenLevel()) &&
                     !levelChooser.styled) {
