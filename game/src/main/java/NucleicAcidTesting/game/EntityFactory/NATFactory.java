@@ -45,7 +45,6 @@ public class NATFactory implements EntityFactory {
 
         return FXGL.entityBuilder(data)
                 .type(NATType.PLAYER)
-                .view(new Rectangle(20, 40, Color.LIGHTBLUE))
                 .bbox(new HitBox(new Point2D(0,20),BoundingShape.box(20,20)))
                 .with(physicsComponent)
                 .collidable()
@@ -112,7 +111,8 @@ public class NATFactory implements EntityFactory {
 
         return FXGL.entityBuilder(data)
                 .type(NATType.PEOPLE)
-                .viewWithBBox(new Circle(10, FXGLMath.randomColor()))
+                .bbox(BoundingShape.circle(10))
+                .view("playerLine.png")
                 .with(new KeepInBoundsComponent
                         (new Rectangle2D(Config.WINDOW_MIN_X,Config.WINDOW_MIN_Y,
                                 Config.WINDOW_MAX_X-Config.WINDOW_MIN_X,
