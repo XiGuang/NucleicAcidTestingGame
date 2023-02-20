@@ -61,7 +61,7 @@ public class MoodComponent extends Component {
                 }
 
                 //画橘色进度条
-                else if ((nv.doubleValue() / time_interval * width)>(width/3)&&(nv.doubleValue() / 10 * width)<=(width/3*2)) {
+                else if ((nv.doubleValue() / time_interval * width)>(width/3)&&(nv.doubleValue() / time_interval * width)<=(width/3*2)) {
                     //当前长度小于三分之二
                     g2d.setFill(Color.rgb(255,165,0));
                     g2d.fillRect(0,0,canvas.getWidth(), canvas.getHeight());
@@ -92,7 +92,7 @@ public class MoodComponent extends Component {
                 }
 
                 //画橘色进度条
-                else if ((nv.doubleValue() / time_interval * width)>(width/3)&&(nv.doubleValue() / 10 * width)<=(width/3*2)) {
+                else if ((nv.doubleValue() / time_interval * width)>(width/3)&&(nv.doubleValue() / time_interval * width)<=(width/3*2)) {
                     //当前长度小于三分之二
                     g2d.setFill(Color.rgb(255,165,0));
                     g2d.fillRect(0,0,canvas.getWidth(), canvas.getHeight());
