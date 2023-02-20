@@ -20,6 +20,7 @@ import javafx.geometry.Rectangle2D;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
@@ -56,25 +57,28 @@ public class SiteComponent extends Component {
             for (int i=1;i<follow_list.size();i++) {
                 Entity person = follow_list.get(i);
                 follow_list.remove(person);
-                if (site_queue.size() == 0){
-                    person.getComponent(PeopleComponent.class).follow(entity, 1);
-                    site_queue.add(person);
-                    disappear_queue.add(person);
-                }else{
-                    person.getComponent(PeopleComponent.class).follow(site_queue.get(site_queue.size()-1), site_queue.size());
-                    site_queue.add(person);
-                    disappear_queue.add(person);
-                }
-//                FXGL.getGameWorld().removeEntity(person);
-//                i--;
-//                if(!site_queue.contains(person)) {
+
+//                if(!site_queue.contains(person)&&!disappear_queue.contains(person)) {
 //                    site_queue.add(person);
-//                    count++;
-//                    Entity citizen=FXGL.getGameWorld().spawn("People",
-//                            entity.getX()  + Config.SPAWNING_X_GAP * 4 * site_queue.size(),
-//                            entity.getBottomY() - 5);
-//                    disappear_queue.add(citizen);
+//                    disappear_queue.add(person);
+//
+//                    if (site_queue.size() == 1){
+//                        person.getComponent(PeopleComponent.class).follow(entity, 1);
+//                    }else{
+//                        person.getComponent(PeopleComponent.class).follow(site_queue.get(i-1), site_queue.size());
+//                        System.out.println(i);
+//                    }
 //                }
+
+                FXGL.getGameWorld().removeEntity(person);
+                i--;
+                if(!site_queue.contains(person)) {
+                    site_queue.add(person);
+                    Entity citizen=FXGL.getGameWorld().spawn("People",
+                            entity.getX()  + Config.SPAWNING_X_GAP * 4 * disappear_queue.size(),
+                            entity.getBottomY() - 5);
+                    disappear_queue.add(citizen);
+                }
             }
         }
 
@@ -88,22 +92,24 @@ public class SiteComponent extends Component {
                 break;
 
             Entity person=disappear_queue.get(0);
-            distance=entity.distance(person);
-            if(distance<100) {
-                FXGL.getGameWorld().removeEntity(person);
-                disappear_queue.remove(0);
-                mark++;
-            }
+
+            FXGL.getGameWorld().removeEntity(person);
+            disappear_queue.remove(0);
+            mark++;
+
             for(int i=0;i<disappear_queue.size();i++){
-                if(i==0) {
-                    person = disappear_queue.get(i);
-                    person.getComponent(PeopleComponent.class).follow(entity, 1);
-                }
-                else{
-                    person = disappear_queue.get(i);
-                    person.getComponent(PeopleComponent.class).follow(disappear_queue.get(i-1), 1);
-                }
+                disappear_queue.get(i).translate(-20,0);
             }
+//            for(int i=0;i<disappear_queue.size();i++){
+//                if(i==0) {
+//                    person = disappear_queue.get(i);
+//                    person.getComponent(PeopleComponent.class).follow(entity, 1);
+//                }
+//                else{
+//                    person = disappear_queue.get(i);
+//                    person.getComponent(PeopleComponent.class).follow(disappear_queue.get(i-1), 1);
+//                }
+//            }
             if(disappear_queue.isEmpty())
                 remove_count=0;
         }
