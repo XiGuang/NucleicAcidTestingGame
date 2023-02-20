@@ -28,7 +28,7 @@ public interface Config {
 
     // 队伍生成时间间隔
     Duration SPAWNING_INTERVAL=Duration.seconds(1);
-    double SPAWNING_X_GAP=5;
+    double SPAWNING_X_GAP=10;
 
     // Window
     int WINDOW_MIN_X=-WINDOW_WIDTH;

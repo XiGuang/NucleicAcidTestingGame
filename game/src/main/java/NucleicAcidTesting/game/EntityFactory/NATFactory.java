@@ -105,12 +105,10 @@ public class NATFactory implements EntityFactory {
 
     @Spawns("People")
     public Entity newPeople(SpawnData data) {
-        PhysicsComponent physicsComponent=new PhysicsComponent();
-        physicsComponent.setBodyType(BodyType.DYNAMIC);
 
         return FXGL.entityBuilder(data)
                 .type(NATType.PEOPLE)
-                .bbox(BoundingShape.circle(10))
+                .bbox(BoundingShape.box(20,20))
                 .with(new KeepInBoundsComponent
                         (new Rectangle2D(Config.WINDOW_MIN_X,Config.WINDOW_MIN_Y,
                                 Config.WINDOW_MAX_X-Config.WINDOW_MIN_X,
@@ -135,7 +133,8 @@ public class NATFactory implements EntityFactory {
             if (buildings.isEmpty())
                 break;
         }
-        getGameWorld().spawn("Site", point);
+        var e=getGameWorld().spawn("Site", point);
+        e.translateTowards(FXGL.getGameWorld().getSingleton(NATType.PLAYER).getCenter(),10);
     }
 
     @Spawns("Site")
@@ -145,7 +144,7 @@ public class NATFactory implements EntityFactory {
 
         return FXGL.entityBuilder(data)
                 .type(NATType.SITE)
-                .viewWithBBox(new Rectangle(30, 30, Color.PINK))
+                .viewWithBBox(new Rectangle(50, 50, Color.PINK))
                 .collidable()
                 .with(physicsComponent)
                 .with(new SiteComponent())
