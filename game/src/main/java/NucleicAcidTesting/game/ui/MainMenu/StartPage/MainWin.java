@@ -29,6 +29,7 @@ public class MainWin extends StackPane {
 
     FunctionPane originPane = new FunctionPane();
     FunctionPane classGamePane = new FunctionPane();
+    FunctionPane infiniteGamePane = new FunctionPane();
     FunctionPane rankPane = new FunctionPane();
 
     VBox rankBox = new VBox();
@@ -39,8 +40,8 @@ public class MainWin extends StackPane {
         public ChoicePane() {
             Button classicGameButton = new ChoiceButton("限时闯关");
             classicGameButton.setOnAction(actionEvent -> classGamePane.toFront());
-            Button infiniteGameButton = new ChoiceButton("无尽游戏");
-            infiniteGameButton.setOnAction(actionEvent -> FXGL.getGameController().startNewGame());
+            Button infiniteGameButton = new ChoiceButton("无尽模式");
+            infiniteGameButton.setOnAction(actionEvent -> infiniteGamePane.toFront());
             Button setButton = new ChoiceButton("设置");
             setButton.setOnAction(actionEvent -> FXGL.getGameController().gotoGameMenu());
             Button rankButton = new ChoiceButton("排行榜");
@@ -74,8 +75,10 @@ public class MainWin extends StackPane {
             setOriginPane();
             setClassicGamePane();
             setRankPane();
+            setInfiniteGamePane();
 
             this.getChildren().add(rankPane);
+            this.getChildren().add(infiniteGamePane);
             this.getChildren().add(classGamePane);
             this.getChildren().add(originPane);
 
@@ -122,7 +125,10 @@ public class MainWin extends StackPane {
 
     private void setClassicGamePane() {
         Button classicGameButton = new Button("开始游戏");
-        classicGameButton.setOnAction(actionEvent -> FXGL.getGameController().startNewGame());
+        classicGameButton.setOnAction(actionEvent -> {
+            FXGL.getGameController().resumeEngine();
+            FXGL.getGameController().startNewGame();
+        });
         classicGameButton.setPrefSize(200, 50);
         classicGameButton.setFont(Font.font("Times Roman", FontWeight.BOLD, 16));
         classicGameButton.setStyle("-fx-background-color: rgba(85,192,232,0.7);" +
@@ -186,6 +192,64 @@ public class MainWin extends StackPane {
         classGamePane.setAlignment(Pos.CENTER);
         classGamePane.add(vBox, 0, 0);
     }
+
+
+    private void setInfiniteGamePane() {
+        Button infiniteGameButton = new Button("开始游戏");
+        infiniteGameButton.setOnAction(actionEvent -> {
+            FXGL.getGameController().resumeEngine();
+            FXGL.getGameController().startNewGame();
+        });
+        infiniteGameButton.setPrefSize(200, 50);
+        infiniteGameButton.setFont(Font.font("Times Roman", FontWeight.BOLD, 16));
+        infiniteGameButton.setStyle("-fx-background-color: rgba(85,192,232,0.7);" +
+                "-fx-border-color: rgba(255,255,255,0.82);" +
+                "-fx-border-width: 3px;" +
+                "-fx-border-radius: 10px;" +
+                "-fx-background-radius: 10px;" +
+                "-fx-text-fill: white;");
+        infiniteGameButton.addEventHandler(MouseEvent.MOUSE_ENTERED, (e) -> {
+            infiniteGameButton.setStyle("-fx-border-color: rgb(246,168,69);" +
+                    "-fx-background-color: rgba(85,192,232,0.7);" +
+                    "-fx-border-width: 3px;" +
+                    "-fx-border-radius: 10px;" +
+                    "-fx-background-radius: 10px;" +
+                    "-fx-text-fill: white;");
+        });
+        ;
+        infiniteGameButton.addEventHandler(MouseEvent.MOUSE_EXITED, (e) -> {
+            infiniteGameButton.setStyle(("-fx-background-color: rgba(85,192,232,0.7);" +
+                    "-fx-border-width: 3px;" +
+                    "-fx-border-color: rgba(255,255,255,0.82);" +
+                    "-fx-border-radius: 10px;" +
+                    "-fx-background-radius: 10px;" +
+                    "-fx-text-fill: white;"));
+        });
+
+        Image imageLogo = new Image("assets/textures/menuImg/infiniteGameLogo.png",
+                180, 50, false, false);
+        ImageView imageLogoView = new ImageView(imageLogo);
+
+        Image image = new Image("assets/textures/menuImg/infiniteImg.png",
+                432 * 0.6, 391 * 0.6, false, false);
+        ImageView imageView = new ImageView(image);
+
+
+        VBox vBox = new VBox();
+        vBox.setStyle("-fx-background-color: rgb(146,184,248);" +
+                "-fx-background-radius: 10px;" +
+                "-fx-border-radius: 10px;" +
+                "-fx-border-style: dashed;" +
+                "-fx-border-width: 2px;");
+        vBox.setPrefSize(600, 400);
+        vBox.setAlignment(Pos.CENTER);
+        vBox.setSpacing(10);
+
+        vBox.getChildren().addAll(imageLogoView, imageView, infiniteGameButton);
+        infiniteGamePane.setAlignment(Pos.CENTER);
+        infiniteGamePane.add(vBox, 0, 0);
+    }
+
 
     private void setRankPane() {
         Image rankLogo = new Image("assets/textures/menuImg/rankLogo.png",
