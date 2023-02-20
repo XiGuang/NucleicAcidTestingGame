@@ -121,6 +121,9 @@ public class CountDownComponent extends Component {
 
             minute = minute2;
             second = second2;
+            FXGL.getGameController().resumeEngine();
+            FXGL.getGameController().startNewGame();
+
             popupBox.setVisible(false);
         });
         ResetButton.setOnMouseEntered(event -> ResetButton.setImage(resetButton_down));
@@ -170,7 +173,7 @@ public class CountDownComponent extends Component {
 
     @Override
     public void onUpdate(double tpf) {
-        super.onUpdate(tpf);
+
         //等待Delay时间然后再启动倒计时
         if (Delay > 0) {
             Delay -= tpf;
@@ -186,6 +189,7 @@ public class CountDownComponent extends Component {
                 if (second == 0 && minute == 0) {
                     //System.out.println("倒计时为0");
                     //显示失败窗口
+                    FXGL.getGameController().pauseEngine();
                     popupBox.setVisible(true);
                 }
 

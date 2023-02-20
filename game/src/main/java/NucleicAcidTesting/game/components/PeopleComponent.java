@@ -12,13 +12,14 @@ import javafx.geometry.Point2D;
 import javafx.util.Duration;
 
 import java.util.List;
+import java.util.Random;
 
 public class PeopleComponent extends Component {
 
     int queueNum = -1;
     Entity aheadPerson;
     State state = State.REST;
-
+    String texture;
     private AnimationChannel acUp,acDown,acLeft,acRight;
     private AnimatedTexture at;
     static MoveDirection dir = MoveDirection.DOWN;
@@ -26,6 +27,11 @@ public class PeopleComponent extends Component {
 
     public enum State {
         REST, FOLLOW
+    }
+
+    public PeopleComponent() {
+        Random random = new Random();
+        texture = "people/student"+(random.nextInt(29) + 1)+".png";
     }
 
     @Override
@@ -96,7 +102,7 @@ public class PeopleComponent extends Component {
     }
 
     private AnimationChannel getAnimationChannel(int start,int end){
-        return new AnimationChannel(FXGL.image("player.png"),
+        return new AnimationChannel(FXGL.image(texture),
                 4,128/4,192/4,
                 Duration.seconds(0.75),start,end);
 
