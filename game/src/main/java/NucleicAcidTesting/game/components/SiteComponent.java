@@ -33,33 +33,25 @@ import static com.almasb.fxgl.dsl.FXGLForKtKt.getGameWorld;
 
 public class SiteComponent extends Component {
     private int remove_count=0;
-    private int count=0;
+    private int mark=0;
     private LocalTimer localTimer;
     //检测队列
     List<Entity>site_queue=new ArrayList<>();
     List<Entity>disappear_queue=new ArrayList<>();
-    final static double INFINITE_MAX=10000;
-    PhysicsComponent physicsComponent;
-    //距离
-    double distance=INFINITE_MAX;
 
-    public double getDistance(){
-        return distance;
+    //得到做过核算的人数
+    public int getMark(){
+        return mark;
     }
 
-    public int getCount(){
-        return count;
-    }
-    //传入当前人的实体
     public void onAdded(){
         localTimer = FXGL.newLocalTimer();
-
     }
 
     public void onUpdate(double tpf) {
         List<Entity> follow_list = FXGL.getWorldProperties().getObject("follow_list");
         Entity player = follow_list.get(0);
-        distance=entity.distance(player);
+        double distance=entity.distance(player);
         if(distance<30) {
             for (int i=1;i<follow_list.size();i++) {
                 Entity person = follow_list.get(i);
@@ -94,12 +86,26 @@ public class SiteComponent extends Component {
             localTimer.capture();
             if(remove_count==0)
                 break;
+
             Entity person=disappear_queue.get(0);
-            double distance=entity.distance(person);
+            distance=entity.distance(person);
             if(distance<100) {
                 FXGL.getGameWorld().removeEntity(person);
                 disappear_queue.remove(0);
+                mark++;
             }
+            for(int i=0;i<disappear_queue.size();i++){
+                if(i==0) {
+                    person = disappear_queue.get(i);
+                    person.getComponent(PeopleComponent.class).follow(entity, 1);
+                }
+                else{
+                    person = disappear_queue.get(i);
+                    person.getComponent(PeopleComponent.class).follow(disappear_queue.get(i-1), 1);
+                }
+            }
+            if(disappear_queue.isEmpty())
+                remove_count=0;
         }
     }
 
