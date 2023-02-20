@@ -96,7 +96,7 @@ public class SiteComponent extends Component {
                     Entity citizen=FXGL.getGameWorld().spawn("People",
                             entity.getX()  + Config.SPAWNING_X_GAP * 4 * disappear_queue.size(),
                             entity.getBottomY() - 5);
-
+                    citizen.getViewComponent().addChild((person.getViewComponent().getChildren().get(0)));
                     disappear_queue.add(citizen);
                 }
             }
