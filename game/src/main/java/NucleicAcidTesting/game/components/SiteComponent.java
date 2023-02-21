@@ -15,6 +15,7 @@ import javafx.scene.text.Text;
 import javafx.util.Duration;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class SiteComponent extends Component {
@@ -68,17 +69,16 @@ public class SiteComponent extends Component {
     public void queueUp(){
         // 排队
         List<Entity> follow_list = FXGL.getWorldProperties().getObject("follow_list");
-
-        for (int i = 1; i < follow_list.size(); i++) {
-            Entity person = follow_list.get(i);
-            follow_list.remove(person);
-
+        Iterator<Entity> iterator = follow_list.iterator();
+        iterator.next();
+        while(iterator.hasNext()){
+            Entity person=iterator.next();
             site_queue.add(person);
             person.getComponent(PeopleComponent.class).follow(new Point2D(
                     entity.getX() + 20 * site_queue.size(),
                     entity.getBottomY()));
+            iterator.remove();
         }
-
     }
 
     public void onUpdate(double tpf) {
