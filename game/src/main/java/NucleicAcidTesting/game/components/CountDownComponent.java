@@ -1,38 +1,16 @@
 package NucleicAcidTesting.game.components;
 
-import NucleicAcidTesting.game.ui.FailWin;
+import NucleicAcidTesting.game.ui.FailPane;
 import NucleicAcidTesting.game.ui.LoadingWin;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.component.Component;
-import com.almasb.fxgl.texture.AnimatedTexture;
-import com.almasb.fxgl.texture.AnimationChannel;
-import com.almasb.fxgl.time.LocalTimer;
-import com.almasb.fxgl.scene.SubScene;
-import javafx.scene.control.Button;
 import javafx.scene.image.Image;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
-import javafx.scene.layout.*;
-import javafx.scene.layout.VBox;
-import javafx.scene.Scene;
-import javafx.scene.image.ImageView;
-import javafx.util.Duration;
-import org.jetbrains.annotations.NotNull;
-
-import java.util.Locale;
-import java.util.Stack;
-import java.util.Timer;
-import java.util.TimerTask;
-
-import javafx.geometry.Pos;
-import javafx.geometry.HPos;
-import javafx.geometry.VPos;
 
 public class CountDownComponent extends Component {
     double minute, second;
@@ -48,7 +26,7 @@ public class CountDownComponent extends Component {
     boolean showLoading = false;
     LoadingWin loadingWin;
 
-    FailWin failWin = new FailWin();
+    FailPane failWin = new FailPane();
     Text text;
 
     //构造函数，设置初始秒数
@@ -118,10 +96,10 @@ public class CountDownComponent extends Component {
             }
             return;
         }
-        if (tpf > max_time) {
-            inited = false;
-            return;
-        } ;
+//        if (tpf > max_time) {
+//            inited = false;
+//            return;
+//        } ;
         //等待Delay时间然后再启动倒计时
         if (Delay > 0) {
             Delay -= tpf;

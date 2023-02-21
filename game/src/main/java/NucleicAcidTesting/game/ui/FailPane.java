@@ -6,8 +6,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 
-public class FailWin extends VBox{
-    public FailWin() {
+public class FailPane extends VBox{
+    public FailPane() {
         GridPane popupPane;
         popupPane = new GridPane();
         popupPane.setHgap(10);
@@ -50,7 +50,7 @@ public class FailWin extends VBox{
 
 
         //退出图片按钮
-        Image img2 = new Image("assets/textures/CountDownPic/exit3.png");
+//        Image img2 = new Image("assets/textures/CountDownPic/exit3.png");
         Image exitButton_up = new Image("assets/textures/CountDownPic/exit_down(已去底).png");
         Image exitButton_down = new Image("assets/textures/CountDownPic/exit_up(已去底).png");
         ImageView exitButton = new ImageView(exitButton_up);
