@@ -44,6 +44,7 @@ public class CountDownComponent extends Component {
     //计时器 初始延迟的秒数
 
     boolean inited = false;
+    double initDelay = 1.5;
     boolean showLoading = false;
     LoadingWin loadingWin;
 
@@ -103,13 +104,15 @@ public class CountDownComponent extends Component {
     public void onUpdate(double tpf) {
         double max_time = 0.015;
         if (!inited) {
-            if (tpf <= max_time) {
+            initDelay -= tpf;
+            if (tpf <= max_time && initDelay <0) {
                 if (showLoading) {
                     loadingWin.closeLoading();
                     showLoading = false;
+                    initDelay = 1.5;
                 }
                 inited = true;
-            } else if (tpf > max_time && !showLoading) {
+            } else if (!showLoading) {
                 loadingWin = new LoadingWin();
                 showLoading = true;
             }
