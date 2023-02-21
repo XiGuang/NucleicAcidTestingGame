@@ -5,7 +5,7 @@ import javafx.util.Duration;
 public interface Config {
     int WINDOW_HEIGHT=520;
     int WINDOW_WIDTH =960;
-    String VERSION="0.1";
+    String VERSION="0.9";
     String TITLE="Nucleic Acid Testing";
 
     boolean ONLINE = false;
@@ -14,21 +14,15 @@ public interface Config {
     double Velocity=300;
 
     // Building
-    double SIZE_X=80;
-    double SIZE_Y=160;
+    double GAP_X =175*2;
+    double GAP_Y =175*2;
+    int MAX_CYCLE_TIME=1000;
 
-    double GAP_X =SIZE_X*2;
-    double GAP_Y =SIZE_Y*2;
-    int MAX_CYCLE_TIME=100;
-
-    double OFFSET_X=-SIZE_X/2;
-    double OFFSET_Y=-SIZE_Y/2;
-
-    int GAP_TO_WINDOW=30;
+    int GAP_TO_WINDOW=100;
 
     // 队伍生成时间间隔
     Duration SPAWNING_INTERVAL=Duration.seconds(1);
-    double SPAWNING_X_GAP=10;
+    double SPAWNING_X_GAP=20;
 
     // Window
     int WINDOW_MIN_X=-WINDOW_WIDTH;

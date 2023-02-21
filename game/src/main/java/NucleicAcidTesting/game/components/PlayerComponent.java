@@ -27,18 +27,19 @@ public class PlayerComponent extends Component {
 
     @Override
     public void onUpdate(double tpf) {
+        // 在房屋后面时，使房屋变透明
         List<Entity> entities = entity_group_lazy_value.get().getEntitiesCopy();
-
         for (var e : entities) {
             Point2D point_left_up = e.getPosition();
             Bounds bounds = e.getViewComponent().getChildren().get(0).getBoundsInLocal();
-            Rectangle2D rectangle2D = new Rectangle2D(point_left_up.getX(), point_left_up.getY(), bounds.getWidth(), bounds.getHeight());
+            Rectangle2D rectangle2D = new Rectangle2D(point_left_up.getX(), point_left_up.getY(), bounds.getWidth()-10, bounds.getHeight()-10);
 
             if (rectangle2D.contains(entity.getCenter())) {
                 e.setOpacity(NATMath.InterpolationD(e.getOpacity(),0.5,tpf*3));
             } else if (e.getOpacity() != 1)
                 e.setOpacity(NATMath.InterpolationD(e.getOpacity(),1,tpf*3));
         }
+
         if(moveDirection != MoveComponent.getDir()){
             moveDirection = MoveComponent.getDir();
         }

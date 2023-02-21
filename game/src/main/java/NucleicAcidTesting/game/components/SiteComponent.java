@@ -48,7 +48,7 @@ public class SiteComponent extends Component {
 
     public void onAdded(){
         SpawnData spawnData = new SpawnData(entity.getCenter().getX(), entity.getCenter().getY());
-        spawnData.put("size", 80.0);
+        spawnData.put("size", 130.0);
         spawnData.put("site", entity);
         Entity trigger_area = FXGL.spawn("SiteArea", spawnData);
         trigger_area.setOpacity(0.25);
@@ -75,14 +75,14 @@ public class SiteComponent extends Component {
             Entity person=iterator.next();
             site_queue.add(person);
             person.getComponent(PeopleComponent.class).follow(new Point2D(
-                    entity.getX() + 20 * site_queue.size(),
+                    entity.getRightX() + 30 * site_queue.size()-1,
                     entity.getBottomY()));
             iterator.remove();
         }
     }
 
     public void onUpdate(double tpf) {
-
+        // 可变做核酸速度
         if(isFaster)
             NATTime= NATMath.InterpolationD(NATTime,0.5,tpf);
         else
@@ -93,14 +93,14 @@ public class SiteComponent extends Component {
         }
         localTimer.capture();
 
-        if(!site_queue.isEmpty() && site_queue.get(0).distance(entity)<100){
+        if(!site_queue.isEmpty() && site_queue.get(0).distance(entity)<300){
             site_queue.get(0).removeFromWorld();
             site_queue.remove(0);
             score+=10;
             text.setText(String.valueOf(score));
             for(int i = 0; i < site_queue.size(); i++){
                 PeopleComponent peopleComponent = site_queue.get(i).getComponent(PeopleComponent.class);
-                peopleComponent.follow(new Point2D(entity.getCenter().getX() + 20 * (i+1), entity.getCenter().getY()));
+                peopleComponent.follow(new Point2D(entity.getRightX() + 30 * i, entity.getCenter().getY()));
             }
         }
     }

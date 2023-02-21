@@ -23,10 +23,10 @@ public class MapLoader {
         spawn("Background", -Config.WINDOW_WIDTH, -Config.WINDOW_HEIGHT);
         spawn("UICountDown", -40, -200);
         NATFactory.spawnSite();
-        NATFactory.spawnBuildings(10, (int) (-getAppWidth() + Config.SIZE_X / 2 + Config.GAP_TO_WINDOW),
-                (int) (-getAppHeight() + Config.SIZE_Y / 2 + Config.GAP_TO_WINDOW),
-                (int) (getAppWidth() - Config.SIZE_X / 2 - Config.GAP_TO_WINDOW),
-                (int) (getAppHeight() - Config.SIZE_Y / 2 - Config.GAP_TO_WINDOW));
+        NATFactory.spawnBuildings(10, (int) (Config.WINDOW_MIN_X + Config.GAP_TO_WINDOW),
+                (Config.WINDOW_MIN_Y + Config.GAP_TO_WINDOW),
+                (Config.WINDOW_MAX_X - Config.GAP_TO_WINDOW),
+                (Config.WINDOW_MAX_Y - Config.GAP_TO_WINDOW));
     }
 
     private static void loadMapLevel2() {

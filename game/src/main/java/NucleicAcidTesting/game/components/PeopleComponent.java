@@ -84,8 +84,9 @@ public class PeopleComponent extends Component {
             entity.getComponent(BoundingBoxComponent.class).clearHitBoxes();
             FXGL.getGameWorld().addEntity(entity);
             entity.getComponent(PhysicsComponent.class).overwritePosition(p);
-            state=State.STATIC_FOLLOW;
+
         }
+        state=State.STATIC_FOLLOW;
         followPoint=point;
         aheadPerson=null;
     }
@@ -110,13 +111,16 @@ public class PeopleComponent extends Component {
             if(distance<3)
                 physicsComponent.setLinearVelocity(0,0);
             else{
-                vec=followPoint.subtract(entity.getCenter()).normalize().multiply(500);
+                vec=followPoint.subtract(entity.getCenter()).normalize().multiply(250);
                 physicsComponent.setLinearVelocity(vec);
             }
         } else if (distance > 50) {
             // 跟随玩家时
 
             vec = aheadPerson.getCenter().subtract(entity.getCenter()).multiply(2);
+            if(vec.magnitude()>250){
+                vec.normalize().multiply(250);
+            }
             // 连接从这个人到上一个人的线上的结果。
             var ray_result=FXGL.getPhysicsWorld().raycast(entity.getCenter(),aheadPerson.getCenter());
             if(ray_result.getEntity().isPresent() && !ray_result.getEntity().get().equals(aheadPerson)){

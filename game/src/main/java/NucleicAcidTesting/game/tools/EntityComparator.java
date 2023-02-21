@@ -1,6 +1,7 @@
 package NucleicAcidTesting.game.tools;
 
 import com.almasb.fxgl.entity.Entity;
+import com.almasb.fxgl.entity.components.ViewComponent;
 
 import java.util.Comparator;
 

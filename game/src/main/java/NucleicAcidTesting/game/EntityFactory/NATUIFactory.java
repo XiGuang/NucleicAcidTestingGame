@@ -9,6 +9,7 @@ import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.EntityFactory;
 import com.almasb.fxgl.entity.SpawnData;
 import com.almasb.fxgl.entity.Spawns;
+import com.almasb.fxgl.texture.Texture;
 
 public class NATUIFactory implements EntityFactory {
 
@@ -17,7 +18,7 @@ public class NATUIFactory implements EntityFactory {
         return FXGL.entityBuilder(data)
                 .type(NATType.COUNT_DOWN)
                 // 在CountDownComponent中传入初始的秒数来进行倒计时
-                .with(new CountDownComponent(10))
+                .with(new CountDownComponent(100))
                 .build();
     }
 
@@ -31,8 +32,15 @@ public class NATUIFactory implements EntityFactory {
 
     @Spawns("Tips")
     public Entity newTips(SpawnData data) {
-        return FXGL.entityBuilder(data)
-                .with(new TipsComponent(data.get("tips")))
-                .build();
+        if(data.hasKey("tips")){
+            return FXGL.entityBuilder(data)
+                    .with(new TipsComponent((String) data.get("tips")))
+                    .build();
+        }else{
+            return FXGL.entityBuilder(data)
+                    .with(new TipsComponent((Texture) data.get("texture")))
+                    .build();
+        }
+
     }
 }

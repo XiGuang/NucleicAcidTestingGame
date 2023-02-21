@@ -54,10 +54,10 @@ public class BuildingComponent extends Component {
     public void onAdded() {
         spawnTimer = FXGL.newLocalTimer();
         SpawnData spawnData = new SpawnData(entity.getCenter().getX(), entity.getBottomY());
-        spawnData.put("size", 55.0);
+        spawnData.put("size", 100.0);
         spawnData.put("building", entity);
         Entity trigger_area = FXGL.spawn("BuildingArea", spawnData);
-        trigger_area.setOpacity(0.25);
+        trigger_area.setOpacity(0.3);
     }
 
     @Override

@@ -70,12 +70,6 @@ public class CountDownComponent extends Component {
         //将背景图片与数字显示 结合
         StackPane stackPane = new StackPane(rectangle, text);
         FXGL.addUINode(stackPane, 850, 30);
-
-
-        //时间结束界面
-
-
-
     }
 
     @Override
@@ -140,8 +134,6 @@ public class CountDownComponent extends Component {
                     else
                         text.setText((int) minute + ":" + (int) second);
                 }
-            } else {
-                return;
             }
         }
     }

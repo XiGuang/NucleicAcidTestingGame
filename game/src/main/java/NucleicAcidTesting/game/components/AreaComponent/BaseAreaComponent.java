@@ -14,7 +14,7 @@ public abstract class BaseAreaComponent extends Component {
     }
 
     public BaseAreaComponent(Entity from_building) {
-        this.fromBuilding =from_building;
+        this.fromBuilding = from_building;
     }
 
     @Override

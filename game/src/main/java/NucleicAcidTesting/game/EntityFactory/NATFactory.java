@@ -17,8 +17,12 @@ import com.almasb.fxgl.physics.BoundingShape;
 import com.almasb.fxgl.physics.HitBox;
 import com.almasb.fxgl.physics.PhysicsComponent;
 import com.almasb.fxgl.physics.box2d.dynamics.BodyType;
+import com.almasb.fxgl.physics.box2d.dynamics.Fixture;
+import com.almasb.fxgl.physics.box2d.dynamics.FixtureDef;
+import com.almasb.fxgl.texture.Texture;
 import javafx.geometry.Point2D;
 import javafx.geometry.Rectangle2D;
+import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
@@ -93,12 +97,33 @@ public class NATFactory implements EntityFactory {
     public Entity newBuilding(SpawnData data) {
         PhysicsComponent physicsComponent=new PhysicsComponent();
         physicsComponent.setBodyType(BodyType.STATIC);
+        int num=FXGL.random(1,3);
+        double width = 100,height=100;
+        switch (num) {
+            case 1 -> {
+                double ratio=0.3;
+                width = 388*ratio;
+                height = 599*ratio;
+            }
+            case 2 -> {
+                double ratio=0.3;
+                width = 574*ratio;
+                height = 531*ratio;
+            }
+            case 3 -> {
+                double ratio=0.3;
+                width = 505*ratio;
+                height = 540*ratio;
+            }
+        }
+
+        Texture texture=new Texture(FXGL.image("Building/楼"+num+".png",width,height));
 
         return FXGL.entityBuilder()
                 .type(NATType.BUILDING)
-                .at(data.getX() + Config.OFFSET_X, data.getY() + Config.OFFSET_Y)
-                .view(new Rectangle(Config.SIZE_X, Config.SIZE_Y, Color.GRAY))
-                .bbox(new HitBox(new Point2D(0,Config.SIZE_Y*0.75),BoundingShape.box(Config.SIZE_X,Config.SIZE_Y*0.25)))
+                .at(data.getX() - width/2, data.getY() -height/2)
+                .view(texture)
+                .bbox(new HitBox(new Point2D(0,height*0.55),BoundingShape.box(width-10,height*0.25)))
                 .with(physicsComponent)
                 .collidable()
                 .with(new BuildingComponent())
@@ -110,7 +135,7 @@ public class NATFactory implements EntityFactory {
 
         return FXGL.entityBuilder(data)
                 .type(NATType.PEOPLE)
-                .bbox(BoundingShape.box(20,20))
+                .bbox(new HitBox(new Point2D(0,30),BoundingShape.box(10,10)))
                 .with(new KeepInBoundsComponent
                         (new Rectangle2D(Config.WINDOW_MIN_X,Config.WINDOW_MIN_Y,
                                 Config.WINDOW_MAX_X-Config.WINDOW_MIN_X,
@@ -136,17 +161,20 @@ public class NATFactory implements EntityFactory {
                 break;
         }
         var e=getGameWorld().spawn("Site", point);
-        e.translateTowards(FXGL.getGameWorld().getSingleton(NATType.PLAYER).getCenter(),10);
     }
 
     @Spawns("Site")
     public Entity newSite(SpawnData data) {
         PhysicsComponent physicsComponent=new PhysicsComponent();
         physicsComponent.setBodyType(BodyType.STATIC);
-
-        return FXGL.entityBuilder(data)
+        double width=445/2.5,height=490/2.5;
+        Texture texture=new Texture(FXGL.image("Building/医院.png",width,height));
+        texture.setScaleX(-1);
+        return FXGL.entityBuilder()
                 .type(NATType.SITE)
-                .viewWithBBox(new Rectangle(50, 50, Color.PINK))
+                .at(data.getX() - width/2, data.getY() -height/2)
+                .view(texture)
+                .bbox(new HitBox(new Point2D(0,height*0.5),BoundingShape.box(width-8,height*0.45)))
                 .collidable()
                 .with(physicsComponent)
                 .with(new SiteComponent())
@@ -162,7 +190,7 @@ public class NATFactory implements EntityFactory {
                 .with(new BuildingAreaComponent(data.get("building")))
                 .collidable()
                 .view(new Circle(size,Color.RED))
-                .bbox(new HitBox(new Point2D(-size/2,-size/2),BoundingShape.box(size*1.8,size*1.8)))
+                .bbox(new HitBox(new Point2D(-size,-size),BoundingShape.box(size*1.8,size*1.8)))
                 .build();
     }
 
@@ -175,7 +203,7 @@ public class NATFactory implements EntityFactory {
                 .with(new SiteAreaComponent(data.get("site")))
                 .collidable()
                 .view(new Circle(size,Color.GREEN))
-                .bbox(new HitBox(new Point2D(-size/2,-size/2),BoundingShape.box(size*1.8,size*1.8)))
+                .bbox(new HitBox(new Point2D(-size,-size),BoundingShape.box(size*1.8,size*1.8)))
                 .build();
     }
 
