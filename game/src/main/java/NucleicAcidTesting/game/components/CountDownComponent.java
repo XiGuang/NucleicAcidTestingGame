@@ -1,5 +1,6 @@
 package NucleicAcidTesting.game.components;
 
+import NucleicAcidTesting.game.ui.LoadingWin;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.component.Component;
 import com.almasb.fxgl.texture.AnimatedTexture;
@@ -27,25 +28,31 @@ import java.util.Locale;
 import java.util.Stack;
 import java.util.Timer;
 import java.util.TimerTask;
+
 import javafx.geometry.Pos;
 import javafx.geometry.HPos;
 import javafx.geometry.VPos;
 
 public class CountDownComponent extends Component {
-    double minute,second;
-    double minute2,second2;
+    double minute, second;
+    double minute2, second2;
     int CountTime;
-    double remainingTime ;
-    double currentSecond ;
+    double remainingTime;
+    double currentSecond;
     double Delay;
     //计时器 初始延迟的秒数
     private GridPane popupPane;
     private VBox popupBox;
 
+    boolean inited = false;
+    boolean showLoading = false;
+    LoadingWin loadingWin;
+
 
     Text text;
+
     //构造函数，设置初始秒数
-    public CountDownComponent(int CountSecondTime){
+    public CountDownComponent(int CountSecondTime) {
         CountTime = CountSecondTime;
 
     }
@@ -55,11 +62,11 @@ public class CountDownComponent extends Component {
     public void onAdded() {
 
         //根据秒数设置分与秒
-        minute = CountTime/60;
-        second = CountTime%60;
+        minute = CountTime / 60;
+        second = CountTime % 60;
         //存储备份，以便于重置游戏
-        minute2 = CountTime/60;
-        second2 = CountTime%60;
+        minute2 = CountTime / 60;
+        second2 = CountTime % 60;
         //设置计时器的时间
         remainingTime = second;
         currentSecond = second;
@@ -68,24 +75,23 @@ public class CountDownComponent extends Component {
         //背景图片以及格式设置
         Image image = new Image("assets/textures/CountDownPic/CountDownBackground.gif");
 
-        Rectangle rectangle = new Rectangle(80,50);
+        Rectangle rectangle = new Rectangle(80, 50);
         rectangle.setFill(new ImagePattern(image));
         rectangle.setStroke(Color.BROWN);
         rectangle.setStrokeWidth(3);
 
         //数字显示设置
-        if(second<10)
-            text = FXGL.getUIFactoryService().newText((int)minute+":0"+(int)second);
+        if (second < 10)
+            text = FXGL.getUIFactoryService().newText((int) minute + ":0" + (int) second);
         else
-            text = FXGL.getUIFactoryService().newText((int)minute+":"+(int)second);
+            text = FXGL.getUIFactoryService().newText((int) minute + ":" + (int) second);
         text.setFill(Color.BLUE);
         text.fontProperty().unbind();
         text.setFont(Font.font(35));
 
         //将背景图片与数字显示 结合
-        StackPane stackPane = new StackPane(rectangle,text);
-        FXGL.addUINode(stackPane,850,30);
-
+        StackPane stackPane = new StackPane(rectangle, text);
+        FXGL.addUINode(stackPane, 850, 30);
 
 
         //时间结束界面
@@ -121,6 +127,8 @@ public class CountDownComponent extends Component {
 
             minute = minute2;
             second = second2;
+            inited = false;
+            showLoading = false;
             FXGL.getGameController().resumeEngine();
             FXGL.getGameController().startNewGame();
 
@@ -129,11 +137,6 @@ public class CountDownComponent extends Component {
         ResetButton.setOnMouseEntered(event -> ResetButton.setImage(resetButton_down));
         ResetButton.setOnMouseExited(event -> ResetButton.setImage(resetButton_up));
         popupPane.add(ResetButton, 9, 25);
-
-
-
-
-
 
 
         //退出图片按钮
@@ -145,7 +148,8 @@ public class CountDownComponent extends Component {
         exitButton.setFitHeight(80);
 
         exitButton.setOnMouseClicked(event -> {
-
+            inited = false;
+            showLoading = false;
             FXGL.getGameController().gotoMainMenu();
             popupBox.setVisible(false);
         });
@@ -173,6 +177,20 @@ public class CountDownComponent extends Component {
 
     @Override
     public void onUpdate(double tpf) {
+        double max_time = 0.016;
+        if (!inited) {
+            if (tpf <= max_time) {
+                if (showLoading){
+                    loadingWin.closeLoading();
+                    showLoading = false;
+                }
+                inited = true;
+            } else if (tpf > max_time && !showLoading) {
+                loadingWin = new LoadingWin();
+                showLoading = true;
+            }
+            return;
+        }
 
         //等待Delay时间然后再启动倒计时
         if (Delay > 0) {
