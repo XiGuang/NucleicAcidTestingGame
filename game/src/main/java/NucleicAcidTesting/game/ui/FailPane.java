@@ -6,24 +6,44 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 
+import java.util.Random;
 public class FailPane extends VBox{
     public FailPane() {
         GridPane popupPane;
         popupPane = new GridPane();
         popupPane.setHgap(10);
         popupPane.setVgap(10);
-        this.setPrefSize(472, 413);
+        this.setPrefSize(642, 406);
         this.setAlignment(Pos.CENTER);
 
 
-        BackgroundImage backgroundImage = new BackgroundImage(
-                new Image("assets/textures/CountDownPic/fail(已去底).png"),
+        BackgroundImage backgroundImage1 = new BackgroundImage(
+                new Image("assets/textures/CountDownPic/failed(已去底).png"),
                 BackgroundRepeat.REPEAT,
                 BackgroundRepeat.REPEAT,
                 BackgroundPosition.DEFAULT,
                 BackgroundSize.DEFAULT
         );
-        Background background = new Background(backgroundImage);
+        BackgroundImage backgroundImage2 = new BackgroundImage(
+                new Image("assets/textures/CountDownPic/failedWindow2(已去底).png"),
+                BackgroundRepeat.REPEAT,
+                BackgroundRepeat.REPEAT,
+                BackgroundPosition.DEFAULT,
+                BackgroundSize.DEFAULT
+        );
+
+        //随机出现两种胜利界面
+
+        Background background;
+        Random random = new Random();
+        if(random.nextInt(100)>50){
+            background = new Background(backgroundImage1);
+        }
+        else {
+            background = new Background(backgroundImage2);
+        }
+
+
         this.setBackground(background);
         this.getChildren().add(popupPane);
 
@@ -46,11 +66,11 @@ public class FailPane extends VBox{
         });
         ResetButton.setOnMouseEntered(event -> ResetButton.setImage(resetButton_down));
         ResetButton.setOnMouseExited(event -> ResetButton.setImage(resetButton_up));
-        popupPane.add(ResetButton, 9, 25);
+        popupPane.add(ResetButton, 16, 30);
 
 
         //退出图片按钮
-//        Image img2 = new Image("assets/textures/CountDownPic/exit3.png");
+        Image img2 = new Image("assets/textures/CountDownPic/exit3.png");
         Image exitButton_up = new Image("assets/textures/CountDownPic/exit_down(已去底).png");
         Image exitButton_down = new Image("assets/textures/CountDownPic/exit_up(已去底).png");
         ImageView exitButton = new ImageView(exitButton_up);
@@ -65,7 +85,7 @@ public class FailPane extends VBox{
         exitButton.setOnMouseEntered(event -> exitButton.setImage(exitButton_down));
         exitButton.setOnMouseExited(event -> exitButton.setImage(exitButton_up));
 
-        popupPane.add(exitButton, 20, 25);
+        popupPane.add(exitButton, 34, 30);
 
 
         FXGL.addUINode(this);
