@@ -1,5 +1,6 @@
 package NucleicAcidTesting.game.components;
 
+import NucleicAcidTesting.game.ui.FailWin;
 import NucleicAcidTesting.game.ui.LoadingWin;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.component.Component;
@@ -41,14 +42,12 @@ public class CountDownComponent extends Component {
     double currentSecond;
     double Delay;
     //计时器 初始延迟的秒数
-    private GridPane popupPane;
-    private VBox popupBox;
 
     boolean inited = false;
     boolean showLoading = false;
     LoadingWin loadingWin;
 
-
+    FailWin failWin = new FailWin();
     Text text;
 
     //构造函数，设置初始秒数
@@ -71,7 +70,7 @@ public class CountDownComponent extends Component {
         remainingTime = second;
         currentSecond = second;
         //设置计时器启动的初始延迟
-        Delay = 2;
+        Delay = 0;
         //背景图片以及格式设置
         Image image = new Image("assets/textures/CountDownPic/CountDownBackground.gif");
 
@@ -95,92 +94,17 @@ public class CountDownComponent extends Component {
 
 
         //时间结束界面
-        popupPane = new GridPane();
-        popupPane.setHgap(10);
-        popupPane.setVgap(10);
-        popupBox = new VBox();
-        popupBox.setPrefSize(472, 413);
-        popupBox.setAlignment(Pos.CENTER);
 
-
-        BackgroundImage backgroundImage = new BackgroundImage(
-                new Image("assets/textures/CountDownPic/fail(已去底).png"),
-                BackgroundRepeat.REPEAT,
-                BackgroundRepeat.REPEAT,
-                BackgroundPosition.DEFAULT,
-                BackgroundSize.DEFAULT
-        );
-        Background background = new Background(backgroundImage);
-        popupBox.setBackground(background);
-        popupBox.getChildren().add(popupPane);
-
-
-        //重置时间图片按钮
-        Image resetButton_up = new Image("assets/textures/CountDownPic/resetButton_up(已去底).png");
-        Image resetButton_down = new Image("assets/textures/CountDownPic/resetButton_down(已去底).png");
-        ImageView ResetButton = new ImageView(resetButton_up);
-        ResetButton.setFitWidth(80);
-        ResetButton.setFitHeight(80);
-
-
-        ResetButton.setOnMouseClicked(event -> {
-
-            minute = minute2;
-            second = second2;
-            inited = false;
-            showLoading = false;
-            FXGL.getGameController().resumeEngine();
-            FXGL.getGameController().startNewGame();
-
-            popupBox.setVisible(false);
-        });
-        ResetButton.setOnMouseEntered(event -> ResetButton.setImage(resetButton_down));
-        ResetButton.setOnMouseExited(event -> ResetButton.setImage(resetButton_up));
-        popupPane.add(ResetButton, 9, 25);
-
-
-        //退出图片按钮
-        Image img2 = new Image("assets/textures/CountDownPic/exit3.png");
-        Image exitButton_up = new Image("assets/textures/CountDownPic/exit_down(已去底).png");
-        Image exitButton_down = new Image("assets/textures/CountDownPic/exit_up(已去底).png");
-        ImageView exitButton = new ImageView(exitButton_up);
-        exitButton.setFitWidth(80);
-        exitButton.setFitHeight(80);
-
-        exitButton.setOnMouseClicked(event -> {
-            inited = false;
-            showLoading = false;
-            FXGL.getGameController().gotoMainMenu();
-            popupBox.setVisible(false);
-        });
-        exitButton.setOnMouseEntered(event -> exitButton.setImage(exitButton_down));
-        exitButton.setOnMouseExited(event -> exitButton.setImage(exitButton_up));
-
-        popupPane.add(exitButton, 20, 25);
-
-
-        FXGL.addUINode(popupBox);
-        popupBox.setVisible(false);
-
-        //设置失败窗体格式
-        double WINDOW_WIDTH = 960;
-        double WINDOW_HEIGHT = 520;
-        double popupBoxWidth = popupBox.getPrefWidth();
-        double popupBoxHeight = popupBox.getPrefHeight();
-        double popupBoxX = (WINDOW_WIDTH - popupBoxWidth) / 2;
-        double popupBoxY = (WINDOW_HEIGHT - popupBoxHeight) / 2;
-        popupBox.setLayoutX(popupBoxX);
-        popupBox.setLayoutY(popupBoxY);
 
 
     }
 
     @Override
     public void onUpdate(double tpf) {
-        double max_time = 0.016;
+        double max_time = 0.015;
         if (!inited) {
             if (tpf <= max_time) {
-                if (showLoading){
+                if (showLoading) {
                     loadingWin.closeLoading();
                     showLoading = false;
                 }
@@ -191,7 +115,10 @@ public class CountDownComponent extends Component {
             }
             return;
         }
-
+        if (tpf > max_time) {
+            inited = false;
+            return;
+        } ;
         //等待Delay时间然后再启动倒计时
         if (Delay > 0) {
             Delay -= tpf;
@@ -207,8 +134,12 @@ public class CountDownComponent extends Component {
                 if (second == 0 && minute == 0) {
                     //System.out.println("倒计时为0");
                     //显示失败窗口
+                    inited = false;
+                    showLoading = false;
+//                    minute = minute2;
+//                    second = second2;
                     FXGL.getGameController().pauseEngine();
-                    popupBox.setVisible(true);
+                    failWin.setVisible(true);
                 }
 
                 //减去一秒后判断下一时刻的情况
