@@ -3,6 +3,8 @@ package NucleicAcidTesting.game.EntityFactory;
 import NucleicAcidTesting.game.Config;
 import NucleicAcidTesting.game.NATType;
 import NucleicAcidTesting.game.components.*;
+import NucleicAcidTesting.game.components.AreaComponent.BuildingAreaComponent;
+import NucleicAcidTesting.game.components.AreaComponent.SiteAreaComponent;
 import com.almasb.fxgl.core.math.FXGLMath;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.dsl.components.KeepInBoundsComponent;
@@ -151,15 +153,28 @@ public class NATFactory implements EntityFactory {
                 .build();
     }
     
-    @Spawns("Area")
-    public Entity newArea(SpawnData data) {
+    @Spawns("BuildingArea")
+    public Entity newBuildingArea(SpawnData data) {
         double size= data.get("size");
         return FXGL.entityBuilder(data)
                 .type(NATType.AREA)
                 .zIndex(0)
-                .with(new AreaComponent(data.get("building")))
+                .with(new BuildingAreaComponent(data.get("building")))
                 .collidable()
                 .view(new Circle(size,Color.RED))
+                .bbox(new HitBox(new Point2D(-size/2,-size/2),BoundingShape.box(size*1.8,size*1.8)))
+                .build();
+    }
+
+    @Spawns("SiteArea")
+    public Entity newSiteArea(SpawnData data) {
+        double size=data.get("size");
+        return FXGL.entityBuilder(data)
+                .type(NATType.AREA)
+                .zIndex(0)
+                .with(new SiteAreaComponent(data.get("site")))
+                .collidable()
+                .view(new Circle(size,Color.GREEN))
                 .bbox(new HitBox(new Point2D(-size/2,-size/2),BoundingShape.box(size*1.8,size*1.8)))
                 .build();
     }

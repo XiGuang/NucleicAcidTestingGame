@@ -1,7 +1,9 @@
 package NucleicAcidTesting.game.components;
 
+import NucleicAcidTesting.game.tools.NATMath;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
+import com.almasb.fxgl.entity.SpawnData;
 import com.almasb.fxgl.entity.component.Component;
 import com.almasb.fxgl.time.LocalTimer;
 import javafx.geometry.Point2D;
@@ -17,19 +19,38 @@ import java.util.List;
 
 public class SiteComponent extends Component {
     Text text;
-    private final int mark=0;
+
     int score=0;
     private LocalTimer localTimer;
     //检测队列
     List<Entity>site_queue=new ArrayList<>();
-    List<Entity>disappear_queue=new ArrayList<>();
 
-    //得到做过核算的人数
-    public int getMark(){
-        return mark;
+    private double NATTime=2;  // 做核酸的时间
+
+    private boolean isFaster;   // 是否开始加速
+
+    public double getNATTime() {
+        return NATTime;
+    }
+
+    public void setNATTime(double NATTime) {
+        this.NATTime = NATTime;
+    }
+
+    public void setFaster(boolean faster) {
+        isFaster = faster;
+    }
+
+    public boolean isFaster() {
+        return isFaster;
     }
 
     public void onAdded(){
+        SpawnData spawnData = new SpawnData(entity.getCenter().getX(), entity.getCenter().getY());
+        spawnData.put("size", 80.0);
+        spawnData.put("site", entity);
+        Entity trigger_area = FXGL.spawn("SiteArea", spawnData);
+        trigger_area.setOpacity(0.25);
 
         localTimer = FXGL.newLocalTimer();
         Rectangle rectangle = new Rectangle(80,50);
@@ -44,23 +65,30 @@ public class SiteComponent extends Component {
         FXGL.addUINode(stackPane,400,30);
     }
 
-    public void onUpdate(double tpf) {
+    public void queueUp(){
+        // 排队
         List<Entity> follow_list = FXGL.getWorldProperties().getObject("follow_list");
-        Entity player = follow_list.get(0);
-        double distance=entity.distance(player);
-        if(distance<50) {
-            for (int i=1;i<follow_list.size();i++) {
-                Entity person = follow_list.get(i);
-                follow_list.remove(person);
 
-                site_queue.add(person);
-                person.getComponent(PeopleComponent.class).follow(new Point2D(
-                        entity.getX()  + 20 * site_queue.size(),
-                        entity.getBottomY()));
-            }
+        for (int i = 1; i < follow_list.size(); i++) {
+            Entity person = follow_list.get(i);
+            follow_list.remove(person);
+
+            site_queue.add(person);
+            person.getComponent(PeopleComponent.class).follow(new Point2D(
+                    entity.getX() + 20 * site_queue.size(),
+                    entity.getBottomY()));
         }
 
-        if (!localTimer.elapsed(Duration.seconds(2))) {
+    }
+
+    public void onUpdate(double tpf) {
+
+        if(isFaster)
+            NATTime= NATMath.InterpolationD(NATTime,0.5,tpf);
+        else
+            NATTime=2;
+
+        if (!localTimer.elapsed(Duration.seconds(NATTime))) {
             return;
         }
         localTimer.capture();

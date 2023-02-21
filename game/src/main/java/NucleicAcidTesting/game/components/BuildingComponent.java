@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 public class BuildingComponent extends Component {
-    private final int maxPeopleNum = 20;
+    private int maxPeopleNum = 20;
 
     private int hasSpawnedNum = 0;
 
@@ -25,6 +25,14 @@ public class BuildingComponent extends Component {
 
 
     private final ArrayList<Entity> queueResidents = new ArrayList<>();
+
+    public int getMaxPeopleNum() {
+        return maxPeopleNum;
+    }
+
+    public void setMaxPeopleNum(int maxPeopleNum) {
+        this.maxPeopleNum = maxPeopleNum;
+    }
 
     public int getHasSpawnedNum() {
         return hasSpawnedNum;
@@ -48,7 +56,7 @@ public class BuildingComponent extends Component {
         SpawnData spawnData = new SpawnData(entity.getCenter().getX(), entity.getBottomY());
         spawnData.put("size", 55.0);
         spawnData.put("building", entity);
-        Entity trigger_area = FXGL.spawn("Area", spawnData);
+        Entity trigger_area = FXGL.spawn("BuildingArea", spawnData);
         trigger_area.setOpacity(0.25);
     }
 

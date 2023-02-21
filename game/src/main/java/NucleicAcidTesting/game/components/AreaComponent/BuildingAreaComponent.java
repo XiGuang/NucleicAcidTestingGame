@@ -1,23 +1,15 @@
-package NucleicAcidTesting.game.components;
+package NucleicAcidTesting.game.components.AreaComponent;
 
+import NucleicAcidTesting.game.components.BuildingComponent;
 import com.almasb.fxgl.entity.Entity;
-import com.almasb.fxgl.entity.component.Component;
 import com.almasb.fxgl.input.KeyTrigger;
 import com.almasb.fxgl.input.TriggerListener;
 import org.jetbrains.annotations.NotNull;
 
-public class AreaComponent extends Component {
+public class BuildingAreaComponent extends BaseAreaComponent {
 
-    private final Entity fromBuilding;
-
-    private TriggerListener triggerListener;
-
-    public TriggerListener getTriggerListener() {
-        return triggerListener;
-    }
-
-    public AreaComponent(Entity from_building) {
-        this.fromBuilding =from_building;
+    public BuildingAreaComponent(Entity from_building) {
+        super(from_building);
     }
 
     @Override

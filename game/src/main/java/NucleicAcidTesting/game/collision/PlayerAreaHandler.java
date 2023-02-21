@@ -1,7 +1,9 @@
 package NucleicAcidTesting.game.collision;
 
 import NucleicAcidTesting.game.NATType;
-import NucleicAcidTesting.game.components.AreaComponent;
+import NucleicAcidTesting.game.components.AreaComponent.BaseAreaComponent;
+import NucleicAcidTesting.game.components.AreaComponent.BuildingAreaComponent;
+import NucleicAcidTesting.game.components.AreaComponent.SiteAreaComponent;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.SpawnData;
@@ -19,8 +21,10 @@ public class PlayerAreaHandler extends CollisionHandler {
 
     @Override
     protected void onCollisionBegin(Entity player, Entity effect) {
-
-        triggerListener=effect.getComponent(AreaComponent.class).getTriggerListener();
+        if(effect.hasComponent(BuildingAreaComponent.class))
+            triggerListener=effect.getComponent(BuildingAreaComponent.class).getTriggerListener();
+        else
+            triggerListener=effect.getComponent(SiteAreaComponent.class).getTriggerListener();
         FXGL.getInput().addTriggerListener(triggerListener);
 
         keyTips=FXGL.getGameWorld().spawn("Tips",new SpawnData().put("tips","E"));
