@@ -55,6 +55,7 @@ public class BuildingComponent extends Component {
         this.isStartingSpawn = isStartingSpawn;
         if(isStartingSpawn){
             this.mood= FXGL.spawn("Mood",entity.getX()+100,entity.getY());
+            this.mood.getComponent(MoodComponent.class).setPeople_num(getQueueNum());
         }else if(mood!=null){
             mood.removeFromWorld();
             mood=null;
@@ -120,7 +121,7 @@ public class BuildingComponent extends Component {
         person.setUpdateEnabled(false);
 
         if(mood!=null && mood.hasComponent(MoodComponent.class))
-            mood.getComponent(MoodComponent.class).setPeopleNum(queueResidents.size());
+            mood.getComponent(MoodComponent.class).setPeople_num(queueResidents.size());
 
         ++hasSpawnedNum;
         queueResidents.add(person);
@@ -158,7 +159,7 @@ public class BuildingComponent extends Component {
         if(mood!=null && mood.hasComponent(MoodComponent.class)){
             if(queueResidents.size()==0)
                 mood.getComponent(MoodComponent.class).reset();
-            mood.getComponent(MoodComponent.class).setPeopleNum(queueResidents.size());
+            mood.getComponent(MoodComponent.class).setPeople_num(queueResidents.size());
         }
     }
 }

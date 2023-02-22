@@ -122,9 +122,10 @@ public class user {
         return res;
     }
 
-    public void setNumber(int num) {
+    public int setNumber(int num) {
         Connection con = null;  // 定义Connection对象用于链接数据库
         Statement s;  // 定义Statement对象用于执行SQL语句
+        int newnumb = 0;
         try {
             // 加载数据库驱动
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -144,6 +145,7 @@ public class user {
                 number = r.getInt("number");
                 if(num>number){
                     number = num;
+                    newnumb = 1;
                     // 修改积分
                     PreparedStatement psql= con.prepareStatement("update user set number =? where user_id=?");
                     psql.setInt(1,num);
@@ -167,6 +169,7 @@ public class user {
                 con=null;
             }
         }
+        return newnumb;
     }
     public List<JSONObject> Ranking(){
         Connection con = null;  // 定义Connection对象用于链接数据库
