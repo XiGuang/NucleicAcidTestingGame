@@ -141,7 +141,7 @@ public class NATGameApp extends GameApplication {
         entities.sort(new EntityComparator());
         for(int z=0;z<entities.size();++z){
             Entity entity=entities.get(z);
-            if(entity.isType(NATType.AREA) || entity.isType(NATType.BACKGROUND))
+            if(entity.isType(NATType.AREA) || entity.isType(NATType.BACKGROUND) || entity.isType(NATType.MOOD))
                 continue;
             entity.setZIndex(z+1);
         }
