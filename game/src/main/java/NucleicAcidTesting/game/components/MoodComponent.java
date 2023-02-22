@@ -12,6 +12,7 @@ import javafx.scene.shape.Rectangle;
 
 
 public class MoodComponent extends Component {
+    
     private double time_interval=60;
     //记录游戏结束
     boolean over=false;
