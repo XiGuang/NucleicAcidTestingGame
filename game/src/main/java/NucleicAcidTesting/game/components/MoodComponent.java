@@ -1,5 +1,7 @@
 package NucleicAcidTesting.game.components;
 
+import NucleicAcidTesting.game.Config;
+import NucleicAcidTesting.game.MapLoader;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.component.Component;
 import com.almasb.fxgl.texture.Texture;
@@ -9,6 +11,8 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+
+import java.util.Objects;
 
 
 public class MoodComponent extends Component {
@@ -95,6 +99,8 @@ public class MoodComponent extends Component {
     //记录累计时间
     @Override
     public void onUpdate(double tpf){
+        if (Objects.equals(MapLoader.getMapLevel(), "infinity") &&!InfiniteGameLoadControllerComponent.INITED)
+            return;
         if(people_num!=0)
             progress.set(progress.get()+tpf*people_num);
         else

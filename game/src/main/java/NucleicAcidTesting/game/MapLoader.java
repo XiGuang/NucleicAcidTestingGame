@@ -13,6 +13,10 @@ public class MapLoader {
         MapLoader.mapLevel = mapLevel;
     }
 
+    public static String getMapLevel() {
+        return mapLevel;
+    }
+
     static void loadMap() {
         switch (mapLevel) {
             case "1" -> loadMapLevel1();
@@ -53,7 +57,8 @@ public class MapLoader {
         spawn("Site", 100, 0);
     }
 
-    private static void loadMapInfinity(){
+    private static void loadMapInfinity() {
+        spawn("InfiniteGameLoadController");
         spawn("Background", -Config.WINDOW_WIDTH, -Config.WINDOW_HEIGHT);
         spawn("Score");
         NATFactory.spawnSite();

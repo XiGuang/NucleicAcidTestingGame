@@ -1,6 +1,7 @@
 package NucleicAcidTesting.game.components;
 
 import NucleicAcidTesting.game.Config;
+import NucleicAcidTesting.game.MapLoader;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.SpawnData;
@@ -13,6 +14,7 @@ import javafx.util.Duration;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Objects;
 
 public class BuildingComponent extends Component {
     private int maxPeopleNum = 10;
@@ -102,6 +104,8 @@ public class BuildingComponent extends Component {
 
     @Override
     public void onUpdate(double tpf) {
+        if (Objects.equals(MapLoader.getMapLevel(), "infinity") &&!InfiniteGameLoadControllerComponent.INITED)
+            return;
         if (!spawnTimer.elapsed(spawnInterval))
             return;
         spawnTimer.capture();
