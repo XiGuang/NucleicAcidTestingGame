@@ -28,7 +28,7 @@ public class NATUIFactory implements EntityFactory {
     public Entity newMood(SpawnData data) {
         return FXGL.entityBuilder(data)
                 .type(NATType.MOOD)
-                .zIndex(9999)
+                .zIndex(Integer.MAX_VALUE)
                 .with(new MoodComponent())
                 .build();
     }
