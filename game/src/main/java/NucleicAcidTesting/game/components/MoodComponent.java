@@ -31,7 +31,7 @@ public class MoodComponent extends Component {
     @Override
     public void onAdded(){
         //添加画布
-        Canvas canvas = new Canvas(367,14);
+        Canvas canvas = new Canvas(92,14);
         //添加画笔
         GraphicsContext g2d=canvas.getGraphicsContext2D();
 
