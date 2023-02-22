@@ -1,5 +1,6 @@
 package NucleicAcidTesting.game.ui;
 
+import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -14,6 +15,7 @@ import javafx.stage.StageStyle;
 public class LoadingWin extends Stage {
 
     Stage loadWin;
+
     public LoadingWin() {
         loadWin = new Stage();
         Image image = new Image("assets/textures/loadingImg.png",
@@ -21,18 +23,30 @@ public class LoadingWin extends Stage {
         ImageView imageView = new ImageView(image);
         GridPane pane = new GridPane();
         pane.setPrefSize(557, 102);
-        pane.add(imageView,0,0);
+        pane.add(imageView, 0, 0);
         pane.setStyle("-fx-background-color: transparent;");
 
         Scene scene = new Scene(pane);
         scene.setFill(null);
         loadWin.setScene(scene);
         loadWin.initStyle(StageStyle.TRANSPARENT);
-        loadWin.show();
 
+        Thread thread = new Thread(() -> {
+            try {
+                Thread.sleep(3000);
+                if (loadWin.isShowing())
+                    Platform.runLater(() -> loadWin.close());
+            } catch (InterruptedException exp) {
+                exp.printStackTrace();
+            }
+        });
+        thread.setDaemon(true);
+        thread.start();
+
+        loadWin.show();
     }
 
-    public void closeLoading(){
+    public void closeLoading() {
         loadWin.close();
 
     }
