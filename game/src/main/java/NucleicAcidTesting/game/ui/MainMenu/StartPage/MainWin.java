@@ -1,6 +1,7 @@
 package NucleicAcidTesting.game.ui.MainMenu.StartPage;
 
 import NucleicAcidTesting.game.Config;
+import NucleicAcidTesting.game.MapLoader;
 import NucleicAcidTesting.game.ui.MainMenu.LoginPage.Client;
 import NucleicAcidTesting.game.ui.MainMenu.Popup;
 import com.almasb.fxgl.dsl.FXGL;
@@ -41,7 +42,10 @@ public class MainWin extends StackPane {
             Button classicGameButton = new ChoiceButton("限时闯关");
             classicGameButton.setOnAction(actionEvent -> classGamePane.toFront());
             Button infiniteGameButton = new ChoiceButton("无尽模式");
-            infiniteGameButton.setOnAction(actionEvent -> infiniteGamePane.toFront());
+            infiniteGameButton.setOnAction(actionEvent -> {
+                infiniteGamePane.toFront();
+                MapLoader.setMapLevel("infinity");
+            });
             Button setButton = new ChoiceButton("设置");
             setButton.setOnAction(actionEvent -> FXGL.getGameController().gotoGameMenu());
             Button rankButton = new ChoiceButton("排行榜");
@@ -98,9 +102,7 @@ public class MainWin extends StackPane {
                     BackgroundPosition.DEFAULT,
                     BackgroundSize.DEFAULT);
             returnButton.setBackground(new Background(backgroundimage));
-            returnButton.setOnAction(actionEvent -> {
-                mainWin.toBack();
-            });
+            returnButton.setOnAction(actionEvent -> mainWin.toBack());
 
             DropShadow dropShadow2 = new DropShadow();
             dropShadow2.setOffsetX(0.0);
@@ -137,23 +139,19 @@ public class MainWin extends StackPane {
                 "-fx-border-radius: 10px;" +
                 "-fx-background-radius: 10px;" +
                 "-fx-text-fill: white;");
-        classicGameButton.addEventHandler(MouseEvent.MOUSE_ENTERED, (e) -> {
-            classicGameButton.setStyle("-fx-border-color: rgb(246,168,69);" +
-                    "-fx-background-color: rgba(85,192,232,0.7);" +
-                    "-fx-border-width: 3px;" +
-                    "-fx-border-radius: 10px;" +
-                    "-fx-background-radius: 10px;" +
-                    "-fx-text-fill: white;");
-        });
-        ;
-        classicGameButton.addEventHandler(MouseEvent.MOUSE_EXITED, (e) -> {
-            classicGameButton.setStyle(("-fx-background-color: rgba(85,192,232,0.7);" +
-                    "-fx-border-width: 3px;" +
-                    "-fx-border-color: rgba(255,255,255,0.82);" +
-                    "-fx-border-radius: 10px;" +
-                    "-fx-background-radius: 10px;" +
-                    "-fx-text-fill: white;"));
-        });
+        classicGameButton.addEventHandler(MouseEvent.MOUSE_ENTERED, (e) -> classicGameButton.setStyle("-fx-border-color: rgb(246,168,69);" +
+                "-fx-background-color: rgba(85,192,232,0.7);" +
+                "-fx-border-width: 3px;" +
+                "-fx-border-radius: 10px;" +
+                "-fx-background-radius: 10px;" +
+                "-fx-text-fill: white;"));
+
+        classicGameButton.addEventHandler(MouseEvent.MOUSE_EXITED, (e) -> classicGameButton.setStyle(("-fx-background-color: rgba(85,192,232,0.7);" +
+                "-fx-border-width: 3px;" +
+                "-fx-border-color: rgba(255,255,255,0.82);" +
+                "-fx-border-radius: 10px;" +
+                "-fx-background-radius: 10px;" +
+                "-fx-text-fill: white;")));
 
         Image image = new Image("assets/textures/menuImg/levelChooseLogo.png",
                 165, 50, false, false);
@@ -164,9 +162,7 @@ public class MainWin extends StackPane {
         List<LevelChooser> levelList = getLevels();
 
 
-        this.setOnMouseMoved(mouseEvent -> {
-            LevelChooser.showChosenButton(levelList);
-        });
+        this.setOnMouseMoved(mouseEvent -> LevelChooser.showChosenButton(levelList));
 
         VBox vBox = new VBox();
         vBox.setStyle("-fx-background-color: rgb(146,184,248);" +
@@ -208,23 +204,19 @@ public class MainWin extends StackPane {
                 "-fx-border-radius: 10px;" +
                 "-fx-background-radius: 10px;" +
                 "-fx-text-fill: white;");
-        infiniteGameButton.addEventHandler(MouseEvent.MOUSE_ENTERED, (e) -> {
-            infiniteGameButton.setStyle("-fx-border-color: rgb(246,168,69);" +
-                    "-fx-background-color: rgba(85,192,232,0.7);" +
-                    "-fx-border-width: 3px;" +
-                    "-fx-border-radius: 10px;" +
-                    "-fx-background-radius: 10px;" +
-                    "-fx-text-fill: white;");
-        });
-        ;
-        infiniteGameButton.addEventHandler(MouseEvent.MOUSE_EXITED, (e) -> {
-            infiniteGameButton.setStyle(("-fx-background-color: rgba(85,192,232,0.7);" +
-                    "-fx-border-width: 3px;" +
-                    "-fx-border-color: rgba(255,255,255,0.82);" +
-                    "-fx-border-radius: 10px;" +
-                    "-fx-background-radius: 10px;" +
-                    "-fx-text-fill: white;"));
-        });
+        infiniteGameButton.addEventHandler(MouseEvent.MOUSE_ENTERED, (e) -> infiniteGameButton.setStyle("-fx-border-color: rgb(246,168,69);" +
+                "-fx-background-color: rgba(85,192,232,0.7);" +
+                "-fx-border-width: 3px;" +
+                "-fx-border-radius: 10px;" +
+                "-fx-background-radius: 10px;" +
+                "-fx-text-fill: white;"));
+
+        infiniteGameButton.addEventHandler(MouseEvent.MOUSE_EXITED, (e) -> infiniteGameButton.setStyle(("-fx-background-color: rgba(85,192,232,0.7);" +
+                "-fx-border-width: 3px;" +
+                "-fx-border-color: rgba(255,255,255,0.82);" +
+                "-fx-border-radius: 10px;" +
+                "-fx-background-radius: 10px;" +
+                "-fx-text-fill: white;")));
 
         Image imageLogo = new Image("assets/textures/menuImg/infiniteGameLogo.png",
                 180, 50, false, false);

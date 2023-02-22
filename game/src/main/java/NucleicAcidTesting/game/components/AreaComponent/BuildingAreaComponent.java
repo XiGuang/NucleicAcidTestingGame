@@ -18,8 +18,11 @@ public class BuildingAreaComponent extends BaseAreaComponent {
             @Override
             protected void onKeyBegin(@NotNull KeyTrigger keyTrigger) {
                 if (keyTrigger.isKey() && keyTrigger.getName().equals("E")) {
-                    if (!fromBuilding.getComponent(BuildingComponent.class).isSpawning()) {
-                        fromBuilding.getComponent(BuildingComponent.class).isSpawning(true);
+                    if(!fromBuilding.hasComponent(BuildingComponent.class))
+                        return;
+
+                    if (!fromBuilding.getComponent(BuildingComponent.class).isStart()) {
+                        fromBuilding.getComponent(BuildingComponent.class).setStart(true);
                         entity.setOpacity(0);
                     } else if (fromBuilding.getComponent(BuildingComponent.class).getQueueNum() > 0) {
                         fromBuilding.getComponent(BuildingComponent.class).followToPlayer();

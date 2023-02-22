@@ -1,6 +1,7 @@
 package NucleicAcidTesting.game;
 
 import NucleicAcidTesting.game.EntityFactory.NATFactory;
+import com.almasb.fxgl.entity.SpawnData;
 
 import static com.almasb.fxgl.dsl.FXGLForKtKt.*;
 
@@ -16,12 +17,17 @@ public class MapLoader {
         switch (mapLevel) {
             case "1" -> loadMapLevel1();
             case "2" -> loadMapLevel2();
+            case "infinity"->loadMapInfinity();
         }
     }
 
     private static void loadMapLevel1() {
         spawn("Background", -Config.WINDOW_WIDTH, -Config.WINDOW_HEIGHT);
         spawn("UICountDown", -40, -200);
+        spawn("Score");
+        SpawnData needScoreData=new SpawnData();
+        needScoreData.put("need_score",200);
+        spawn("NeedScore",needScoreData);
         NATFactory.spawnSite();
         spawn("Building",-100,0);
         spawn("Building",-682,209);
@@ -33,6 +39,10 @@ public class MapLoader {
     private static void loadMapLevel2() {
         spawn("Background", 0, 100);
         spawn("UICountDown", -40, -200);
+        spawn("Score");
+        SpawnData needScoreData=new SpawnData();
+        needScoreData.put("need_score",500);
+        spawn("NeedScore",needScoreData);
         spawn("Building",-100,-202);
         spawn("Building",-670,178);
         spawn("Building",723,92);
@@ -41,5 +51,15 @@ public class MapLoader {
         spawn("Building",490,-492);
         spawn("Building",392,381);
         spawn("Site", 100, 0);
+    }
+
+    private static void loadMapInfinity(){
+        spawn("Background", -Config.WINDOW_WIDTH, -Config.WINDOW_HEIGHT);
+        spawn("Score");
+        NATFactory.spawnSite();
+        NATFactory.spawnBuildings(10,Config.WINDOW_MIN_X+Config.GAP_TO_WINDOW,
+                Config.WINDOW_MIN_Y+Config.GAP_TO_WINDOW,
+                Config.WINDOW_MAX_X-Config.GAP_TO_WINDOW,
+                Config.WINDOW_MAX_Y-Config.GAP_TO_WINDOW);
     }
 }

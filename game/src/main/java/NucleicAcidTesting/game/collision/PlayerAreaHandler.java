@@ -1,9 +1,9 @@
 package NucleicAcidTesting.game.collision;
 
 import NucleicAcidTesting.game.NATType;
-import NucleicAcidTesting.game.components.AreaComponent.BaseAreaComponent;
 import NucleicAcidTesting.game.components.AreaComponent.BuildingAreaComponent;
 import NucleicAcidTesting.game.components.AreaComponent.SiteAreaComponent;
+import NucleicAcidTesting.game.components.SiteComponent;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.SpawnData;
@@ -13,7 +13,7 @@ import com.almasb.fxgl.physics.CollisionHandler;
 public class PlayerAreaHandler extends CollisionHandler {
     private TriggerListener triggerListener;
 
-    Entity keyTips,Mood;
+    Entity keyTips;
 
     public PlayerAreaHandler() {
         super(NATType.PLAYER, NATType.AREA);
@@ -23,7 +23,7 @@ public class PlayerAreaHandler extends CollisionHandler {
     protected void onCollisionBegin(Entity player, Entity effect) {
         if(effect.hasComponent(BuildingAreaComponent.class))
             triggerListener=effect.getComponent(BuildingAreaComponent.class).getTriggerListener();
-        else
+        else if(effect.hasComponent(SiteAreaComponent.class))
             triggerListener=effect.getComponent(SiteAreaComponent.class).getTriggerListener();
         FXGL.getInput().addTriggerListener(triggerListener);
 
@@ -33,6 +33,16 @@ public class PlayerAreaHandler extends CollisionHandler {
     @Override
     protected void onCollisionEnd(Entity player, Entity effect) {
         FXGL.getInput().removeTriggerListener(triggerListener);
+
+        // 防止走出碰撞范围后无法触发onKeyEnd
+        if(effect.hasComponent(SiteAreaComponent.class)){
+            var site_area_component=effect.getComponent(SiteAreaComponent.class);
+            if(site_area_component.tips!=null)
+                site_area_component.tips.removeFromWorld();
+            if(site_area_component.getFromBuilding().hasComponent(SiteComponent.class))
+                site_area_component.getFromBuilding().getComponent(SiteComponent.class).setFaster(false);
+        }
+
         FXGL.getGameWorld().removeEntity(keyTips);
     }
 }

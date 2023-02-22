@@ -13,6 +13,10 @@ public abstract class BaseAreaComponent extends Component {
         return triggerListener;
     }
 
+    public Entity getFromBuilding() {
+        return fromBuilding;
+    }
+
     public BaseAreaComponent(Entity from_building) {
         this.fromBuilding = from_building;
     }

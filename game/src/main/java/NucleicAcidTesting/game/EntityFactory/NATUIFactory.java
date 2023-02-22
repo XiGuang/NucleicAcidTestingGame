@@ -1,9 +1,7 @@
 package NucleicAcidTesting.game.EntityFactory;
 
 import NucleicAcidTesting.game.NATType;
-import NucleicAcidTesting.game.components.CountDownComponent;
-import NucleicAcidTesting.game.components.TipsComponent;
-import NucleicAcidTesting.game.components.MoodComponent;
+import NucleicAcidTesting.game.components.*;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.EntityFactory;
@@ -15,10 +13,14 @@ public class NATUIFactory implements EntityFactory {
 
     @Spawns("UICountDown")
     public Entity newUICountDown(SpawnData data) {
+        int time=100;
+        if(data.hasKey("time"))
+            time=data.get("time");
+
         return FXGL.entityBuilder(data)
                 .type(NATType.COUNT_DOWN)
                 // 在CountDownComponent中传入初始的秒数来进行倒计时
-                .with(new CountDownComponent(100))
+                .with(new CountDownComponent(time))
                 .build();
     }
 
@@ -41,6 +43,23 @@ public class NATUIFactory implements EntityFactory {
                     .with(new TipsComponent((Texture) data.get("texture")))
                     .build();
         }
+    }
 
+    @Spawns("Score")
+    public Entity newScore(SpawnData data) {
+        return FXGL.entityBuilder(data)
+                .with(new ScoreComponent())
+                .build();
+    }
+
+    @Spawns("NeedScore")
+    public Entity newNeedScore(SpawnData data) {
+        int need_score=100;
+        if(data.hasKey("need_score"))
+            need_score=data.get("need_score");
+
+        return FXGL.entityBuilder(data)
+                .with(new NeedScoreComponent(need_score))
+                .build();
     }
 }

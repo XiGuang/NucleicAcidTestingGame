@@ -2,9 +2,9 @@ package NucleicAcidTesting.game.EntityFactory;
 
 import NucleicAcidTesting.game.Config;
 import NucleicAcidTesting.game.NATType;
-import NucleicAcidTesting.game.components.*;
 import NucleicAcidTesting.game.components.AreaComponent.BuildingAreaComponent;
 import NucleicAcidTesting.game.components.AreaComponent.SiteAreaComponent;
+import NucleicAcidTesting.game.components.*;
 import com.almasb.fxgl.core.math.FXGLMath;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.dsl.components.KeepInBoundsComponent;
@@ -17,15 +17,11 @@ import com.almasb.fxgl.physics.BoundingShape;
 import com.almasb.fxgl.physics.HitBox;
 import com.almasb.fxgl.physics.PhysicsComponent;
 import com.almasb.fxgl.physics.box2d.dynamics.BodyType;
-import com.almasb.fxgl.physics.box2d.dynamics.Fixture;
-import com.almasb.fxgl.physics.box2d.dynamics.FixtureDef;
 import com.almasb.fxgl.texture.Texture;
 import javafx.geometry.Point2D;
 import javafx.geometry.Rectangle2D;
-import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
-import javafx.scene.shape.Rectangle;
 
 import java.util.List;
 
@@ -89,7 +85,9 @@ public class NATFactory implements EntityFactory {
                     throw new RuntimeException("NOT FOUND LOCATION TO SET BUILDING");
 
             }
-            getGameWorld().spawn("Building", point);
+            SpawnData data=new SpawnData(point);
+            data.put("infinity",true);
+            Entity building=getGameWorld().spawn("Building", data);
         }
     }
 
@@ -116,7 +114,9 @@ public class NATFactory implements EntityFactory {
                 height = 540*ratio;
             }
         }
-
+        boolean is_infinity=false;
+        if(data.hasKey("infinity"))
+            is_infinity=data.get("infinity");
         Texture texture=new Texture(FXGL.image("Building/楼"+num+".png",width,height));
 
         return FXGL.entityBuilder()
@@ -126,7 +126,7 @@ public class NATFactory implements EntityFactory {
                 .bbox(new HitBox(new Point2D(0,height*0.55),BoundingShape.box(width-10,height*0.25)))
                 .with(physicsComponent)
                 .collidable()
-                .with(new BuildingComponent())
+                .with(new BuildingComponent(is_infinity))
                 .build();
     }
 
@@ -146,7 +146,8 @@ public class NATFactory implements EntityFactory {
     }
     
      public static void spawnSite() {
-        Rectangle2D bound = new Rectangle2D(0,0,200,200);
+        Rectangle2D bound = new Rectangle2D(Config.WINDOW_MIN_X+Config.GAP_TO_WINDOW,Config.WINDOW_MIN_Y+Config.GAP_TO_WINDOW,
+                Config.WINDOW_MAX_X-Config.WINDOW_MIN_X-Config.GAP_TO_WINDOW,Config.WINDOW_MAX_Y);
         Point2D point;
         while (true) {
             point = FXGLMath.randomPoint(bound);

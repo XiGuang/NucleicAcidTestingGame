@@ -7,11 +7,6 @@ import com.almasb.fxgl.entity.SpawnData;
 import com.almasb.fxgl.entity.component.Component;
 import com.almasb.fxgl.time.LocalTimer;
 import javafx.geometry.Point2D;
-import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Font;
-import javafx.scene.text.Text;
 import javafx.util.Duration;
 
 import java.util.ArrayList;
@@ -19,9 +14,7 @@ import java.util.Iterator;
 import java.util.List;
 
 public class SiteComponent extends Component {
-    Text text;
 
-    int score=0;
     private LocalTimer localTimer;
     //检测队列
     List<Entity>site_queue=new ArrayList<>();
@@ -54,16 +47,7 @@ public class SiteComponent extends Component {
         trigger_area.setOpacity(0.25);
 
         localTimer = FXGL.newLocalTimer();
-        Rectangle rectangle = new Rectangle(80,50);
-        rectangle.setStroke(Color.BROWN);
-        rectangle.setStrokeWidth(3);
-        text = FXGL.getUIFactoryService().newText(String.valueOf(score));
-        text.setFill(Color.BLUE);
-        text.fontProperty().unbind();
-        text.setFont(Font.font(35));
 
-        StackPane stackPane = new StackPane(rectangle,text);
-        FXGL.addUINode(stackPane,400,30);
     }
 
     public void queueUp(){
@@ -96,8 +80,9 @@ public class SiteComponent extends Component {
         if(!site_queue.isEmpty() && site_queue.get(0).distance(entity)<300){
             site_queue.get(0).removeFromWorld();
             site_queue.remove(0);
-            score+=10;
-            text.setText(String.valueOf(score));
+            FXGL.getWorldProperties().setValue("people_num",
+                    FXGL.getWorldProperties().getInt("people_num")+1);
+
             for(int i = 0; i < site_queue.size(); i++){
                 PeopleComponent peopleComponent = site_queue.get(i).getComponent(PeopleComponent.class);
                 peopleComponent.follow(new Point2D(entity.getRightX() + 30 * i, entity.getCenter().getY()));

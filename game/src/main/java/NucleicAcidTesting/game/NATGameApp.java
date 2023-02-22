@@ -3,8 +3,11 @@ package NucleicAcidTesting.game;
 import NucleicAcidTesting.game.EntityFactory.NATFactory;
 import NucleicAcidTesting.game.EntityFactory.NATUIFactory;
 import NucleicAcidTesting.game.collision.PlayerAreaHandler;
+import NucleicAcidTesting.game.components.BuildingComponent;
+import NucleicAcidTesting.game.components.MoodComponent;
 import NucleicAcidTesting.game.components.MoveComponent;
 import NucleicAcidTesting.game.tools.EntityComparator;
+import NucleicAcidTesting.game.ui.FailPane;
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
 import com.almasb.fxgl.dsl.FXGL;
@@ -20,8 +23,6 @@ import java.util.Map;
 import static com.almasb.fxgl.dsl.FXGLForKtKt.*;
 
 public class NATGameApp extends GameApplication {
-
-    private Entity player;
 
     private MoveComponent move_component;
 
@@ -43,6 +44,7 @@ public class NATGameApp extends GameApplication {
     @Override
     protected void initGameVars(Map<String, Object> vars) {
         vars.put("follow_list", new ArrayList<Entity>());
+        vars.put("people_num",0);
     }
 
     @Override
@@ -104,7 +106,7 @@ public class NATGameApp extends GameApplication {
         getGameWorld().addEntityFactory(new NATUIFactory());
 
 
-        player = spawn("Player",0,0);
+        Entity player = spawn("Player", 0, 0);
         move_component = player.getComponent(MoveComponent.class);
         List<Entity> follow_list = FXGL.getWorldProperties().getObject("follow_list");
         follow_list.add(player);
@@ -143,6 +145,21 @@ public class NATGameApp extends GameApplication {
                 continue;
             entity.setZIndex(z+1);
         }
+
+        List<Entity> buildings=getGameWorld().getEntitiesByType(NATType.BUILDING);
+        for(var building:buildings){
+            if(!building.hasComponent(BuildingComponent.class))
+                continue;
+            Entity mood = building.getComponent(BuildingComponent.class).getMood();
+            if(mood !=null && mood.hasComponent(MoodComponent.class)){
+                if(mood.getComponent(MoodComponent.class).isOver()){
+                    FailPane failPane=new FailPane();
+                    getGameController().pauseEngine();
+                    failPane.setVisible(true);
+                }
+            }
+        }
+
     }
 
 }
