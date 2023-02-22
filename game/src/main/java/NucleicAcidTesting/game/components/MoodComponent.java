@@ -2,6 +2,7 @@ package NucleicAcidTesting.game.components;
 
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.component.Component;
+import com.almasb.fxgl.texture.Texture;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -11,23 +12,23 @@ import javafx.scene.shape.Rectangle;
 
 
 public class MoodComponent extends Component {
-    double timeInterval =30;
+    private double time_interval=60;
     //记录游戏结束
     boolean over=false;
     //出楼人数
-    private int peopleNum =0;
+    private int people_num=3;
     //记录时间
     private final SimpleDoubleProperty progress=new SimpleDoubleProperty();
     //构造函数一
     public MoodComponent(int peopleNum) {
-        this.peopleNum = peopleNum;
+        people_num = peopleNum;
     }
-    
+
     //构造函数二
     public MoodComponent(){}
 
-    public void setPeopleNum(int peopleNum) {
-        this.peopleNum = peopleNum;
+    public void setPeople_num(int people_num){
+        this.people_num=people_num;
     }
 
     //添加圆形进度条
@@ -53,35 +54,8 @@ public class MoodComponent extends Component {
 
         //添加监听器
         progress.addListener((ob,ov,nv)->{
-            //上层遮盖条移动距离
-            if(peopleNum ==0) {
-                //画绿色进度条
-                g2d.setFill(Color.rgb(0,255,0));
-                g2d.fillRect(0,0,canvas.getWidth(), canvas.getHeight());
-                if((nv.doubleValue() / timeInterval * width)<=(width/3)){
-                    rect.setTranslateX(-width +
-                        Math.min(width, nv.doubleValue() / timeInterval * width));
-                }
-
-                //画橘色进度条
-                else if ((nv.doubleValue() / timeInterval * width)>(width/3)&&(nv.doubleValue() / timeInterval * width)<=(width/3*2)) {
-                    //当前长度小于三分之二
-                    g2d.setFill(Color.rgb(255,165,0));
-                    g2d.fillRect(0,0,canvas.getWidth(), canvas.getHeight());
-                    rect.setTranslateX(-width +
-                            Math.min(width, nv.doubleValue() / timeInterval * width));
-                }
-
-                //画红色进度条
-                else if((nv.doubleValue() / timeInterval <= width)){
-                    //当前长度小于等于进度条
-                    g2d.setFill(Color.rgb(255,0,0));
-                    g2d.fillRect(0,0,canvas.getWidth(), canvas.getHeight());
-                    rect.setTranslateX(-width +
-                            Math.min(width, nv.doubleValue() / timeInterval * width));
-                }
-                else
-                    over=true;
+            if(people_num==0) {
+                reset();
             }
 
             //人数不是0
@@ -89,27 +63,27 @@ public class MoodComponent extends Component {
                 //画绿色进度条
                 g2d.setFill(Color.rgb(0,255,0));
                 g2d.fillRect(0,0,canvas.getWidth(), canvas.getHeight());
-                if((nv.doubleValue() / timeInterval * width)<=(width/3)){
+                if((nv.doubleValue() / time_interval * width)<=(width/3)){
                     rect.setTranslateX(-width +
-                            Math.min(width, nv.doubleValue() / timeInterval * peopleNum * width));
+                            Math.min(width/3, nv.doubleValue() / time_interval * width));
                 }
 
                 //画橘色进度条
-                else if ((nv.doubleValue() / timeInterval * width)>(width/3)&&(nv.doubleValue() / timeInterval * width)<=(width/3*2)) {
+                else if ((nv.doubleValue() / time_interval * width)>(width/3)&&(nv.doubleValue() / time_interval * width)<=(width/3*2)) {
                     //当前长度小于三分之二
                     g2d.setFill(Color.rgb(255,165,0));
                     g2d.fillRect(0,0,canvas.getWidth(), canvas.getHeight());
                     rect.setTranslateX(-width +
-                            Math.min(width, nv.doubleValue() / timeInterval * peopleNum * width));
+                            Math.min(width/3*2, nv.doubleValue() / time_interval * width));
                 }
 
                 //画红色进度条
-                else if((nv.doubleValue() / timeInterval <= width)){
+                else if((nv.doubleValue() / time_interval <= width)){
                     //当前长度小于等于进度条
                     g2d.setFill(Color.rgb(255,0,0));
                     g2d.fillRect(0,0,canvas.getWidth(), canvas.getHeight());
                     rect.setTranslateX(-width +
-                            Math.min(width, nv.doubleValue() / timeInterval * peopleNum * width));
+                            Math.min(width, nv.doubleValue() / time_interval * width));
                 }
                 else
                     over=true;
@@ -120,9 +94,10 @@ public class MoodComponent extends Component {
     //记录累计时间
     @Override
     public void onUpdate(double tpf){
-        progress.set(progress.get()+tpf);
-        if(peopleNum !=0)
-            timeInterval = timeInterval / peopleNum;
+        if(people_num!=0)
+            progress.set(progress.get()+tpf*people_num);
+        else
+            progress.set(0);
     }
 
     //清零
@@ -135,5 +110,5 @@ public class MoodComponent extends Component {
     public boolean isOver(){
         return over;
     }
-   
+
 }
