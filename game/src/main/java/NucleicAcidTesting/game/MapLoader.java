@@ -23,16 +23,23 @@ public class MapLoader {
         spawn("Background", -Config.WINDOW_WIDTH, -Config.WINDOW_HEIGHT);
         spawn("UICountDown", -40, -200);
         NATFactory.spawnSite();
-        NATFactory.spawnBuildings(10, (int) (Config.WINDOW_MIN_X + Config.GAP_TO_WINDOW),
-                (Config.WINDOW_MIN_Y + Config.GAP_TO_WINDOW),
-                (Config.WINDOW_MAX_X - Config.GAP_TO_WINDOW),
-                (Config.WINDOW_MAX_Y - Config.GAP_TO_WINDOW));
+        spawn("Building",-100,0);
+        spawn("Building",-682,209);
+        spawn("Building",792,123);
+        spawn("Building",-502,-312);
+        spawn("Building",302,-293);
     }
 
     private static void loadMapLevel2() {
         spawn("Background", 0, 100);
         spawn("UICountDown", -40, -200);
-        spawn("Building", 0, 0);
+        spawn("Building",-100,-202);
+        spawn("Building",-670,178);
+        spawn("Building",723,92);
+        spawn("Building",-474,-298);
+        spawn("Building",291,-252);
+        spawn("Building",490,-492);
+        spawn("Building",392,381);
         spawn("Site", 100, 0);
     }
 }
