@@ -62,9 +62,10 @@ public class Client {
         return res;
     }
 
-    public static void setNumber(String Name,int number)
+    public static int setNumber(String Name,int number)
     //登记分数函数，需要传递用户姓名，分数
     {
+        JSONObject res = null;
         try {
             socket = new Socket("127.0.0.1", 9999);
             connection_state = true;
@@ -78,10 +79,13 @@ public class Client {
             object.put("Number", number);
             oos.writeObject(object);
             oos.flush();
+            res = (JSONObject) ois.readObject();
+            System.out.println(res);
         }catch (Exception e){
             e.printStackTrace();
             connection_state = false;
         }
+        return (int) res.get("result");
     }
 
     public static List<JSONObject> Ranking()
@@ -110,5 +114,6 @@ public class Client {
         return res;
     }
 }
+
 
 
