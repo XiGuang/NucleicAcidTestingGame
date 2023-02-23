@@ -24,7 +24,7 @@ public class NeedScoreComponent extends Component {
 
     @Override
     public void onUpdate(double tpf) {
-        if(needScore<= FXGL.getWorldProperties().getInt("people_num")){
+        if(needScore<= FXGL.getWorldProperties().getInt("people_num")*10){
             SuccessPane successPane=new SuccessPane();
             FXGL.addUINode(successPane);
             FXGL.getGameController().pauseEngine();
