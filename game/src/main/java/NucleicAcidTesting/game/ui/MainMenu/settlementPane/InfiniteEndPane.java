@@ -117,7 +117,6 @@ public class InfiniteEndPane extends StackPane {
             }
         }
         settlementPane.add(exitButton, 0, 3);
-        settlementPane.setGridLinesVisible(true);
         GridPane.setHalignment(exitButton,HPos.RIGHT);
         GridPane.setMargin(exitButton,new Insets(0,-40,0,0));
         settlementPane.add(ResetButton, 2, 3);

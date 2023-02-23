@@ -37,8 +37,6 @@ public class MainWin extends StackPane {
     VBox rankBox = new VBox();
 
     class ChoicePane extends VBox {
-
-
         public ChoicePane() {
             Button classicGameButton = new ChoiceButton("限时闯关");
             classicGameButton.setOnAction(actionEvent -> {
@@ -74,7 +72,6 @@ public class MainWin extends StackPane {
             this.setAlignment(Pos.CENTER);
         }
     }
-
 
     class DetailPane extends Pane {
         public DetailPane() {
@@ -194,7 +191,6 @@ public class MainWin extends StackPane {
         classGamePane.add(vBox, 0, 0);
     }
 
-
     private void setInfiniteGamePane() {
         Button infiniteGameButton = new Button("开始游戏");
         infiniteGameButton.setOnAction(actionEvent -> {
@@ -247,7 +243,6 @@ public class MainWin extends StackPane {
         infiniteGamePane.add(vBox, 0, 0);
     }
 
-
     private void setRankPane() {
         Image rankLogo = new Image("assets/textures/menuImg/rankLogo.png",
                 125, 50, false, false);
@@ -293,6 +288,7 @@ public class MainWin extends StackPane {
     }
 
     private void getRank() throws Exception {
+        rankBox.getChildren().clear();
         List<JSONObject> rankList = Client.Ranking();
 
         for (JSONObject jsonObject : rankList) {
