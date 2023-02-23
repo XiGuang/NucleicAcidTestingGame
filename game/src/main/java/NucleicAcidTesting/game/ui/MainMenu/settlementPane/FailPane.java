@@ -1,4 +1,4 @@
-package NucleicAcidTesting.game.ui;
+package NucleicAcidTesting.game.ui.MainMenu.settlementPane;
 
 import com.almasb.fxgl.dsl.FXGL;
 import javafx.geometry.Pos;
@@ -61,7 +61,6 @@ public class FailPane extends VBox{
 
             FXGL.getGameController().resumeEngine();
             FXGL.getGameController().startNewGame();
-
             this.setVisible(false);
         });
         ResetButton.setOnMouseEntered(event -> ResetButton.setImage(resetButton_down));
@@ -88,8 +87,7 @@ public class FailPane extends VBox{
         popupPane.add(exitButton, 34, 30);
 
 
-        FXGL.addUINode(this);
-        this.setVisible(false);
+
 
         //设置失败窗体格式
         double WINDOW_WIDTH = 960;

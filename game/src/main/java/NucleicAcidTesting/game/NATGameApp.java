@@ -7,8 +7,8 @@ import NucleicAcidTesting.game.components.BuildingComponent;
 import NucleicAcidTesting.game.components.MoodComponent;
 import NucleicAcidTesting.game.components.MoveComponent;
 import NucleicAcidTesting.game.tools.EntityComparator;
-import NucleicAcidTesting.game.ui.FailPane;
-import NucleicAcidTesting.game.ui.InfiniteEndPane;
+import NucleicAcidTesting.game.ui.MainMenu.settlementPane.FailPane;
+import NucleicAcidTesting.game.ui.MainMenu.settlementPane.InfiniteEndPane;
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
 import com.almasb.fxgl.dsl.FXGL;
@@ -161,8 +161,11 @@ public class NATGameApp extends GameApplication {
                         overPane = new InfiniteEndPane();
                     else
                         overPane = new FailPane();
-                    getGameController().pauseEngine();
+
+                    FXGL.addUINode(overPane);
                     overPane.setVisible(true);
+                    getGameController().pauseEngine();
+
                 }
             }
         }

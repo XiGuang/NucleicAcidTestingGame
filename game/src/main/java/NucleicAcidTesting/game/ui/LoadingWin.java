@@ -30,6 +30,7 @@ public class LoadingWin extends Stage {
         scene.setFill(null);
         loadWin.setScene(scene);
         loadWin.initStyle(StageStyle.TRANSPARENT);
+        loadWin.centerOnScreen();
 
         Thread thread = new Thread(() -> {
             try {

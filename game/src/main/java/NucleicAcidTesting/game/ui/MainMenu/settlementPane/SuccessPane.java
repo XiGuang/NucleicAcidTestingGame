@@ -1,4 +1,4 @@
-package NucleicAcidTesting.game.ui;
+package NucleicAcidTesting.game.ui.MainMenu.settlementPane;
 
 import com.almasb.fxgl.dsl.FXGL;
 import javafx.geometry.Pos;
@@ -65,7 +65,7 @@ public class SuccessPane extends VBox{
         popupPane.add(exitButton, 25, 32);
 
 
-        FXGL.addUINode(this);
+
         this.setVisible(false);
 
         //设置失败窗体格式

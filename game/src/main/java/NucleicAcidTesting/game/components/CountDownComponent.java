@@ -1,6 +1,6 @@
 package NucleicAcidTesting.game.components;
 
-import NucleicAcidTesting.game.ui.FailPane;
+import NucleicAcidTesting.game.ui.MainMenu.settlementPane.FailPane;
 import NucleicAcidTesting.game.ui.LoadingWin;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.component.Component;

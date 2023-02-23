@@ -22,6 +22,7 @@ import javafx.scene.text.Text;
 import org.json.simple.JSONObject;
 
 import java.util.List;
+import java.util.Objects;
 
 import static NucleicAcidTesting.game.ui.MainMenu.StartPage.LevelChooser.getLevels;
 
@@ -40,7 +41,11 @@ public class MainWin extends StackPane {
 
         public ChoicePane() {
             Button classicGameButton = new ChoiceButton("限时闯关");
-            classicGameButton.setOnAction(actionEvent -> classGamePane.toFront());
+            classicGameButton.setOnAction(actionEvent -> {
+                classGamePane.toFront();
+                if(Objects.equals(MapLoader.getMapLevel(), "infinity"))
+                    MapLoader.setMapLevel("1");
+            });
             Button infiniteGameButton = new ChoiceButton("无尽模式");
             infiniteGameButton.setOnAction(actionEvent -> {
                 infiniteGamePane.toFront();

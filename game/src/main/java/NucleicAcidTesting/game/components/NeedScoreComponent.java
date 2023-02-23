@@ -1,6 +1,6 @@
 package NucleicAcidTesting.game.components;
 
-import NucleicAcidTesting.game.ui.SuccessPane;
+import NucleicAcidTesting.game.ui.MainMenu.settlementPane.SuccessPane;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.component.Component;
 import javafx.scene.text.Font;
@@ -26,6 +26,7 @@ public class NeedScoreComponent extends Component {
     public void onUpdate(double tpf) {
         if(needScore<= FXGL.getWorldProperties().getInt("people_num")){
             SuccessPane successPane=new SuccessPane();
+            FXGL.addUINode(successPane);
             FXGL.getGameController().pauseEngine();
             successPane.setVisible(true);
         }
