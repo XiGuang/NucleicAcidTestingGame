@@ -8,6 +8,7 @@ import NucleicAcidTesting.game.components.MoodComponent;
 import NucleicAcidTesting.game.components.MoveComponent;
 import NucleicAcidTesting.game.tools.EntityComparator;
 import NucleicAcidTesting.game.ui.FailPane;
+import NucleicAcidTesting.game.ui.InfiniteEndPane;
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
 import com.almasb.fxgl.dsl.FXGL;
@@ -15,10 +16,12 @@ import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.input.UserAction;
 import com.almasb.fxgl.input.virtual.VirtualButton;
 import javafx.scene.input.KeyCode;
+import javafx.scene.layout.Pane;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import static com.almasb.fxgl.dsl.FXGLForKtKt.*;
 
@@ -44,7 +47,7 @@ public class NATGameApp extends GameApplication {
     @Override
     protected void initGameVars(Map<String, Object> vars) {
         vars.put("follow_list", new ArrayList<Entity>());
-        vars.put("people_num",0);
+        vars.put("people_num", 0);
     }
 
     @Override
@@ -71,7 +74,7 @@ public class NATGameApp extends GameApplication {
             protected void onActionEnd() {
                 move_component.stop();
             }
-        }, KeyCode.A,VirtualButton.LEFT);
+        }, KeyCode.A, VirtualButton.LEFT);
 
         getInput().addAction(new UserAction("Move Down") {
             @Override
@@ -83,7 +86,7 @@ public class NATGameApp extends GameApplication {
             protected void onActionEnd() {
                 move_component.stop();
             }
-        }, KeyCode.S,VirtualButton.DOWN);
+        }, KeyCode.S, VirtualButton.DOWN);
 
         getInput().addAction(new UserAction("Move Right") {
             @Override
@@ -95,7 +98,7 @@ public class NATGameApp extends GameApplication {
             protected void onActionEnd() {
                 move_component.stop();
             }
-        }, KeyCode.D,VirtualButton.RIGHT);
+        }, KeyCode.D, VirtualButton.RIGHT);
 
 
     }
@@ -113,14 +116,14 @@ public class NATGameApp extends GameApplication {
 
         MapLoader.loadMap();
 
-        getGameScene().getViewport().bindToEntity(player,getAppWidth()/2.0,getAppHeight()/2.0);
+        getGameScene().getViewport().bindToEntity(player, getAppWidth() / 2.0, getAppHeight() / 2.0);
         getGameScene().getViewport().setLazy(true);
-        getGameScene().getViewport().setBounds(Config.WINDOW_MIN_X,Config.WINDOW_MIN_Y,Config.WINDOW_MAX_X,Config.WINDOW_MAX_Y);
+        getGameScene().getViewport().setBounds(Config.WINDOW_MIN_X, Config.WINDOW_MIN_Y, Config.WINDOW_MAX_X, Config.WINDOW_MAX_Y);
     }
 
     @Override
     protected void initPhysics() {
-        getPhysicsWorld().setGravity(0,0);
+        getPhysicsWorld().setGravity(0, 0);
         getPhysicsWorld().addCollisionHandler(new PlayerAreaHandler());
     }
 
@@ -136,26 +139,30 @@ public class NATGameApp extends GameApplication {
     @Override
     protected void onUpdate(double tpf) {
         /// 按y轴的高度进行渲染
-        List<Entity> entities =getGameWorld().getEntities();
+        List<Entity> entities = getGameWorld().getEntities();
         // 按bottomY从小到大排序（屏幕上小下大）
         entities.sort(new EntityComparator());
-        for(int z=0;z<entities.size();++z){
-            Entity entity=entities.get(z);
-            if(entity.isType(NATType.AREA) || entity.isType(NATType.BACKGROUND) || entity.isType(NATType.MOOD))
+        for (int z = 0; z < entities.size(); ++z) {
+            Entity entity = entities.get(z);
+            if (entity.isType(NATType.AREA) || entity.isType(NATType.BACKGROUND) || entity.isType(NATType.MOOD))
                 continue;
-            entity.setZIndex(z+1);
+            entity.setZIndex(z + 1);
         }
 
-        List<Entity> buildings=getGameWorld().getEntitiesByType(NATType.BUILDING);
-        for(var building:buildings){
-            if(!building.hasComponent(BuildingComponent.class))
+        List<Entity> buildings = getGameWorld().getEntitiesByType(NATType.BUILDING);
+        for (var building : buildings) {
+            if (!building.hasComponent(BuildingComponent.class))
                 continue;
             Entity mood = building.getComponent(BuildingComponent.class).getMood();
-            if(mood !=null && mood.hasComponent(MoodComponent.class)){
-                if(mood.getComponent(MoodComponent.class).isOver()){
-                    FailPane failPane=new FailPane();
+            if (mood != null && mood.hasComponent(MoodComponent.class)) {
+                if (mood.getComponent(MoodComponent.class).isOver()) {
+                    Pane overPane;
+                    if (Objects.equals(MapLoader.getMapLevel(), "infinity"))
+                        overPane = new InfiniteEndPane();
+                    else
+                        overPane = new FailPane();
                     getGameController().pauseEngine();
-                    failPane.setVisible(true);
+                    overPane.setVisible(true);
                 }
             }
         }

@@ -6,4 +6,8 @@ public class UserInfo {
     public static void setUserId(String userId) {
         UserInfo.userId = userId;
     }
+
+    public static String getUserId() {
+        return userId;
+    }
 }

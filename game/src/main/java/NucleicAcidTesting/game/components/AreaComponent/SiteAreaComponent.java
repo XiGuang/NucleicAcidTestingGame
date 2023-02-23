@@ -19,33 +19,33 @@ public class SiteAreaComponent extends BaseAreaComponent {
 
     @Override
     public void onAdded() {
-        SpawnData data=new SpawnData();
-        Texture texture=new Texture(FXGL.image("UI/NATing.png",20,20));
+        SpawnData data = new SpawnData();
+        Texture texture = new Texture(FXGL.image("UI/NATing.png", 20, 20));
         texture.setScaleX(-1);
-        data.put("texture",texture);
+        data.put("texture", texture);
 
-        triggerListener =new TriggerListener() {
+        triggerListener = new TriggerListener() {
 
             @Override
             protected void onKeyBegin(@NotNull KeyTrigger keyTrigger) {
-                if(keyTrigger.isKey() && keyTrigger.getName().equals("E")){
-                    if(!fromBuilding.hasComponent(SiteComponent.class))
+                if (keyTrigger.isKey() && keyTrigger.getName().equals("E")) {
+                    if (!fromBuilding.hasComponent(SiteComponent.class))
                         return;
                     fromBuilding.getComponent(SiteComponent.class).queueUp();
                     fromBuilding.getComponent(SiteComponent.class).setFaster(true);
 
-                    tips= FXGL.spawn("Tips",data);
+                    tips = FXGL.spawn("Tips", data);
                 }
             }
 
             @Override
             protected void onKeyEnd(@NotNull KeyTrigger keyTrigger) {
-                if(keyTrigger.isKey() && keyTrigger.getName().equals("E")){
-                    if(!fromBuilding.hasComponent(SiteComponent.class))
+                if (keyTrigger.isKey() && keyTrigger.getName().equals("E")) {
+                    if (!fromBuilding.hasComponent(SiteComponent.class))
                         return;
                     fromBuilding.getComponent(SiteComponent.class).setNATTime(2);
                     fromBuilding.getComponent(SiteComponent.class).setFaster(false);
-                    tips.removeFromWorld();
+                    if (tips != null) tips.removeFromWorld();
                 }
             }
         };
