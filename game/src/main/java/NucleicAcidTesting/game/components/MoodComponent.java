@@ -83,7 +83,7 @@ public class MoodComponent extends Component {
                 }
 
                 //画红色进度条
-                else if((nv.doubleValue() / time_interval <= width)){
+                else if((nv.doubleValue() / time_interval *width < width)){
                     //当前长度小于等于进度条
                     g2d.setFill(Color.rgb(255,0,0));
                     g2d.fillRect(0,0,canvas.getWidth(), canvas.getHeight());
