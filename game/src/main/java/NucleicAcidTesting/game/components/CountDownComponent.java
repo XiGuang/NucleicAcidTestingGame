@@ -85,8 +85,16 @@ public class CountDownComponent extends Component {
             FXGL.getGameController().gotoMainMenu();
             //this.setVisible(false);
         });
-        exitButton.setOnMouseEntered(event -> exitButton.setImage(exitButton_down));
-        exitButton.setOnMouseExited(event -> exitButton.setImage(exitButton_up));
+        exitButton.setOnMouseEntered(event -> {
+            exitButton.setFitWidth(55);
+            exitButton.setFitHeight(55);
+            exitButton.setImage(exitButton_down);
+        });
+        exitButton.setOnMouseExited(event -> {
+            exitButton.setFitWidth(50);
+            exitButton.setFitHeight(50);
+            exitButton.setImage(exitButton_up);
+        });
 
         FXGL.addUINode(exitButton, 900, 450);
 
@@ -105,11 +113,27 @@ public class CountDownComponent extends Component {
         pauseButton.setVisible(true);
         continueButton.setVisible(false);
 
-        pauseButton.setOnMouseEntered(event -> pauseButton.setImage(pauseButton_down));
-        pauseButton.setOnMouseExited(event -> pauseButton.setImage(pauseButton_up));
+        pauseButton.setOnMouseEntered(event -> {
+            pauseButton.setFitWidth(55);
+            pauseButton.setFitHeight(55);
+            pauseButton.setImage(pauseButton_down);
+        });
+        pauseButton.setOnMouseExited(event -> {
+            pauseButton.setFitWidth(50);
+            pauseButton.setFitHeight(50);
+            pauseButton.setImage(pauseButton_up);
+        });
 
-        continueButton.setOnMouseEntered(event -> continueButton.setImage(continueButton_down));
-        continueButton.setOnMouseExited(event -> continueButton.setImage(continueButton_up));
+        continueButton.setOnMouseEntered(event -> {
+            continueButton.setFitWidth(55);
+            continueButton.setFitHeight(55);
+            continueButton.setImage(continueButton_down);
+        });
+        continueButton.setOnMouseExited(event -> {
+            continueButton.setFitWidth(50);
+            continueButton.setFitHeight(50);
+            continueButton.setImage(continueButton_up);
+        });
 
         pauseButton.setOnMouseClicked(event -> {
                 //暂停游戏
@@ -143,8 +167,16 @@ public class CountDownComponent extends Component {
             FXGL.getGameController().startNewGame();
             //this.setVisible(false);
         });
-        ResetButton.setOnMouseEntered(event -> ResetButton.setImage(resetButton_down));
-        ResetButton.setOnMouseExited(event -> ResetButton.setImage(resetButton_up));
+        ResetButton.setOnMouseEntered(event -> {
+            ResetButton.setImage(resetButton_down);
+            ResetButton.setFitWidth(55);
+            ResetButton.setFitHeight(55);
+        });
+        ResetButton.setOnMouseExited(event -> {
+            ResetButton.setImage(resetButton_up);
+            ResetButton.setFitWidth(50);
+            ResetButton.setFitHeight(50);
+        });
         FXGL.addUINode(ResetButton,840,450);
     }
 
