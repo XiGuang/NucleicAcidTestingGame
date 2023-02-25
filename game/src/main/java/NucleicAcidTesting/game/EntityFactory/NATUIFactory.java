@@ -23,6 +23,13 @@ public class NATUIFactory implements EntityFactory {
                 .with(new CountDownComponent(time))
                 .build();
     }
+    @Spawns("ControlButton")
+    public Entity newControlButton(SpawnData data){
+        return FXGL.entityBuilder(data)
+                .type(NATType.CONTROL_BUTTON)
+                .with(new ControlButtonComponent())
+                .build();
+    }
 
     @Spawns("Mood")
     public Entity newMood(SpawnData data) {

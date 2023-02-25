@@ -28,6 +28,7 @@ public class MapLoader {
     private static void loadMapLevel1() {
         spawn("Background", -Config.WINDOW_WIDTH, -Config.WINDOW_HEIGHT);
         spawn("UICountDown", -40, -200);
+        spawn("ControlButton");
         spawn("Score");
         SpawnData needScoreData=new SpawnData();
         needScoreData.put("need_score",200);
@@ -43,6 +44,7 @@ public class MapLoader {
     private static void loadMapLevel2() {
         spawn("Background", 0, 100);
         spawn("UICountDown", -40, -200);
+        spawn("ControlButton");
         spawn("Score");
         SpawnData needScoreData=new SpawnData();
         needScoreData.put("need_score",500);
@@ -60,6 +62,7 @@ public class MapLoader {
     private static void loadMapInfinity() {
         spawn("InfiniteGameLoadController");
         spawn("Background", -Config.WINDOW_WIDTH, -Config.WINDOW_HEIGHT);
+        spawn("ControlButton");
         spawn("Score");
         NATFactory.spawnSite();
         NATFactory.spawnBuildings(10,Config.WINDOW_MIN_X+Config.GAP_TO_WINDOW,

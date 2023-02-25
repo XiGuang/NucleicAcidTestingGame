@@ -5,7 +5,7 @@ package NucleicAcidTesting.game;
  */
 public enum NATType {
     PLAYER,PEOPLE, BUILDING,SITE,
-    COUNT_DOWN,MOOD,
+    COUNT_DOWN,MOOD,CONTROL_BUTTON,
     AREA,BACKGROUND
 
 }
