@@ -2,7 +2,6 @@ package NucleicAcidTesting.game.ui.MainMenu.StartPage;
 
 import NucleicAcidTesting.game.Config;
 import NucleicAcidTesting.game.MapLoader;
-import com.almasb.fxgl.dsl.FXGL;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
@@ -12,8 +11,6 @@ import javafx.scene.input.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-
-import static com.almasb.fxgl.dsl.FXGLForKtKt.set;
 
 public class LevelChooser extends Button {
     static String chosenLevel;
@@ -107,9 +104,9 @@ public class LevelChooser extends Button {
         List<LevelChooser> levelList = new ArrayList<>();
 
         Image levelThumbnail1 = new Image("assets/textures/menuImg/LevelThumbnail/levelThumbnail1.png",
-                Config.WINDOW_WIDTH * 0.1, Config.WINDOW_HEIGHT * 0.1, false, false);
+                Config.WINDOW_WIDTH * 0.15, Config.WINDOW_HEIGHT * 0.15, false, false);
         Image levelThumbnail2 = new Image("assets/textures/menuImg/LevelThumbnail/levelThumbnail2.png",
-                Config.WINDOW_WIDTH * 0.1, Config.WINDOW_HEIGHT * 0.1, false, false);
+                Config.WINDOW_WIDTH * 0.15, Config.WINDOW_HEIGHT * 0.15, false, false);
 
         ImageView thumbnailView1 = new ImageView(levelThumbnail1);
         ImageView thumbnailView2 = new ImageView(levelThumbnail2);

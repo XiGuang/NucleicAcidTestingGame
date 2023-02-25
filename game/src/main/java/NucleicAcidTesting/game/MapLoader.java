@@ -42,7 +42,7 @@ public class MapLoader {
     }
 
     private static void loadMapLevel2() {
-        spawn("Background", 0, 100);
+        spawn("Background", -Config.WINDOW_WIDTH, -Config.WINDOW_HEIGHT);
         spawn("UICountDown", -40, -200);
         spawn("ControlButton");
         spawn("Score");

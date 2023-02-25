@@ -324,7 +324,6 @@ public class MainWin extends StackPane {
             gridPane.setStyle("-fx-background-color: transparent;");
             rankBox.getChildren().add(gridPane);
         }
-
     }
 
     public MainWin() {
