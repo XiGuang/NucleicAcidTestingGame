@@ -80,8 +80,10 @@ public class BuildingComponent extends Component {
             randomSpawnInterval(4,8);
         else if(hasSpawnedNum<20)
             randomSpawnInterval(3,5);
-        else
+        else if(hasSpawnedNum<100)
             randomSpawnInterval(3,4);
+        else
+            randomSpawnInterval(2,3);
     }
 
     public BuildingComponent(boolean is_infinity) {
@@ -109,11 +111,11 @@ public class BuildingComponent extends Component {
         if (!spawnTimer.elapsed(spawnInterval))
             return;
         spawnTimer.capture();
-        // 无尽模式并且开始产生则继续
+        // 无尽模式或开始产生则继续
         if(!isInfinity && !isStartingSpawn )
             return;
-        // 没有开始产生或则产生人数超出上限则返回
-        if(!isStartingSpawn || hasSpawnedNum >= maxPeopleNum)
+        // 不是无限模式则产生人数超出上限则返回
+        if(hasSpawnedNum >= maxPeopleNum && !isInfinity)
             return;
         if(isInfinity)
             randomSpawnInInfinity();

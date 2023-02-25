@@ -17,9 +17,11 @@ public class SiteComponent extends Component {
 
     private LocalTimer localTimer;
     //检测队列
-    List<Entity>site_queue=new ArrayList<>();
+    List<Entity> siteQueue = new ArrayList<>();
 
-    private double NATTime=2;  // 做核酸的时间
+    private int maxQueueSize = 40;
+
+    private double NATTime = 2;  // 做核酸的时间
 
     private boolean isFaster;   // 是否开始加速
 
@@ -31,6 +33,10 @@ public class SiteComponent extends Component {
         this.NATTime = NATTime;
     }
 
+    public void setMaxQueueSize(int maxQueueSize) {
+        this.maxQueueSize = maxQueueSize;
+    }
+
     public void setFaster(boolean faster) {
         isFaster = faster;
     }
@@ -39,7 +45,7 @@ public class SiteComponent extends Component {
         return isFaster;
     }
 
-    public void onAdded(){
+    public void onAdded() {
         SpawnData spawnData = new SpawnData(entity.getCenter().getX(), entity.getCenter().getY());
         spawnData.put("size", 130.0);
         spawnData.put("site", entity);
@@ -50,16 +56,28 @@ public class SiteComponent extends Component {
 
     }
 
-    public void queueUp(){
+    public void queueUp() {
         // 排队
         List<Entity> follow_list = FXGL.getWorldProperties().getObject("follow_list");
         Iterator<Entity> iterator = follow_list.iterator();
         iterator.next();
-        while(iterator.hasNext()){
-            Entity person=iterator.next();
-            site_queue.add(person);
+        while (iterator.hasNext()) {
+            // 队列满时
+            if(siteQueue.size()>=maxQueueSize){
+                Entity person = iterator.next();
+                if(!person.hasComponent(PeopleComponent.class))
+                    return;
+                person.getComponent(PeopleComponent.class).followPlayer();
+                FXGL.getNotificationService().pushNotification("核酸站队伍满啦！");
+                return;
+            }
+
+            Entity person = iterator.next();
+            if(!person.hasComponent(PeopleComponent.class))
+                return;
+            siteQueue.add(person);
             person.getComponent(PeopleComponent.class).follow(new Point2D(
-                    entity.getRightX() + 30 * site_queue.size()-1,
+                    entity.getRightX() + 30 * siteQueue.size() - 1,
                     entity.getBottomY()));
             iterator.remove();
         }
@@ -67,24 +85,24 @@ public class SiteComponent extends Component {
 
     public void onUpdate(double tpf) {
         // 可变做核酸速度
-        if(isFaster)
-            NATTime= NATMath.InterpolationD(NATTime,0.5,tpf);
+        if (isFaster)
+            NATTime = NATMath.InterpolationD(NATTime, 0.5, tpf);
         else
-            NATTime=2;
+            NATTime = 2;
 
         if (!localTimer.elapsed(Duration.seconds(NATTime))) {
             return;
         }
         localTimer.capture();
 
-        if(!site_queue.isEmpty() && site_queue.get(0).distance(entity)<300){
-            site_queue.get(0).removeFromWorld();
-            site_queue.remove(0);
+        if (!siteQueue.isEmpty() && siteQueue.get(0).distance(entity) < 300) {
+            siteQueue.get(0).removeFromWorld();
+            siteQueue.remove(0);
             FXGL.getWorldProperties().setValue("people_num",
-                    FXGL.getWorldProperties().getInt("people_num")+1);
+                    FXGL.getWorldProperties().getInt("people_num") + 1);
 
-            for(int i = 0; i < site_queue.size(); i++){
-                PeopleComponent peopleComponent = site_queue.get(i).getComponent(PeopleComponent.class);
+            for (int i = 0; i < siteQueue.size(); i++) {
+                PeopleComponent peopleComponent = siteQueue.get(i).getComponent(PeopleComponent.class);
                 peopleComponent.follow(new Point2D(entity.getRightX() + 30 * i, entity.getCenter().getY()));
             }
         }

@@ -87,7 +87,7 @@ public class NATFactory implements EntityFactory {
             }
             SpawnData data=new SpawnData(point);
             data.put("infinity",true);
-            Entity building=getGameWorld().spawn("Building", data);
+            getGameWorld().spawn("Building", data);
         }
     }
 
@@ -147,7 +147,7 @@ public class NATFactory implements EntityFactory {
     
      public static void spawnSite() {
         Rectangle2D bound = new Rectangle2D(Config.WINDOW_MIN_X+Config.GAP_TO_WINDOW,Config.WINDOW_MIN_Y+Config.GAP_TO_WINDOW,
-                Config.WINDOW_MAX_X-Config.WINDOW_MIN_X-Config.GAP_TO_WINDOW,Config.WINDOW_MAX_Y);
+                Config.WINDOW_MAX_X,Config.WINDOW_MAX_Y-Config.WINDOW_MIN_Y-Config.GAP_TO_WINDOW-200);
         Point2D point;
         while (true) {
             point = FXGLMath.randomPoint(bound);
@@ -161,7 +161,7 @@ public class NATFactory implements EntityFactory {
             if (buildings.isEmpty())
                 break;
         }
-        var e=getGameWorld().spawn("Site", point);
+        getGameWorld().spawn("Site", point);
     }
 
     @Spawns("Site")

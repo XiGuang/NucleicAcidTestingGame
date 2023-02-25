@@ -16,7 +16,7 @@ public interface Config {
     double GAP_Y =175*2;
     int MAX_CYCLE_TIME=1000;
 
-    int GAP_TO_WINDOW=130;
+    int GAP_TO_WINDOW=200;
 
     double SPAWNING_X_GAP=20;
 

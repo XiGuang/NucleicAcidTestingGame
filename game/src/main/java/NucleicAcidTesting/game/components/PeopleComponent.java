@@ -22,27 +22,27 @@ public class PeopleComponent extends Component {
     private Point2D followPoint;
     private State state = State.REST;
     String texture;
-    private AnimationChannel acUp,acDown,acLeft,acRight;
+    private AnimationChannel acUp, acDown, acLeft, acRight;
     private AnimatedTexture at;
     static MoveDirection dir = MoveDirection.DOWN;
     private boolean isStop = true;
 
     public enum State {
-        REST, FOLLOW,STATIC_FOLLOW
+        REST, FOLLOW, STATIC_FOLLOW
     }
 
     public PeopleComponent() {
         Random random = new Random();
-        texture = "people/student"+(random.nextInt(29) + 1)+".png";
+        texture = "people/student" + (random.nextInt(29) + 1) + ".png";
     }
 
     @Override
     public void onAdded() {
         getEntity().getViewComponent().clearChildren();
-        acUp = getAnimationChannel(12,15);
-        acDown = getAnimationChannel(0,3);
-        acLeft = getAnimationChannel(4,7);
-        acRight = getAnimationChannel(8,11);
+        acUp = getAnimationChannel(12, 15);
+        acDown = getAnimationChannel(0, 3);
+        acLeft = getAnimationChannel(4, 7);
+        acRight = getAnimationChannel(8, 11);
         at = new AnimatedTexture(acDown);
         entity.getViewComponent().addChild(at);
     }
@@ -69,63 +69,73 @@ public class PeopleComponent extends Component {
         return true;
     }
 
-    public boolean follow(Entity aheadPerson,int queueNum){
-        state=State.STATIC_FOLLOW;
-        this.aheadPerson=aheadPerson;
-        this.queueNum=queueNum;
+    public boolean followPlayer() {
+        List<Entity> follow_list = FXGL.getWorldProperties().getObject("follow_list");
+        if (follow_list.get(1) != entity)
+            return false;
+        aheadPerson = follow_list.get(0);
+        queueNum = 1;
+        state = State.FOLLOW;
         return true;
     }
 
-    public void follow(Point2D point){
+    public boolean follow(Entity aheadPerson, int queueNum) {
+        state = State.STATIC_FOLLOW;
+        this.aheadPerson = aheadPerson;
+        this.queueNum = queueNum;
+        return true;
+    }
 
-        if(state!=State.STATIC_FOLLOW){
-            var p=entity.getCenter();
+    public void follow(Point2D point) {
+
+        if (state != State.STATIC_FOLLOW) {
+            var p = entity.getCenter();
             FXGL.getGameWorld().removeEntity(entity);
             entity.getComponent(BoundingBoxComponent.class).clearHitBoxes();
             FXGL.getGameWorld().addEntity(entity);
             entity.getComponent(PhysicsComponent.class).overwritePosition(p);
 
         }
-        state=State.STATIC_FOLLOW;
-        followPoint=point;
-        aheadPerson=null;
+        state = State.STATIC_FOLLOW;
+        followPoint = point;
+        aheadPerson = null;
     }
 
     @Override
     public void onUpdate(double tpf) {
 
-        var physicsComponent=entity.getComponent(PhysicsComponent.class);
+        var physicsComponent = entity.getComponent(PhysicsComponent.class);
 
         if (state == State.REST)
             return;
 
         // 跟随
         double distance;
-        if(aheadPerson==null)
-            distance=followPoint.distance(entity.getCenter());
+        if (aheadPerson == null)
+            distance = followPoint.distance(entity.getCenter());
         else
-            distance= entity.distance(aheadPerson);
+            distance = entity.distance(aheadPerson);
         Point2D vec;
-        if(state==State.STATIC_FOLLOW){
+        if (state == State.STATIC_FOLLOW) {
             // 排队时
-            if(distance<3)
-                physicsComponent.setLinearVelocity(0,0);
-            else{
-                vec=followPoint.subtract(entity.getCenter()).normalize().multiply(250);
+            if (distance < 3)
+                physicsComponent.setLinearVelocity(0, 0);
+            else {
+                vec = followPoint.subtract(entity.getCenter()).normalize().multiply(250);
                 physicsComponent.setLinearVelocity(vec);
             }
         } else if (distance > 50) {
             // 跟随玩家时
 
             vec = aheadPerson.getCenter().subtract(entity.getCenter()).multiply(2);
-            if(vec.magnitude()>250){
-                vec.normalize().multiply(250);
+            if (vec.distance(0, 0) > 250) {
+                vec = vec.normalize().multiply(250);
             }
             // 连接从这个人到上一个人的线上的结果。
-            var ray_result=FXGL.getPhysicsWorld().raycast(entity.getCenter(),aheadPerson.getCenter());
-            if(ray_result.getEntity().isPresent() && !ray_result.getEntity().get().equals(aheadPerson)){
-                physicsComponent.setLinearVelocity(-vec.getY(),vec.getX());
-            }else
+            var ray_result = FXGL.getPhysicsWorld().raycast(entity.getCenter(), aheadPerson.getCenter());
+            if (ray_result.getEntity().isPresent() && !ray_result.getEntity().get().equals(aheadPerson)) {
+                physicsComponent.setLinearVelocity(-vec.getY(), vec.getX());
+            } else
                 physicsComponent.setLinearVelocity(vec);
 
         } else {
@@ -134,57 +144,57 @@ public class PeopleComponent extends Component {
                     NATMath.InterpolationD(physicsComponent.getVelocityX(), 0, tpf * 50),
                     NATMath.InterpolationD(physicsComponent.getVelocityY(), 0, tpf * 50));
         }
-         setAnimation();
+        setAnimation();
     }
 
-    private AnimationChannel getAnimationChannel(int start,int end){
+    private AnimationChannel getAnimationChannel(int start, int end) {
         return new AnimationChannel(FXGL.image(texture),
-                4,128/4,192/4,
-                Duration.seconds(0.75),start,end);
+                4, 128 / 4, 192 / 4,
+                Duration.seconds(0.75), start, end);
 
     }
-    private void setAnimation(){
-        var physicsComponent=entity.getComponent(PhysicsComponent.class);
+
+    private void setAnimation() {
+        var physicsComponent = entity.getComponent(PhysicsComponent.class);
         double x_speed = physicsComponent.getVelocityX();
         double y_speed = physicsComponent.getVelocityY();
 
-        if(x_speed == 0&&y_speed==0){
+        if (x_speed == 0 && y_speed == 0) {
             at.stop();
-            isStop =true;
+            isStop = true;
             return;
         }
 
-        if (Math.abs(y_speed)>Math.abs(x_speed)){
-            if(y_speed >0)  dir = MoveDirection.DOWN;
-            else dir =MoveDirection.UP;
-        }
-        else {
-            if(x_speed <0)  dir = MoveDirection.LEFT;
-            else dir =MoveDirection.RIGHT;
+        if (Math.abs(y_speed) > Math.abs(x_speed)) {
+            if (y_speed > 0) dir = MoveDirection.DOWN;
+            else dir = MoveDirection.UP;
+        } else {
+            if (x_speed < 0) dir = MoveDirection.LEFT;
+            else dir = MoveDirection.RIGHT;
         }
 
-        if(dir == MoveDirection.UP){
-            if(at.getAnimationChannel()!=acUp || isStop){
+        if (dir == MoveDirection.UP) {
+            if (at.getAnimationChannel() != acUp || isStop) {
                 at.loopAnimationChannel(acUp);
-                isStop =false;
+                isStop = false;
             }
         }
-        if(dir == MoveDirection.DOWN){
-            if(at.getAnimationChannel()!=acDown || isStop){
+        if (dir == MoveDirection.DOWN) {
+            if (at.getAnimationChannel() != acDown || isStop) {
                 at.loopAnimationChannel(acDown);
-                isStop =false;
+                isStop = false;
             }
         }
-        if(dir == MoveDirection.RIGHT){
-            if(at.getAnimationChannel()!=acRight || isStop){
+        if (dir == MoveDirection.RIGHT) {
+            if (at.getAnimationChannel() != acRight || isStop) {
                 at.loopAnimationChannel(acRight);
-                isStop =false;
+                isStop = false;
             }
         }
-        if(dir == MoveDirection.LEFT){
-            if(at.getAnimationChannel()!=acLeft || isStop){
+        if (dir == MoveDirection.LEFT) {
+            if (at.getAnimationChannel() != acLeft || isStop) {
                 at.loopAnimationChannel(acLeft);
-                isStop =false;
+                isStop = false;
             }
         }
     }

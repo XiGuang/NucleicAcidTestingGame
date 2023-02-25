@@ -33,7 +33,7 @@ public class MapLoader {
         SpawnData needScoreData=new SpawnData();
         needScoreData.put("need_score",200);
         spawn("NeedScore",needScoreData);
-        NATFactory.spawnSite();
+        spawn("Site", 400, 0);
         spawn("Building",-100,0);
         spawn("Building",-682,209);
         spawn("Building",792,123);
@@ -43,7 +43,9 @@ public class MapLoader {
 
     private static void loadMapLevel2() {
         spawn("Background", -Config.WINDOW_WIDTH, -Config.WINDOW_HEIGHT);
-        spawn("UICountDown", -40, -200);
+        SpawnData countDownData=new SpawnData(-40, -200);
+        countDownData.put("time",110);  // 设定关卡时长
+        spawn("UICountDown", countDownData);
         spawn("ControlButton");
         spawn("Score");
         SpawnData needScoreData=new SpawnData();
