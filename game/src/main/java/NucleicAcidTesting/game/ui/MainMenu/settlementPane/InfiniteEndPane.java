@@ -74,6 +74,7 @@ public class InfiniteEndPane extends StackPane {
         SettlementButton exitButton = new SettlementButton("返回菜单");
         exitButton.setOnMouseClicked(event -> {
             FXGL.getGameController().gotoMainMenu();
+            FXGL.getGameController().resumeEngine();
             this.setVisible(false);
         });
 

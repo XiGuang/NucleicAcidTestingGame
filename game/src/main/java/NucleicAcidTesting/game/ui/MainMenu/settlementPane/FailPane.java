@@ -79,6 +79,7 @@ public class FailPane extends VBox{
         exitButton.setOnMouseClicked(event -> {
 
             FXGL.getGameController().gotoMainMenu();
+            FXGL.getGameController().resumeEngine();
             this.setVisible(false);
         });
         exitButton.setOnMouseEntered(event -> exitButton.setImage(exitButton_down));

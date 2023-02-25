@@ -17,8 +17,8 @@ public class ControlButtonComponent extends Component {
         exitButton.setFitHeight(50);
 
         exitButton.setOnMouseClicked(event -> {
-
             FXGL.getGameController().gotoMainMenu();
+            FXGL.getGameController().resumeEngine();
             //this.setVisible(false);
         });
         exitButton.setOnMouseEntered(event -> {
