@@ -118,6 +118,7 @@ public class CountDownComponent extends Component {
 //                    minute = minute2;
 //                    second = second2;
                     FXGL.getGameController().pauseEngine();
+                    FXGL.addUINode(failWin);
                     failWin.setVisible(true);
                 }
 
