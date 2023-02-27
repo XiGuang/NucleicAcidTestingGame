@@ -65,10 +65,15 @@ public class MoodComponent extends Component {
 
             //人数不是0
             else{
-                //画绿色进度条
-                g2d.setFill(Color.rgb(0,255,0));
+                g2d.setFill(Color.rgb(0,0,0));
                 g2d.fillRect(0,0,canvas.getWidth(), canvas.getHeight());
-                if((nv.doubleValue() / time_interval * width)<=(width/3)){
+                if((nv.doubleValue() / time_interval * width)==0){
+                    rect.setTranslateX(-width);
+                }
+                //画绿色进度条
+                else if((nv.doubleValue() / time_interval * width)<=(width/3)){
+                    g2d.setFill(Color.rgb(0,255,0));
+                    g2d.fillRect(0,0,canvas.getWidth(), canvas.getHeight());
                     rect.setTranslateX(-width +
                             Math.min(width/3, nv.doubleValue() / time_interval * width));
                 }
