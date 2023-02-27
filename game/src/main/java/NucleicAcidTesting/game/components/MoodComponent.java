@@ -65,6 +65,7 @@ public class MoodComponent extends Component {
 
             //人数不是0
             else{
+                //起始为黑色
                 g2d.setFill(Color.rgb(0,0,0));
                 g2d.fillRect(0,0,canvas.getWidth(), canvas.getHeight());
                 if((nv.doubleValue() / time_interval * width)==0){
