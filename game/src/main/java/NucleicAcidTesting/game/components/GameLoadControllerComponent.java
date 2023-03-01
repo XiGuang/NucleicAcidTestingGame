@@ -3,7 +3,7 @@ package NucleicAcidTesting.game.components;
 import NucleicAcidTesting.game.ui.LoadingWin;
 import com.almasb.fxgl.entity.component.Component;
 
-public class InfiniteGameLoadControllerComponent extends Component {
+public class GameLoadControllerComponent extends Component {
 
     final double DELAY = 1.5;
     static boolean INITED = false;
@@ -32,9 +32,15 @@ public class InfiniteGameLoadControllerComponent extends Component {
                     initDelay = DELAY;
                 }
                 INITED = true;
-            } else if (!showLoading) {
+            }
+            else if (!showLoading) {
                 loadingWin = new LoadingWin();
                 showLoading = true;
+            }
+            else if(!loadingWin.isShowing()&& initDelay <0){
+                showLoading = false;
+                initDelay = DELAY;
+                INITED = true;
             }
         }
     }

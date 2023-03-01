@@ -113,7 +113,7 @@ public class NATGameApp extends GameApplication {
         move_component = player.getComponent(MoveComponent.class);
         List<Entity> follow_list = FXGL.getWorldProperties().getObject("follow_list");
         follow_list.add(player);
-
+        spawn("GameLoadController");
         MapLoader.loadMap();
 
         getGameScene().getViewport().bindToEntity(player, getAppWidth() / 2.0, getAppHeight() / 2.0);

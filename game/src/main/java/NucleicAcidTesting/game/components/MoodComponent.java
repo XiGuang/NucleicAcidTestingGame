@@ -1,10 +1,8 @@
 package NucleicAcidTesting.game.components;
 
-import NucleicAcidTesting.game.Config;
 import NucleicAcidTesting.game.MapLoader;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.component.Component;
-import com.almasb.fxgl.texture.Texture;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -105,7 +103,7 @@ public class MoodComponent extends Component {
     //记录累计时间
     @Override
     public void onUpdate(double tpf){
-        if (Objects.equals(MapLoader.getMapLevel(), "infinity") &&!InfiniteGameLoadControllerComponent.INITED)
+        if (Objects.equals(MapLoader.getMapLevel(), "infinity") &&!GameLoadControllerComponent.INITED)
             return;
         if(people_num!=0)
             progress.set(progress.get()+tpf*people_num);

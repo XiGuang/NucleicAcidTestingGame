@@ -50,7 +50,7 @@ public class CountDownComponent extends Component {
         remainingTime = second;
         currentSecond = second;
         //设置计时器启动的初始延迟
-        Delay = 0;
+        Delay = 2;
         //背景图片以及格式设置
         Image image = new Image("assets/textures/CountDownPic/CountDownBackground.gif");
 
@@ -78,26 +78,9 @@ public class CountDownComponent extends Component {
 
     @Override
     public void onUpdate(double tpf) {
-        double max_time = 0.015;
-        if (!inited) {
-            initDelay -= tpf;
-            if (tpf <= max_time && initDelay <0) {
-                if (showLoading) {
-                    loadingWin.closeLoading();
-                    showLoading = false;
-                    initDelay = 1.5;
-                }
-                inited = true;
-            } else if (!showLoading) {
-                loadingWin = new LoadingWin();
-                showLoading = true;
-            }
+        if(!GameLoadControllerComponent.isInited())
             return;
-        }
-//        if (tpf > max_time) {
-//            inited = false;
-//            return;
-//        } ;
+
         //等待Delay时间然后再启动倒计时
         if (Delay > 0) {
             Delay -= tpf;

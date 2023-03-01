@@ -62,7 +62,6 @@ public class MapLoader {
     }
 
     private static void loadMapInfinity() {
-        spawn("InfiniteGameLoadController");
         spawn("Background", -Config.WINDOW_WIDTH, -Config.WINDOW_HEIGHT);
         spawn("ControlButton");
         spawn("Score");

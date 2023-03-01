@@ -71,10 +71,10 @@ public class NATUIFactory implements EntityFactory {
                 .build();
     }
 
-    @Spawns("InfiniteGameLoadController")
-    public Entity newInfiniteGameLoadController(SpawnData data) {
+    @Spawns("GameLoadController")
+    public Entity newGameLoadController(SpawnData data) {
         return FXGL.entityBuilder(data)
-                .with(new InfiniteGameLoadControllerComponent())
+                .with(new GameLoadControllerComponent())
                 .build();
     }
 }
