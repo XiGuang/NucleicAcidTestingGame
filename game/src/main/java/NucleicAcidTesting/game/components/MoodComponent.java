@@ -103,7 +103,7 @@ public class MoodComponent extends Component {
     //记录累计时间
     @Override
     public void onUpdate(double tpf){
-        if (Objects.equals(MapLoader.getMapLevel(), "infinity") &&!GameLoadControllerComponent.INITED)
+        if (Objects.equals(MapLoader.getMapLevel(), "infinity") &&!GameLoadControllerComponent.isInited())
             return;
         if(people_num!=0)
             progress.set(progress.get()+tpf*people_num);

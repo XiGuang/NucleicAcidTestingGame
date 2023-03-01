@@ -106,7 +106,7 @@ public class BuildingComponent extends Component {
 
     @Override
     public void onUpdate(double tpf) {
-        if (Objects.equals(MapLoader.getMapLevel(), "infinity") &&!GameLoadControllerComponent.INITED)
+        if (Objects.equals(MapLoader.getMapLevel(), "infinity") &&!GameLoadControllerComponent.isInited())
             return;
         if (!spawnTimer.elapsed(spawnInterval))
             return;
