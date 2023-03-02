@@ -3,8 +3,8 @@ package NucleicAcidTesting.game;
 public interface Config {
     int WINDOW_HEIGHT=520;
     int WINDOW_WIDTH =960;
-    String VERSION="0.9";
-    String TITLE="Nucleic Acid Testing";
+    String VERSION="1.0";
+    String TITLE="Let`s Do Nucleic Acid Testing!";
 
     boolean ONLINE = false;
 
