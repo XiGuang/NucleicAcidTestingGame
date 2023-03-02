@@ -21,7 +21,7 @@ public class PlayerComponent extends Component {
     LazyValue<EntityGroup> entity_group_lazy_value = new LazyValue<>(() -> FXGL.getGameWorld().getGroup(NATType.BUILDING, NATType.SITE));
 
     MoveDirection moveDirection = MoveDirection.STOP;
-    private AnimationChannel acUp,acDown,acLeft,acRight;
+    private AnimationChannel acUp, acDown, acLeft, acRight;
     private AnimatedTexture at;
     private boolean isStop = true;
 
@@ -32,61 +32,62 @@ public class PlayerComponent extends Component {
         for (var e : entities) {
             Point2D point_left_up = e.getPosition();
             Bounds bounds = e.getViewComponent().getChildren().get(0).getBoundsInLocal();
-            Rectangle2D rectangle2D = new Rectangle2D(point_left_up.getX(), point_left_up.getY(), bounds.getWidth()-10, bounds.getHeight()-10);
+            Rectangle2D rectangle2D = new Rectangle2D(point_left_up.getX(), point_left_up.getY(), bounds.getWidth() - 10, bounds.getHeight() - 10);
 
             if (rectangle2D.contains(entity.getCenter())) {
-                e.setOpacity(NATMath.InterpolationD(e.getOpacity(),0.5,tpf*3));
+                e.setOpacity(NATMath.InterpolationD(e.getOpacity(), 0.5, tpf * 3));
             } else if (e.getOpacity() != 1)
-                e.setOpacity(NATMath.InterpolationD(e.getOpacity(),1,tpf*3));
+                e.setOpacity(NATMath.InterpolationD(e.getOpacity(), 1, tpf * 3));
         }
 
-        if(moveDirection != MoveComponent.getDir()){
+        if (moveDirection != MoveComponent.getDir()) {
             moveDirection = MoveComponent.getDir();
         }
 
-        if(moveDirection == MoveDirection.UP){
-            if(at.getAnimationChannel()!=acUp || isStop){
+        if (moveDirection == MoveDirection.UP) {
+            if (at.getAnimationChannel() != acUp || isStop) {
                 at.loopAnimationChannel(acUp);
                 isStop = false;
             }
         }
-        if(moveDirection == MoveDirection.DOWN){
-            if(at.getAnimationChannel()!=acDown|| isStop){
+        if (moveDirection == MoveDirection.DOWN) {
+            if (at.getAnimationChannel() != acDown || isStop) {
                 at.loopAnimationChannel(acDown);
                 isStop = false;
             }
         }
-        if(moveDirection == MoveDirection.RIGHT){
-            if(at.getAnimationChannel()!=acRight|| isStop){
+        if (moveDirection == MoveDirection.RIGHT) {
+            if (at.getAnimationChannel() != acRight || isStop) {
                 at.loopAnimationChannel(acRight);
                 isStop = false;
             }
         }
-        if(moveDirection == MoveDirection.LEFT){
-            if(at.getAnimationChannel()!=acLeft|| isStop){
+        if (moveDirection == MoveDirection.LEFT) {
+            if (at.getAnimationChannel() != acLeft || isStop) {
                 at.loopAnimationChannel(acLeft);
                 isStop = false;
             }
         }
-        if (moveDirection == MoveDirection.STOP){
+        if (moveDirection == MoveDirection.STOP) {
             at.stop();
-            isStop =true;
+            isStop = true;
         }
     }
 
     @Override
     public void onAdded() {
-        acUp = getAnimationChannel(12,15);
-        acDown = getAnimationChannel(0,3);
-        acLeft = getAnimationChannel(4,7);
-        acRight = getAnimationChannel(8,11);
+        acUp = getAnimationChannel(12, 15);
+        acDown = getAnimationChannel(0, 3);
+        acLeft = getAnimationChannel(4, 7);
+        acRight = getAnimationChannel(8, 11);
         at = new AnimatedTexture(acDown);
         entity.getViewComponent().addChild(at);
     }
-    private AnimationChannel getAnimationChannel(int start,int end){
+
+    private AnimationChannel getAnimationChannel(int start, int end) {
         return new AnimationChannel(FXGL.image("player.png"),
-                4,128/4,192/4,
-                Duration.seconds(0.75),start,end);
+                4, 128 / 4, 192 / 4,
+                Duration.seconds(0.75), start, end);
     }
 }
 

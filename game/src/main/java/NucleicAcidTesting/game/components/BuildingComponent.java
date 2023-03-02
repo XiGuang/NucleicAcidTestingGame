@@ -25,7 +25,7 @@ public class BuildingComponent extends Component {
 
     private boolean isStartingSpawn = false;
     private final boolean isInfinity;
-    private Duration spawnInterval=Duration.seconds(2);
+    private Duration spawnInterval = Duration.seconds(2);
 
     // 生成队伍计时器
     private LocalTimer spawnTimer;
@@ -55,12 +55,12 @@ public class BuildingComponent extends Component {
 
     public void setStart(boolean isStartingSpawn) {
         this.isStartingSpawn = isStartingSpawn;
-        if(isStartingSpawn){
-            this.mood= FXGL.spawn("Mood",entity.getX()+100,entity.getY());
+        if (isStartingSpawn) {
+            this.mood = FXGL.spawn("Mood", entity.getX() + 100, entity.getY());
             this.mood.getComponent(MoodComponent.class).setPeople_num(getQueueNum());
-        }else if(mood!=null){
+        } else if (mood != null) {
             mood.removeFromWorld();
-            mood=null;
+            mood = null;
         }
     }
 
@@ -69,25 +69,25 @@ public class BuildingComponent extends Component {
     }
 
     // 用于随机更新产生人的时间间隔,单位为秒
-    private void randomSpawnInterval(double min,double max){
-        spawnInterval=Duration.seconds(FXGL.random(min,max));
+    private void randomSpawnInterval(double min, double max) {
+        spawnInterval = Duration.seconds(FXGL.random(min, max));
     }
 
-    private void randomSpawnInInfinity(){
-        if(hasSpawnedNum<5)
-            randomSpawnInterval(5,15);
-        else if(hasSpawnedNum<10)
-            randomSpawnInterval(4,8);
-        else if(hasSpawnedNum<20)
-            randomSpawnInterval(3,5);
-        else if(hasSpawnedNum<100)
-            randomSpawnInterval(3,4);
+    private void randomSpawnInInfinity() {
+        if (hasSpawnedNum < 5)
+            randomSpawnInterval(5, 15);
+        else if (hasSpawnedNum < 10)
+            randomSpawnInterval(4, 8);
+        else if (hasSpawnedNum < 20)
+            randomSpawnInterval(3, 5);
+        else if (hasSpawnedNum < 100)
+            randomSpawnInterval(3, 4);
         else
-            randomSpawnInterval(2,3);
+            randomSpawnInterval(2, 3);
     }
 
     public BuildingComponent(boolean is_infinity) {
-        isInfinity=is_infinity;
+        isInfinity = is_infinity;
     }
 
     @Override
@@ -97,7 +97,7 @@ public class BuildingComponent extends Component {
         spawnData.put("size", 100.0);
         spawnData.put("building", entity);
         Entity trigger_area = FXGL.spawn("BuildingArea", spawnData);
-        if(isInfinity) {
+        if (isInfinity) {
             trigger_area.setOpacity(0);
             setStart(true);
         } else
@@ -112,12 +112,12 @@ public class BuildingComponent extends Component {
             return;
         spawnTimer.capture();
         // 无尽模式或开始产生则继续
-        if(!isInfinity && !isStartingSpawn )
+        if (!isInfinity && !isStartingSpawn)
             return;
         // 不是无限模式则产生人数超出上限则返回
-        if(hasSpawnedNum >= maxPeopleNum && !isInfinity)
+        if (hasSpawnedNum >= maxPeopleNum && !isInfinity)
             return;
-        if(isInfinity)
+        if (isInfinity)
             randomSpawnInInfinity();
 
         Entity person = FXGL.getGameWorld().spawn("People",
@@ -126,7 +126,7 @@ public class BuildingComponent extends Component {
 
         person.setUpdateEnabled(false);
 
-        if(mood!=null && mood.hasComponent(MoodComponent.class))
+        if (mood != null && mood.hasComponent(MoodComponent.class))
             mood.getComponent(MoodComponent.class).setPeople_num(queueResidents.size());
 
         ++hasSpawnedNum;
@@ -136,7 +136,7 @@ public class BuildingComponent extends Component {
     public void followToPlayer() {
 
         for (Iterator<Entity> it = queueResidents.iterator(); it.hasNext(); ) {
-            if(!PeopleComponent.canFollow()){
+            if (!PeopleComponent.canFollow()) {
                 FXGL.getNotificationService().pushNotification("队伍满员啦！");
                 break;
             }
@@ -158,12 +158,12 @@ public class BuildingComponent extends Component {
             person.setUpdateEnabled(true);
 
             FXGL.getGameWorld().addEntity(person);
-            if(!person.getComponent(PeopleComponent.class).follow())
+            if (!person.getComponent(PeopleComponent.class).follow())
                 System.out.println("error follow");
             it.remove();
         }
-        if(mood!=null && mood.hasComponent(MoodComponent.class)){
-            if(queueResidents.size()==0)
+        if (mood != null && mood.hasComponent(MoodComponent.class)) {
+            if (queueResidents.size() == 0)
                 mood.getComponent(MoodComponent.class).reset();
             mood.getComponent(MoodComponent.class).setPeople_num(queueResidents.size());
         }
