@@ -1,6 +1,7 @@
 package NucleicAcidTesting.game.components.AreaComponent;
 
 import NucleicAcidTesting.game.components.BuildingComponent;
+import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.input.KeyTrigger;
 import com.almasb.fxgl.input.TriggerListener;
@@ -22,6 +23,7 @@ public class BuildingAreaComponent extends BaseAreaComponent {
                         return;
 
                     if (!fromBuilding.getComponent(BuildingComponent.class).isStart()) {
+                        FXGL.play("yell.wav");
                         fromBuilding.getComponent(BuildingComponent.class).setStart(true);
                         entity.setOpacity(0);
                     } else if (fromBuilding.getComponent(BuildingComponent.class).getQueueNum() > 0) {

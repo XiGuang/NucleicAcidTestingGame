@@ -34,7 +34,7 @@ public class LoadingWin extends Stage {
 
         Thread thread = new Thread(() -> {
             try {
-                Thread.sleep(3000);
+                Thread.sleep(4000);
                 if (loadWin.isShowing())
                     Platform.runLater(() -> loadWin.close());
             } catch (InterruptedException exp) {
