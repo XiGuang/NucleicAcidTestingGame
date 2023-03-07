@@ -58,7 +58,7 @@ public class MapLoader {
         spawn("Building",291,-252);
         spawn("Building",490,-492);
         spawn("Building",392,381);
-        spawn("Site", 100, 0);
+        spawn("Site", 200, 0);
     }
 
     private static void loadMapInfinity() {
