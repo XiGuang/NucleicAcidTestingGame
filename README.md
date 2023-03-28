@@ -11,5 +11,3 @@
 | JDBC     |
 ## 声明
   项目仅供学习使用。
-
-  uploader:Tang Mingfeng
